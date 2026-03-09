@@ -1,0 +1,229 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite the following paper."
+title: "Data for: Deep untargeted wastewater metagenomic sequencing from sewersheds across the United States"
+type: dataset
+authors:
+  - family-names: Justen
+    given-names: Lennart J.
+  - family-names: Rushford
+    given-names: Clayton
+  - family-names: Hershey
+    given-names: Olivia S.
+  - family-names: Floyd-O'Sullivan
+    given-names: "Ro\xEDsin"
+  - family-names: Grimm
+    given-names: Simon L.
+  - family-names: Bradshaw
+    given-names: William J.
+  - family-names: Bhasin
+    given-names: Harmon
+  - family-names: Rice
+    given-names: Daniel P.
+  - family-names: Stansifer
+    given-names: Katherine
+  - family-names: Faraguna
+    given-names: Jo D.
+  - family-names: McLaren
+    given-names: Michael R.
+  - family-names: Zulli
+    given-names: Alessandro
+  - family-names: Tovar-Mendez
+    given-names: Alejandro
+  - family-names: Copen
+    given-names: Emma
+  - family-names: Shelton
+    given-names: Kristen K.
+  - family-names: Amirali
+    given-names: Ayaaz
+  - family-names: Kannoly
+    given-names: Sherin
+  - family-names: Pesantez
+    given-names: Sofia
+  - family-names: Stanciu
+    given-names: Aiden
+  - family-names: Caballero Quiroga
+    given-names: "I\xF1igo"
+  - family-names: Silvera
+    given-names: Leopolda
+  - family-names: Greenwood
+    given-names: Nicole
+  - family-names: Bongiovi
+    given-names: Barbra
+  - family-names: Walkins
+    given-names: Austin
+  - family-names: Love
+    given-names: Ryan
+  - family-names: Lening
+    given-names: Scott
+  - family-names: Patterson
+    given-names: Kaylyn
+  - family-names: Johnston
+    given-names: Theresa
+  - family-names: Hernandez
+    given-names: Sandra
+  - family-names: Benitez
+    given-names: Aymara
+  - family-names: McCarley
+    given-names: Billie Jo
+  - family-names: Engelage
+    given-names: Samantha
+  - family-names: Pillay
+    given-names: Suguna
+  - family-names: Calender
+    given-names: Cindy
+  - family-names: Herring
+    given-names: Brent
+  - family-names: Robinson
+    given-names: Carey
+  - name: Monett Wastewater Treatment Plant
+  - name: Columbia Missouri Wastewater Treatment Plant
+  - family-names: Cunningham-Bryant
+    given-names: Daniel
+  - family-names: Adams
+    given-names: Gordon
+  - family-names: Paull
+    given-names: Jillian
+  - family-names: Devlin
+    given-names: Jamie
+  - family-names: Thiriveedhi
+    given-names: Vamsi
+  - family-names: Turbett
+    given-names: Sarah E.
+  - family-names: Lemieux
+    given-names: Jacob E.
+  - family-names: Kantor
+    given-names: Rose S.
+  - family-names: O'Connor
+    given-names: David H.
+  - family-names: Dennehy
+    given-names: John J.
+  - family-names: Poretsky
+    given-names: Rachel
+  - family-names: Rothman
+    given-names: Jason A.
+  - family-names: Solo-Gabriele
+    given-names: Helena M.
+  - family-names: Vogel
+    given-names: Jason R.
+  - family-names: Sabeti
+    given-names: Pardis C.
+  - family-names: Kaufman
+    given-names: Jeff
+  - family-names: Johnson
+    given-names: Marc
+preferred-citation:
+  type: article
+  title: "Deep untargeted wastewater metagenomic sequencing from sewersheds across the United States"
+  authors:
+    - family-names: Justen
+      given-names: Lennart J.
+    - family-names: Rushford
+      given-names: Clayton
+    - family-names: Hershey
+      given-names: Olivia S.
+    - family-names: Floyd-O'Sullivan
+      given-names: "Ro\xEDsin"
+    - family-names: Grimm
+      given-names: Simon L.
+    - family-names: Bradshaw
+      given-names: William J.
+    - family-names: Bhasin
+      given-names: Harmon
+    - family-names: Rice
+      given-names: Daniel P.
+    - family-names: Stansifer
+      given-names: Katherine
+    - family-names: Faraguna
+      given-names: Jo D.
+    - family-names: McLaren
+      given-names: Michael R.
+    - family-names: Zulli
+      given-names: Alessandro
+    - family-names: Tovar-Mendez
+      given-names: Alejandro
+    - family-names: Copen
+      given-names: Emma
+    - family-names: Shelton
+      given-names: Kristen K.
+    - family-names: Amirali
+      given-names: Ayaaz
+    - family-names: Kannoly
+      given-names: Sherin
+    - family-names: Pesantez
+      given-names: Sofia
+    - family-names: Stanciu
+      given-names: Aiden
+    - family-names: Caballero Quiroga
+      given-names: "I\xF1igo"
+    - family-names: Silvera
+      given-names: Leopolda
+    - family-names: Greenwood
+      given-names: Nicole
+    - family-names: Bongiovi
+      given-names: Barbra
+    - family-names: Walkins
+      given-names: Austin
+    - family-names: Love
+      given-names: Ryan
+    - family-names: Lening
+      given-names: Scott
+    - family-names: Patterson
+      given-names: Kaylyn
+    - family-names: Johnston
+      given-names: Theresa
+    - family-names: Hernandez
+      given-names: Sandra
+    - family-names: Benitez
+      given-names: Aymara
+    - family-names: McCarley
+      given-names: Billie Jo
+    - family-names: Engelage
+      given-names: Samantha
+    - family-names: Pillay
+      given-names: Suguna
+    - family-names: Calender
+      given-names: Cindy
+    - family-names: Herring
+      given-names: Brent
+    - family-names: Robinson
+      given-names: Carey
+    - name: Monett Wastewater Treatment Plant
+    - name: Columbia Missouri Wastewater Treatment Plant
+    - family-names: Cunningham-Bryant
+      given-names: Daniel
+    - family-names: Adams
+      given-names: Gordon
+    - family-names: Paull
+      given-names: Jillian
+    - family-names: Devlin
+      given-names: Jamie
+    - family-names: Thiriveedhi
+      given-names: Vamsi
+    - family-names: Turbett
+      given-names: Sarah E.
+    - family-names: Lemieux
+      given-names: Jacob E.
+    - family-names: Kantor
+      given-names: Rose S.
+    - family-names: O'Connor
+      given-names: David H.
+    - family-names: Dennehy
+      given-names: John J.
+    - family-names: Poretsky
+      given-names: Rachel
+    - family-names: Rothman
+      given-names: Jason A.
+    - family-names: Solo-Gabriele
+      given-names: Helena M.
+    - family-names: Vogel
+      given-names: Jason R.
+    - family-names: Sabeti
+      given-names: Pardis C.
+    - family-names: Kaufman
+      given-names: Jeff
+    - family-names: Johnson
+      given-names: Marc
+  doi: "10.64898/2026.03.05.26345726"
+  url: "https://doi.org/10.64898/2026.03.05.26345726"
+  journal: "medRxiv"
+  year: 2026
