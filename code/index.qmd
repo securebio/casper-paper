@@ -1,0 +1,519 @@
+---
+title: "CASPER Manuscript Figures"
+author: "Lennart Justen"
+date: 2026-03-05
+toc: false
+format:
+  html:
+    fig-width: 10
+    fig-height: 8
+---
+
+```{python}
+import sys
+import os
+from pathlib import Path
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import warnings
+
+warnings.filterwarnings('ignore')
+
+# Add code directory to path (notebook runs from code/ already)
+sys.path.insert(0, str(Path('.').resolve()))
+
+from IPython.display import Markdown
+
+from data_loaders import (
+    load_all_site_data,
+    load_all_kraken_data,
+    load_all_virus_host_data,
+    load_all_vv_family_data,
+    load_all_qc_data,
+    load_all_quality_data,
+    load_sample_age_data,
+    load_nwss_data,
+    load_mgs_nwss_matches,
+    load_mgs_pathogen_data,
+    load_clinical_positives_tests_data,
+    calculate_vv_fraction_per_library,
+    NWSS_PATHOGEN_MAP,
+    prepare_taxonomic_fractions_rrna_separated,
+    prepare_host_fractions,
+    aggregate_taxonomic_composition,
+    aggregate_virus_host_composition,
+    print_sample_site_stats,
+    print_sra_statistics,
+    print_lit_review_statistics,
+    print_cost_statistics,
+    print_rrna_statistics,
+    print_taxonomic_composition_statistics,
+    print_turnaround_stats,
+    print_quality_statistics,
+    print_read_length_statistics,
+    generate_cost_table,
+)
+
+# Load core datasets once
+site_data = load_all_site_data()
+kraken_data = load_all_kraken_data()
+qc_data = load_all_qc_data()
+virus_data = load_all_site_data()
+virus_host_data = load_all_virus_host_data()
+vv_family_data = load_all_vv_family_data()
+```
+
+## Main Figures
+
+```{python}
+#| label: tbl-1
+#| tbl-cap: "Summary of CASPER sampling sites."
+
+from plot_sample_summary import generate_table1_sampling_sites
+
+table1 = generate_table1_sampling_sites(
+    site_data,
+    save_path='../tables/sampling_sites.tsv'
+)
+
+def format_table1_html(df):
+    """Format Table 1 with region headers as bold rows."""
+    rows = []
+    current_region = None
+    cols = ['Sampling site', 'NWSS sewershed ID', 'Location type', 'Sample type', 'Approx. population served',
+            'Sequencing partner', 'Sample collection start date', 'Sample collection end date',
+            'Number of samples', 'Median read pairs', 'Median sampling interval (days)', 'Median turnaround (days)']
+    for _, row in df.iterrows():
+        if row['region'] != current_region:
+            current_region = row['region']
+            rows.append({col: f"**{current_region}**" if col == 'Sampling site' else '' for col in cols})
+        rows.append({col: str(row[col]) if pd.notna(row[col]) else '' for col in cols})
+    return pd.DataFrame(rows)
+
+display_df = format_table1_html(table1)
+Markdown(display_df.to_markdown(index=False))
+```
+
+```{python}
+#| label: fig-1a
+#| fig-cap: "Geographic distribution of wastewater sampling sites across the United States."
+
+from plot_sampling_map import load_site_coordinates, plot_us_sampling_map
+
+coords = load_site_coordinates()
+fig, ax = plot_us_sampling_map(coords, save_path='../figures/sampling_map.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-1b
+#| fig-cap: "Population served by each wastewater treatment plant sampling site."
+
+from plot_population_served import load_population_data, plot_population_served
+
+pop_data = load_population_data()
+fig, ax = plot_population_served(pop_data, save_path='../figures/population_served.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-2
+#| fig-cap: "CASPER sequencing effort and scale."
+
+from plot_sampling_timeline_sra_combined import plot_sampling_timeline_sra_combined
+
+print_sample_site_stats(site_data)
+print_sra_statistics()
+print_lit_review_statistics()
+print_cost_statistics()
+
+fig = plot_sampling_timeline_sra_combined(save_path='../figures/sampling_timeline_sra_combined.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-3
+#| fig-cap: "Taxonomic composition of wastewater metagenomes."
+
+from plot_taxonomic_panel_combined import plot_taxonomic_panel_combined
+
+print_rrna_statistics(kraken_data)
+print_taxonomic_composition_statistics(kraken_data)
+
+# Virus host composition statistics
+df_tax = prepare_taxonomic_fractions_rrna_separated(kraken_data)
+df_virus = prepare_host_fractions(virus_host_data)
+tax_result = aggregate_taxonomic_composition(df_tax)
+virus_result = aggregate_virus_host_composition(df_virus, virus_data)
+
+total_reads = tax_result['total_reads']
+vv_frac_kraken = virus_result['read_counts']['vertebrate'] / total_reads
+vv_frac_pipeline = virus_data['total_virus_hits'].sum() / virus_data['total_read_pairs'].sum()
+
+print("Virus host composition:")
+for cat in ['plant', 'unknown_ambiguous', 'bacteria', 'invertebrate', 'vertebrate', 'other']:
+    print(f"  {cat}: {virus_result['proportions'][cat] * 100:.1f}%")
+print(f"  VV % of all reads (Kraken): {vv_frac_kraken*100:.4f}%")
+print(f"  VV % of all reads (pipeline): {vv_frac_pipeline*100:.4f}%")
+
+fig = plot_taxonomic_panel_combined(
+    kraken_data, virus_host_data, virus_data, virus_data,
+    save_path='../figures/taxonomic_panel_combined.png',
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-4
+#| fig-cap: "Vertebrate-infecting virus (VV) family composition and respiratory pathogen dynamics."
+
+from plot_vv_pathogen_combined import plot_vv_pathogen_combined
+
+# VV detection statistics
+vv_fractions = calculate_vv_fraction_per_library(vv_family_data, virus_data)
+print("VV detection stats:")
+print(f"  Kraken2 VV fraction (aggregate): {vv_frac_kraken*100:.3f}%")
+print(f"  Pipeline VV fraction (aggregate): {vv_frac_pipeline*100:.3f}%")
+print(f"  Pipeline VV fraction (median per-sample): {vv_fractions['vv_fraction'].median()*100:.3f}%")
+print(f"  Pipeline VV fraction (range): {vv_fractions['vv_fraction'].min()*100:.2f}%-{vv_fractions['vv_fraction'].max()*100:.2f}%")
+print(f"  Pipeline/Kraken2 ratio: {vv_frac_pipeline/vv_frac_kraken:.1f}x")
+
+fig = plot_vv_pathogen_combined(
+    save_path='../figures/vv_pathogen_combined.png',
+    log_scale=False,
+    normalize_by_site_median=True
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-5
+#| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR and MGH clinical testing data for selected sites."
+
+from plot_mgs_nwss_panel import plot_mgs_nwss_panel, SITES_TO_PLOT, PATHOGENS_TO_PLOT
+
+# Load NWSS data
+nwss_data = load_nwss_data()
+matches = load_mgs_nwss_matches()
+
+# Build site info dict
+site_info_dict = {}
+for _, row in matches.iterrows():
+    site_name = row['site_name']
+    if site_name in SITES_TO_PLOT:
+        site_info_dict[site_name] = {
+            'sewershed_ids': row['sewershed_ids'],
+            'state': row['state']
+        }
+
+# Load MGS data for all pathogens
+mgs_data_dict = {}
+for pathogen_key in PATHOGENS_TO_PLOT:
+    pathogen_config = NWSS_PATHOGEN_MAP[pathogen_key]
+    mgs_data = load_mgs_pathogen_data(taxids=pathogen_config['taxids'])
+    if not mgs_data.empty:
+        mgs_data_dict[pathogen_key] = mgs_data
+
+clinical_data = load_clinical_positives_tests_data()
+
+fig = plot_mgs_nwss_panel(mgs_data_dict, nwss_data, site_info_dict, clinical_data=clinical_data, save_path='../figures/mgs_nwss_panel.png')
+plt.show()
+```
+
+## Supplementary Figures
+
+```{python}
+#| label: fig-s1
+#| fig-cap: "Read pairs per library over time for all sites."
+
+from plot_read_pairs_timeseries_all import plot_read_pairs_timeseries_all
+
+fig, axes = plot_read_pairs_timeseries_all(site_data, save_path='../figures/read_pairs_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s2
+#| fig-cap: "CASPER sequencing in context."
+
+from plot_sra_untargeted_supplement import plot_sra_untargeted_supplement
+
+fig = plot_sra_untargeted_supplement(save_path='../figures/sra_untargeted_supplement.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s3
+#| fig-cap: "Sample turnaround time distribution by sequencing laboratory."
+
+from plot_sample_age import plot_sample_age_histogram
+
+sample_age_data = load_sample_age_data()
+print_turnaround_stats(sample_age_data)
+fig, axes = plot_sample_age_histogram(sample_age_data, save_path='../figures/sample_age_histogram.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s4
+#| fig-cap: "Taxonomic composition time series for all sites."
+
+from plot_taxonomic_composition_timeseries_all import plot_taxonomic_composition_timeseries_all
+
+fig, axes = plot_taxonomic_composition_timeseries_all(kraken_data, save_path='../figures/taxonomic_composition_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s5
+#| fig-cap: "PMMoV and ToBRFV fraction over time across all sites."
+
+from plot_pmmov_tbrfv_panel import plot_pmmov_tbrfv_panel
+
+fig, axes = plot_pmmov_tbrfv_panel(kraken_data, virus_data, save_path='../figures/pmmov_tbrfv_panel.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s6
+#| fig-cap: "Vertebrate-infecting virus (VV) family composition over time for all sites."
+
+from plot_vv_family_timeseries_all import plot_vv_family_timeseries_all
+
+fig, axes = plot_vv_family_timeseries_all(vv_family_data, save_path='../figures/vv_family_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s7
+#| fig-cap: "VV family composition and respiratory pathogen dynamics (log scale)."
+
+from plot_vv_pathogen_combined_log import plot_vv_pathogen_combined as plot_vv_pathogen_combined_log
+
+fig = plot_vv_pathogen_combined_log(
+    save_path='../figures/vv_pathogen_combined_log.png',
+    log_scale=True,
+    normalize_by_site_median=False
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-s8
+#| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR data for all sites with available pairing."
+
+from plot_mgs_nwss_supplementary_all import plot_mgs_nwss_supplementary_all, _build_site_info_dict
+
+nwss_data_all = load_nwss_data()
+matches_all = load_mgs_nwss_matches()
+
+# Build site info for all matched sites (includes seq_labs for MU/SB splitting)
+site_info_dict_all = _build_site_info_dict(matches_all)
+
+mgs_data_dict_all = {}
+for pathogen_key in ['sars-cov-2', 'influenza_a', 'rsv']:
+    pathogen_config = NWSS_PATHOGEN_MAP[pathogen_key]
+    mgs_data = load_mgs_pathogen_data(taxids=pathogen_config['taxids'])
+    if not mgs_data.empty:
+        mgs_data_dict_all[pathogen_key] = mgs_data
+
+fig, axes = plot_mgs_nwss_supplementary_all(
+    mgs_data_dict_all, nwss_data_all, site_info_dict_all,
+    save_path='../figures/mgs_nwss_supplementary_all.png'
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-s9
+#| fig-cap: "Boston clinical respiratory virus testing volume and positivity rate."
+
+from plot_clinical_testing_supplement import (
+    plot_clinical_testing_supplement, load_clinical_testing_data,
+    PATHOGENS_TO_PLOT as CLINICAL_PATHOGENS,
+)
+from data_loaders import load_sample_metadata
+
+mgs_data_dict_clinical = {}
+for pathogen_key in CLINICAL_PATHOGENS:
+    pathogen_config = NWSS_PATHOGEN_MAP[pathogen_key]
+    mgs_data = load_mgs_pathogen_data(taxids=pathogen_config['taxids'])
+    if not mgs_data.empty:
+        mgs_data_dict_clinical[pathogen_key] = mgs_data
+
+clinical_time_series = load_clinical_positives_tests_data(filter_test_types=True)
+clinical_testing_data = load_clinical_testing_data()
+metadata = load_sample_metadata()
+
+fig, axes = plot_clinical_testing_supplement(
+    mgs_data_dict=mgs_data_dict_clinical,
+    clinical_time_series=clinical_time_series,
+    clinical_testing_data=clinical_testing_data,
+    metadata=metadata,
+    save_path='../figures/clinical_testing_supplement.png'
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-s10
+#| fig-cap: "Mean GC content (%) over time for all sites."
+
+from plot_gc_content_timeseries_all import plot_gc_content_timeseries_all
+
+fig, axes = plot_gc_content_timeseries_all(qc_data, site_data, save_path='../figures/gc_content_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s11
+#| fig-cap: "Median per-sequence Phred quality score (raw reads) over time for all sites."
+
+from plot_quality_score_timeseries_all import plot_quality_score_timeseries_all
+
+quality_data = load_all_quality_data(stage='raw')
+print_quality_statistics(quality_data, stage='raw')
+fig, axes = plot_quality_score_timeseries_all(quality_data, site_data, save_path='../figures/quality_score_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s12
+#| fig-cap: "QC pass rate over time for all sites."
+
+from plot_qc_pass_rate_timeseries_all import plot_qc_pass_rate_timeseries_all
+
+kraken_with_qc = kraken_data.merge(
+    qc_data[['sra_accession', 'raw_n_read_pairs', 'cleaned_n_read_pairs']],
+    on='sra_accession', how='left'
+)
+kraken_with_qc['fraction_qc_filtered'] = 1 - (kraken_with_qc['cleaned_n_read_pairs'] / kraken_with_qc['raw_n_read_pairs'])
+fig, axes = plot_qc_pass_rate_timeseries_all(kraken_with_qc, site_data, save_path='../figures/qc_pass_rate_timeseries_all.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s13
+#| fig-cap: "Mean raw read length (bp) over time for all sites."
+
+from plot_read_length_timeseries_all import plot_read_length_timeseries_all
+
+qc_data_rl = load_all_qc_data()
+print_read_length_statistics(qc_data_rl)
+fig, axes = plot_read_length_timeseries_all(qc_data_rl, site_data, save_path='../figures/read_length_timeseries_all.png')
+plt.show()
+```
+
+## Supplementary Tables
+
+```{python}
+#| label: tbl-s1
+#| tbl-cap: "Literature review of wastewater metagenomic sequencing studies."
+
+from export_lit_review_table import print_summary as print_lit_review_summary
+print_lit_review_summary()
+
+supp_table = pd.read_csv('../tables/lit_review_table.tsv', sep='\t')
+Markdown(supp_table.to_markdown(index=False))
+```
+
+```{python}
+#| label: tbl-s2
+#| tbl-cap: "Historical cost of sequencing one median CASPER sample."
+
+cost_table = generate_cost_table(
+    save_path='../tables/sequencing_cost_table.tsv'
+)
+Markdown(cost_table.to_markdown(index=False))
+```
+
+```{python}
+#| label: tbl-s3
+#| tbl-cap: "NWSS sewershed IDs for CASPER sampling sites."
+
+from data_loaders import load_nwss_site_matches
+from plot_config import sort_locations_by_state_and_name
+
+sewershed_df = load_nwss_site_matches()
+if not sewershed_df.empty:
+    sewershed_df = sewershed_df.rename(columns={'site_name': 'Site', 'sewershed_id': 'NWSS Sewershed ID'})
+    display(Markdown(sewershed_df[['Site', 'NWSS Sewershed ID']].to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s4
+#| tbl-cap: "Correlation between wastewater metagenomic sequencing and wastewater PCR data."
+
+from plot_mgs_nwss_supplementary_all import generate_nwss_correlation_display_tables
+import io, contextlib
+
+with contextlib.redirect_stdout(io.StringIO()):
+    nwss_corr_tables = generate_nwss_correlation_display_tables(
+        mgs_data_dict_all, nwss_data_all, site_info_dict_all,
+        save_path='../tables/nwss_correlation_table.tsv'
+    )
+
+Markdown(nwss_corr_tables['formatted'].to_markdown(index=False))
+```
+
+```{python}
+#| label: tbl-s4-raw
+#| tbl-cap: "Raw correlation values: wastewater metagenomic sequencing vs wastewater PCR data."
+
+display(Markdown(nwss_corr_tables['raw'].to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s5
+#| tbl-cap: "Wastewater PCR assay details and data source designations."
+
+from plot_mgs_nwss_supplementary_all import generate_nwss_metadata_table, SITES_TO_EXCLUDE
+
+site_info_for_metadata = {
+    k: v for k, v in site_info_dict_all.items()
+    if k not in SITES_TO_EXCLUDE
+}
+
+with contextlib.redirect_stdout(io.StringIO()):
+    nwss_metadata_df = generate_nwss_metadata_table(
+        nwss_data_dict=nwss_data_all,
+        site_info_dict=site_info_for_metadata,
+        mgs_data_dict=mgs_data_dict_all,
+    )
+
+if not nwss_metadata_df.empty:
+    # Add sewershed ID to site name
+    sewershed_lookup = dict(zip(
+        sewershed_df['Site'] if 'Site' in sewershed_df.columns else sewershed_df['site_name'],
+        sewershed_df['NWSS Sewershed ID'].astype(str) if 'NWSS Sewershed ID' in sewershed_df.columns else sewershed_df['sewershed_id'].astype(str)
+    ))
+    display_df = nwss_metadata_df.copy()
+    display_df['Site'] = display_df['Site'].apply(
+        lambda s: f'{s} ({sewershed_lookup[s]})' if s in sewershed_lookup else s
+    )
+    display_df = display_df[['Site', 'Pathogen', 'Source', 'PCR Type', 'Gene Target', 'Normalization']]
+    display(Markdown(display_df.to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s6
+#| tbl-cap: "Correlation between wastewater metagenomic sequencing and clinical respiratory virus testing data."
+
+from plot_mgs_nwss_panel import generate_clinical_correlation_display_tables
+
+with contextlib.redirect_stdout(io.StringIO()):
+    clinical_corr_tables = generate_clinical_correlation_display_tables(
+        mgs_data_dict, clinical_data,
+        save_path='../tables/clinical_correlation_table.tsv'
+    )
+
+display(Markdown(clinical_corr_tables['formatted'].to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s6-raw
+#| tbl-cap: "Raw correlation values: wastewater metagenomic sequencing vs clinical data."
+
+display(Markdown(clinical_corr_tables['raw'].to_markdown(index=False)))
+```

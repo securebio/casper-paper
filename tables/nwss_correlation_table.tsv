@@ -1,0 +1,16 @@
+Sampling site	sequencing_lab	N (weeks)	SARS-CoV-2 (Raw)	SARS-CoV-2 (PMMoV)	SARS-CoV-2 (ToBRFV)	Influenza A (Raw)	Influenza A (PMMoV)	Influenza A (ToBRFV)	RSV (Raw)	RSV (PMMoV)	RSV (ToBRFV)
+Boston DITP North, MA	MU	50	-0.19	0.68***	0.75***	0.56***	0.70***	0.70***	0.72***	0.83***	0.82***
+Boston DITP South, MA	MU	50	-0.22	0.71***	0.72***	0.62***	0.78***	0.77***	0.49***	0.59***	0.57***
+Chicago (CHI-A), IL	MU	69	-0.23	0.37**	0.37**	0.28*	0.24*	0.24	0.74***	0.73***	0.73***
+Chicago (CHI-B), IL	MU	63	0.21	0.83***	0.85***	0.22	0.31*	0.31*	0.52***	0.52***	0.52***
+Chicago (CHI-D1), IL	MU	63	0.04	0.50***	0.66***	0.55***	0.58***	0.60***	0.12	0.24	0.21
+Chicago (CHI-D2), IL	MU	63	0.02	0.56***	0.58***	0.52***	0.57***	0.56***	0.46***	0.46***	0.41***
+Ottumwa WPCF, IA	MU	31	0.68***	0.87***	0.88***	0.37*	0.68***	0.63***	0.79***	0.85***	0.91***
+Columbia WWTP, MO	MU	101	0.80***	0.78***	0.76***	0.54***	0.58***	0.59***	0.70***	0.70***	0.76***
+Kansas City Westside WWTP, MO	MU	9	0.27	0.43	0.45	0.87**	0.87**	0.87**	0.60	0.55	0.60
+Monett WWTP, MO	MU	24	0.84***	0.71***	0.53**	0.61**	0.61**	0.61**	0.32	0.32	0.32
+Riverside WQCP, CA	MU	41	0.25	0.87***	0.78***	0.87***	0.90***	0.90***	0.92***	0.92***	0.90***
+Boise RWF, ID	MU	42	0.03	0.59***	0.80***	0.57***	0.72***	0.73***	0.56***	0.68***	0.76***
+Boston DITP North, MA	SB	29	0.71***	0.65***	0.66***	0.89***	0.89***	0.89***	0.79***	0.81***	0.81***
+Boston DITP South, MA	SB	29	0.52**	0.32	0.31	0.65***	0.75***	0.75***	0.76***	0.78***	0.78***
+Miami-Dade CDWWTP, FL	SB	26	0.55**	0.69***	0.59**	nan	nan	nan	nan	nan	nan

@@ -1,0 +1,30 @@
+region	state	Sampling site	NWSS sewershed ID	Location type	Sample type	Approx. population served	Sequencing partner	Sample collection start date	Sample collection end date	Number of samples	Median read pairs	Median sampling interval (days)	Median turnaround (days)
+Northeast	Massachusetts	Boston DITP North, MA	742	WWTP	24h composite	1,075,656	MU	2024-03-20	2025-12-30	65	945.4M	7	17
+Northeast	Massachusetts	Boston DITP North, MA	742	WWTP	24h composite	1,075,656	SB	2025-02-12	2025-12-30	44	1311.3M	7	17
+Northeast	Massachusetts	Boston DITP South, MA	742	WWTP	24h composite	1,375,228	MU	2024-03-20	2025-12-30	65	950.5M	7	17
+Northeast	Massachusetts	Boston DITP South, MA	742	WWTP	24h composite	1,375,228	SB	2025-02-12	2025-12-30	44	1262.5M	7	17
+Northeast	New York	NYC (Hospital A), NY	-	Hospital (service hatch)	Grab	n/a	MU	2025-08-28	2025-12-23	10	185.9M	8	46
+Northeast	New York	NYC (Hospital B), NY	-	Hospital (manhole)	Grab	n/a	MU	2024-01-16	2025-12-30	23	990.0M	8	190
+Northeast	New York	NYC (Hospital C), NY	-	Hospital (manhole)	Grab	n/a	MU	2024-11-13	2025-12-22	8	528.3M	16	48
+Northeast	New York	NYC (Hospital D), NY	-	Hospital (manhole)	Grab	n/a	MU	2025-09-02	2025-12-23	16	164.1M	7	56
+Midwest	Illinois	Chicago (CHI-A), IL	419	WWTP	24h composite	1,263,110	MU	2024-09-08	2025-12-28	69	918.8M	7	19
+Midwest	Illinois	Chicago (CHI-B), IL	413	WWTP	24h composite	1,134,897	MU	2024-09-08	2025-12-28	63	905.5M	7	19
+Midwest	Illinois	Chicago (CHI-C), IL	-	Airport (manhole)	Moore swab	n/a	MU	2024-10-14	2025-12-29	52	987.8M	7	18
+Midwest	Illinois	Chicago (CHI-D1), IL	423	WWTP	24h composite	1,127,737	MU	2024-09-15	2025-12-28	63	930.8M	7	19
+Midwest	Illinois	Chicago (CHI-D2), IL	429	WWTP	24h composite	1,127,736	MU	2024-09-15	2025-12-28	63	952.3M	7	19
+Midwest	Illinois	Chicago (CHI-D3), IL	-	WWTP	24h composite	-	MU	2024-09-08	2024-10-21	6	569.0M	7	21
+Midwest	Iowa	Ottumwa WPCF, IA	541	WWTP	24h composite	25,529	MU	2025-02-19	2025-12-31	46	990.9M	7	19
+Midwest	Missouri	Columbia WWTP, MO	1045	WWTP	24h composite	123,180	MU	2023-12-26	2025-12-30	106	1078.2M	7	20
+Midwest	Missouri	Kansas City Blue River WWTP, MO	1074	WWTP	24h composite	490,000	MU	2025-08-12	2025-12-30	21	990.1M	7	20
+Midwest	Missouri	Kansas City Westside WWTP, MO	1075	WWTP	24h composite	61,250	MU	2025-10-01	2025-12-29	12	1069.6M	7	16
+Midwest	Missouri	Milan WWTF, MO	-	WWTP	24h composite	1,819	MU	2025-02-24	2025-12-17	31	888.8M	7	19
+Midwest	Missouri	Monett WWTP, MO	1041	WWTP	24h composite	9,100	MU	2025-06-10	2025-12-29	29	1074.2M	7	17
+South	Florida	Miami-Dade CDWWTP, FL	309	WWTP	24h composite	900,000	SB	2025-03-25	2025-12-29	40	1155.7M	7	14
+South	Oklahoma	Central Oklahoma (OK-A), OK	1704	WWTP	24h composite	107,331	MU	2025-08-18	2025-12-30	20	997.8M	7	20
+South	Oklahoma	Central Oklahoma (OK-B), OK	1706	WWTP	24h composite	442,168	MU	2025-08-18	2025-12-30	20	1019.3M	7	20
+West	California	Ontario, CA	143	WWTP	24h composite	890,000	MU	2025-08-25	2025-12-29	28	1030.6M	5	21
+West	California	Palo Alto RWQCP, CA	175	WWTP	24h composite	236,000	MU	2025-08-25	2025-12-29	18	1017.9M	7	18
+West	California	Riverside WQCP, CA	138	WWTP	24h composite	350,000	MU	2024-12-09	2025-12-29	96	968.3M	4	19
+West	California	Sacramento, CA	140	WWTP	24h composite	1,600,000	MU	2025-08-28	2025-12-29	18	1102.1M	7	19
+West	California	Southern California, CA	-	WWTP	24h composite	-	MU	2025-04-16	2025-12-31	73	954.1M	4	19
+West	Idaho	Boise RWF, ID	372	WWTP	24h composite	148,300; 122,600	MU	2024-11-04	2025-12-29	57	923.4M	7	21

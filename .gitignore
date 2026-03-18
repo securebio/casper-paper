@@ -1,0 +1,5 @@
+archive/
+.DS_Store
+__pycache__/
+code/index_files/
+*.quarto_ipynb
