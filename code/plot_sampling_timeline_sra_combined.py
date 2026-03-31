@@ -94,7 +94,7 @@ def plot_sra_panel_on_axis(ax, timeline_data, by_collection_date=False, category
     """Plot SRA cumulative data on a single axis."""
     if category == 'all':
         total_cat = 'wastewater_metagenome'
-        total_label = 'All wastewater sequencing'
+        total_label = 'Wastewater metagenomic sequencing'
     else:
         total_cat = 'wastewater_shotgun_metagenomic'
         total_label = 'Untargeted wastewater sequencing'
@@ -148,21 +148,21 @@ def plot_sra_panel_on_axis(ax, timeline_data, by_collection_date=False, category
         bracket_bottom = final_other
         bracket_top = final_total
         bracket_mid = (bracket_bottom + bracket_top) / 2
-        from matplotlib.transforms import blended_transform_factory
-        trans = blended_transform_factory(ax.transAxes, ax.transData)
-        bracket_x = 0.99
-        tick_len = 0.02
+        last_date = all_dates[-1]
+        import matplotlib.dates as mdates
+        last_date_num = mdates.date2num(last_date)
+        tick_len_days = (mdates.date2num(all_dates[-1]) - mdates.date2num(all_dates[0])) * 0.02
         line_color = 'black'
         lw = 1.5
-        ax.plot([bracket_x, bracket_x], [bracket_bottom, bracket_top],
-               color=line_color, linewidth=lw, clip_on=False, zorder=10, transform=trans)
-        ax.plot([bracket_x - tick_len, bracket_x], [bracket_bottom, bracket_bottom],
-               color=line_color, linewidth=lw, clip_on=False, zorder=10, transform=trans)
-        ax.plot([bracket_x - tick_len, bracket_x], [bracket_top, bracket_top],
-               color=line_color, linewidth=lw, clip_on=False, zorder=10, transform=trans)
-        ax.text(bracket_x + 0.02, bracket_mid, f'{casper_pct:.0f}%',
+        ax.plot([last_date_num, last_date_num], [bracket_bottom, bracket_top],
+               color=line_color, linewidth=lw, clip_on=False, zorder=10)
+        ax.plot([last_date_num - tick_len_days, last_date_num], [bracket_bottom, bracket_bottom],
+               color=line_color, linewidth=lw, clip_on=False, zorder=10)
+        ax.plot([last_date_num - tick_len_days, last_date_num], [bracket_top, bracket_top],
+               color=line_color, linewidth=lw, clip_on=False, zorder=10)
+        ax.text(last_date_num + tick_len_days * 0.5, bracket_mid, f'{casper_pct:.0f}%',
                fontsize=FONT_SIZE_BASE, ha='left', va='center',
-               fontweight='bold', transform=trans, zorder=10)
+               fontweight='bold', zorder=10)
     else:
         ax.fill_between(all_dates, 0, total_data['cumulative_mbases'],
                        label=total_label, color=other_color, alpha=0.8)

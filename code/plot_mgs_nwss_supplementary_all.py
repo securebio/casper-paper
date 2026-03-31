@@ -500,22 +500,19 @@ def generate_correlation_table(
     corr_df = corr_df.sort_values(['pathogen', 'site_name'])
 
     # Add formatted R value with asterisk notation
-    def format_r_with_asterisks(row):
+    def format_r_with_p(row):
         r = row['r_value']
         p = row['p_value']
         if np.isnan(r) or np.isnan(p):
             return 'nan'
         r_str = f"{r:.2f}"
-        if p < 0.001:
-            return f"{r_str}***"
-        elif p < 0.01:
-            return f"{r_str}**"
-        elif p < 0.05:
-            return f"{r_str}*"
+        if p >= 0.001:
+            p_str = f"{p:.3f}"
         else:
-            return r_str
+            p_str = f"{p:.1e}"
+        return f"{r_str} ({p_str})"
 
-    corr_df['r_formatted'] = corr_df.apply(format_r_with_asterisks, axis=1)
+    corr_df['r_formatted'] = corr_df.apply(format_r_with_p, axis=1)
 
     # Save to file if path provided
     if save_path:

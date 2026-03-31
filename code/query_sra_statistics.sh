@@ -43,13 +43,13 @@ FROM (
 
   SELECT "2_wastewater_metagenome" as category, COUNT(*) as runs, SUM(mbases) as mbases, SUM(mbytes) as mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
 
   UNION ALL
 
   SELECT "3_wastewater_shotgun_metagenomic" as category, COUNT(*) as runs, SUM(mbases) as mbases, SUM(mbytes) as mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
     AND librarysource IN ("METAGENOMIC", "METATRANSCRIPTOMIC")
     AND assay_type IN ("RNA-Seq", "WGS")
 
@@ -57,7 +57,7 @@ FROM (
 
   SELECT "4_wastewater_shotgun_metagenomic_excl_casper" as category, COUNT(*) as runs, SUM(mbases) as mbases, SUM(mbytes) as mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
     AND librarysource IN ("METAGENOMIC", "METATRANSCRIPTOMIC")
     AND assay_type IN ("RNA-Seq", "WGS")
     AND bioproject != "PRJNA1247874"
@@ -97,13 +97,13 @@ FROM (
 
   SELECT releasedate, "wastewater_metagenome" as category, mbases, mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
 
   UNION ALL
 
   SELECT releasedate, "wastewater_shotgun_metagenomic" as category, mbases, mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
     AND librarysource IN ("METAGENOMIC", "METATRANSCRIPTOMIC")
     AND assay_type IN ("RNA-Seq", "WGS")
 
@@ -139,13 +139,13 @@ SELECT
 FROM (
   SELECT collection_date_sam, "wastewater_metagenome" as category, mbases, mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
 
   UNION ALL
 
   SELECT collection_date_sam, "wastewater_shotgun_metagenomic" as category, mbases, mbytes
   FROM `nih-sra-datastore.sra.metadata`
-  WHERE organism = "wastewater metagenome"
+  WHERE organism IN ("wastewater metagenome", "sludge metagenome")
     AND librarysource IN ("METAGENOMIC", "METATRANSCRIPTOMIC")
     AND assay_type IN ("RNA-Seq", "WGS")
 
