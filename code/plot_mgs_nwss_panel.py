@@ -1430,14 +1430,15 @@ def generate_clinical_correlation_display_tables(
     pathogens_list = ['SARS-CoV-2', 'Influenza A', 'RSV']
     norms_list = ['Raw', 'PMMoV', 'ToBRFV']
 
-    def format_r_stars(r, p):
+    def format_r_with_p(r, p):
         if pd.isna(r) or pd.isna(p):
             return ''
         r_str = f'{r:.2f}'
-        if p < 0.001: return f'{r_str}***'
-        elif p < 0.01: return f'{r_str}**'
-        elif p < 0.05: return f'{r_str}*'
-        return r_str
+        if p >= 0.001:
+            p_str = f'{p:.3f}'
+        else:
+            p_str = f'{p:.1e}'
+        return f'{r_str} ({p_str})'
 
     # --- Compute median sampling frequencies per (site, lab) ---
     site_freq = {}
@@ -1486,7 +1487,7 @@ def generate_clinical_correlation_display_tables(
                 r_col = f'r_{norm.lower()}'
                 p_col_name = f'p_{norm.lower()}'
                 if not p_data.empty and r_col in p_data.columns and pd.notna(p_data[r_col].iloc[0]):
-                    row[f'{p} ({norm})'] = format_r_stars(p_data[r_col].iloc[0], p_data[p_col_name].iloc[0])
+                    row[f'{p} ({norm})'] = format_r_with_p(p_data[r_col].iloc[0], p_data[p_col_name].iloc[0])
                 else:
                     row[f'{p} ({norm})'] = ''
         fmt_rows.append(row)
