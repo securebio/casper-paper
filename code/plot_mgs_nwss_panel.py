@@ -92,17 +92,10 @@ CLINICAL_PATHOGEN_MAP = {
 # Clinical comparison sites (Boston DITP North and South)
 CLINICAL_SITES = ['Boston DITP North, MA', 'Boston DITP South, MA']
 
-# Normalization method to column suffix mapping
-NORMALIZATION_COLUMNS = {
-    'pmmov': 'ra_clade_pmmov_norm',
-    'raw': 'ra_clade',
-}
-
-# Normalization display names for y-axis labels
-NORMALIZATION_LABELS = {
-    'pmmov': 'Wastewater sequencing signal',
-    'raw': 'Relative abundance',
-}
+# Normalization key -> column and display label come from plot_config so
+# there is a single source of truth across figures and tables.
+NORMALIZATION_LABELS = dict(NORMALIZATION_LABELS)
+NORMALIZATION_LABELS['tobamovirus'] = 'Wastewater sequencing signal'
 
 
 def format_r_with_stars(r, p):
@@ -304,7 +297,7 @@ def plot_mgs_nwss_panel(
     save_path=None,
     standardize_xlim=True,
     clip_comparison_to_mgs=True,
-    normalization='pmmov',
+    normalization='tobamovirus',
     verbose=False
 ):
     """
@@ -318,7 +311,7 @@ def plot_mgs_nwss_panel(
         save_path: Optional path to save figure
         standardize_xlim: If True, use global MGS date range for x-axis limits
         clip_comparison_to_mgs: If True, only show NWSS/clinical data within MGS date range
-        normalization: 'pmmov' (default) or 'raw'
+        normalization: 'tobamovirus' (default) or 'raw'
         verbose: If True, print detailed correlation tables
 
     Returns:
@@ -486,8 +479,8 @@ def plot_mgs_nwss_panel(
         if nwss_max_date is not None:
             nwss_end_by_site[site_name] = nwss_max_date
 
-    # First pass: determine which sites have PMMoV-normalized NWSS data and collect y ranges
-    site_has_pmmov = {}
+    # First pass: collect y ranges. The PCR side uses raw concentrations
+    # (pcr_target_avg_conc_lin), not the PMMoV-normalized pcr_target_mic_lin.
     subplot_mgs_max = {}
     subplot_nwss_max = {}
 
@@ -512,10 +505,6 @@ def plot_mgs_nwss_panel(
             else:
                 date_min, date_max = site_date_ranges[site_name]
             key = (row_idx, col_idx)
-
-            if site_name not in site_has_pmmov and nwss_data is not None:
-                site_nwss_check = nwss_data[nwss_data['sewershed_id'].isin(sewershed_ids)]
-                site_has_pmmov[site_name] = (site_nwss_check['pcr_target_mic_lin'].notna()).sum() > 0
 
             sites_in_column = [site_name]
             if site_name in SITES_SAME_COLUMN:
@@ -559,8 +548,7 @@ def plot_mgs_nwss_panel(
                 site_nwss = nwss_data[nwss_data['sewershed_id'].isin(sewershed_ids)].copy()
                 site_nwss = filter_to_dominant_source(site_nwss)
                 if not site_nwss.empty:
-                    has_pmmov = site_has_pmmov.get(site_name, True)
-                    nwss_col = 'pcr_target_mic_lin' if has_pmmov else 'pcr_target_avg_conc_lin'
+                    nwss_col = 'pcr_target_avg_conc_lin'
                     valid_nwss = site_nwss[site_nwss[nwss_col].notna() & (site_nwss[nwss_col] >= 0)]
                     if not valid_nwss.empty:
                         nwss_smoothed = calculate_mmwr_smoothed_trend(valid_nwss, 'date', nwss_col)
@@ -654,7 +642,6 @@ def plot_mgs_nwss_panel(
                             }
 
             # Get NWSS data
-            has_pmmov = site_has_pmmov.get(site_name, True)
             if nwss_data is not None:
                 if clip_comparison_to_mgs:
                     if site_name in CLINICAL_SITES:
@@ -669,7 +656,7 @@ def plot_mgs_nwss_panel(
                 site_nwss = filter_to_dominant_source(site_nwss)
 
                 if not site_nwss.empty:
-                    nwss_col = 'pcr_target_mic_lin' if has_pmmov else 'pcr_target_avg_conc_lin'
+                    nwss_col = 'pcr_target_avg_conc_lin'
                     site_nwss = site_nwss[
                         (site_nwss[nwss_col] >= 0) & (site_nwss[nwss_col].notna())
                     ].copy()
@@ -706,7 +693,7 @@ def plot_mgs_nwss_panel(
                                                 columns={'smoothed_values': 'nwss_value'}),
                                             on=['mmwr_year', 'mmwr_week'], how='inner'
                                         )
-                                        if len(merged) >= 3:
+                                        if len(merged) >= MIN_OVERLAP_WEEKS:
                                             r, p = spearmanr(merged['mgs_value'], merged['nwss_value'])
                                             corr_items.append((format_r_with_stars(r, p), site_info['color']))
                                             all_correlations.append({
@@ -739,7 +726,7 @@ def plot_mgs_nwss_panel(
                                             columns={'smoothed_values': 'nwss_value'}),
                                         on=['mmwr_year', 'mmwr_week'], how='inner'
                                     )
-                                    if len(merged) >= 3:
+                                    if len(merged) >= MIN_OVERLAP_WEEKS:
                                         r, p = spearmanr(merged['mgs_value'], merged['nwss_value'])
                                         r_text = format_r_with_stars(r, p)
                                         all_correlations.append({
@@ -943,7 +930,8 @@ def plot_mgs_nwss_panel(
             clinical_smoothed = None
             if not clinical_all.empty:
                 clinical_smoothed = calculate_mmwr_smoothed_trend(
-                    clinical_all, 'date', clinical_col_name
+                    clinical_all, 'date', clinical_col_name,
+                    kernel=SOURCE_KERNELS['clinical']
                 )
                 if clinical_smoothed is not None and not clinical_smoothed.empty:
                     smoothed_dates = pd.to_datetime(clinical_smoothed['date'])
@@ -970,7 +958,7 @@ def plot_mgs_nwss_panel(
                                     columns={'smoothed_values': 'clinical_value'}),
                                 on=['mmwr_year', 'mmwr_week'], how='inner'
                             )
-                            if len(merged) >= 3:
+                            if len(merged) >= MIN_OVERLAP_WEEKS:
                                 r, p = spearmanr(merged['mgs_value'], merged['clinical_value'])
                                 corr_items.append((format_r_with_stars(r, p), site_info['color']))
                                 all_correlations.append({
@@ -1258,7 +1246,7 @@ _BOSTON_CLINICAL_SITES = [
 def generate_clinical_correlation_table(
     mgs_data_dict,
     clinical_data,
-    normalization='pmmov',
+    normalization='tobamovirus',
 ):
     """
     Generate correlations between MGS and clinical data for Boston sites.
@@ -1266,7 +1254,7 @@ def generate_clinical_correlation_table(
     Args:
         mgs_data_dict: dict mapping pathogen_key -> DataFrame with MGS data
         clinical_data: DataFrame with clinical positive test data
-        normalization: 'pmmov', 'tobrfv', or 'raw' for MGS normalization
+        normalization: 'tobamovirus' or 'raw' for MGS normalization
 
     Returns:
         List of correlation dicts
@@ -1278,12 +1266,8 @@ def generate_clinical_correlation_table(
         return []
 
     # Get the MGS column based on normalization
-    _norm_columns = {
-        'pmmov': 'ra_clade_pmmov_norm',
-        'tobrfv': 'ra_clade_tobrfv_norm',
-        'raw': 'ra_clade',
-    }
-    mgs_col = _norm_columns.get(normalization, 'ra_clade_pmmov_norm')
+    mgs_col = NORMALIZATION_COLUMNS.get(normalization,
+                                        NORMALIZATION_COLUMNS['tobamovirus'])
 
     correlations = []
 
@@ -1340,7 +1324,8 @@ def generate_clinical_correlation_table(
 
             # Apply MMWR smoothing to clinical data
             clinical_smoothed = calculate_mmwr_smoothed_trend(
-                clinical_all, 'date', clinical_col
+                clinical_all, 'date', clinical_col,
+                kernel=SOURCE_KERNELS['clinical']
             )
 
             if clinical_smoothed.empty:
@@ -1356,7 +1341,7 @@ def generate_clinical_correlation_table(
                 how='inner'
             )
 
-            if len(merged) >= 3:
+            if len(merged) >= MIN_OVERLAP_WEEKS:
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore")
                     r, p = spearmanr(merged['mgs_value'], merged['clinical_value'])
@@ -1390,9 +1375,9 @@ def generate_clinical_correlation_display_tables(
         'raw': DataFrame with separate R, p columns + median sampling frequencies
     """
     # Generate correlations for all three normalizations
-    norm_labels = {'pmmov': 'PMMoV', 'tobrfv': 'ToBRFV', 'raw': 'Raw'}
+    norm_labels = {'raw': 'Total reads', 'tobamovirus': 'Tobamovirus'}
     all_corrs = {}
-    for norm_key in ['pmmov', 'tobrfv', 'raw']:
+    for norm_key in ['raw', 'tobamovirus']:
         corr_list = generate_clinical_correlation_table(
             mgs_data_dict, clinical_data,
             normalization=norm_key
@@ -1428,7 +1413,7 @@ def generate_clinical_correlation_display_tables(
     merged = merged.sort_values(['_seq', 'site_name', '_path']).drop(columns=['_seq', '_path'])
 
     pathogens_list = ['SARS-CoV-2', 'Influenza A', 'RSV']
-    norms_list = ['Raw', 'PMMoV', 'ToBRFV']
+    norms_list = ['Total reads', 'Tobamovirus']
 
     def format_r_with_p(r, p):
         if pd.isna(r) or pd.isna(p):
@@ -1478,7 +1463,7 @@ def generate_clinical_correlation_display_tables(
     for mgs_site, site_name, seq_lab in site_order:
         site_data = merged[(merged['mgs_site'] == mgs_site) & (merged['seq_lab'] == seq_lab)]
         sc2 = site_data[site_data['pathogen'] == 'SARS-CoV-2']
-        n_col = 'n_pmmov' if 'n_pmmov' in site_data.columns else 'n_tobrfv'
+        n_col = 'n_tobamovirus' if 'n_tobamovirus' in site_data.columns else 'n_raw'
         n = int(sc2[n_col].iloc[0]) if not sc2.empty and pd.notna(sc2[n_col].iloc[0]) else ''
         row = {'Sampling site': site_name, 'sequencing_lab': seq_lab, 'N (weeks)': n}
         for p in pathogens_list:
@@ -1504,7 +1489,7 @@ def generate_clinical_correlation_display_tables(
     for mgs_site, site_name, seq_lab in site_order:
         site_data = merged[(merged['mgs_site'] == mgs_site) & (merged['seq_lab'] == seq_lab)]
         sc2 = site_data[site_data['pathogen'] == 'SARS-CoV-2']
-        n_col = 'n_pmmov' if 'n_pmmov' in site_data.columns else 'n_tobrfv'
+        n_col = 'n_tobamovirus' if 'n_tobamovirus' in site_data.columns else 'n_raw'
         n = int(sc2[n_col].iloc[0]) if not sc2.empty and pd.notna(sc2[n_col].iloc[0]) else ''
         row = {'Sampling site': site_name, 'sequencing_lab': seq_lab, 'N (weeks)': n}
         for p in pathogens_list:

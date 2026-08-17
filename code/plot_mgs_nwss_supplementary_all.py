@@ -42,21 +42,8 @@ from scipy.stats import spearmanr
 # Pathogens to plot (columns)
 PATHOGENS_TO_PLOT = ['sars-cov-2', 'influenza_a', 'rsv']
 
-# Normalization method to column suffix mapping
-NORMALIZATION_COLUMNS = {
-    'pmmov': 'ra_clade_pmmov_norm',
-    'rrna': 'ra_clade_rrna_norm',
-    'tobrfv': 'ra_clade_tobrfv_norm',
-    'raw': 'ra_clade',
-}
-
-# Normalization display names for y-axis labels
-NORMALIZATION_LABELS = {
-    'pmmov': 'CASPER wastewater sequencing signal (PMMoV-norm)',
-    'rrna': 'CASPER wastewater sequencing signal (rRNA-norm)',
-    'tobrfv': 'CASPER wastewater sequencing signal (ToBRFV-norm)',
-    'raw': 'Relative abundance',
-}
+# NORMALIZATION_COLUMNS and NORMALIZATION_LABELS come from plot_config so
+# there is a single source of truth across figures and tables.
 
 # Sites with temporal outliers to skip (first N samples)
 # NOTE: Boston DITP first-sample skip is now handled by filter_timeseries_data
@@ -102,7 +89,7 @@ def generate_nwss_metadata_table(
     """
     Generate a supplementary table with NWSS metadata for each site x pathogen combination.
 
-    Includes: Site name, Pathogen, PCR type, PMMoV normalization status, date range, frequency.
+    Includes: Site name, Pathogen, PCR type, gene target, date range, frequency.
 
     Args:
         nwss_data_dict: dict mapping pathogen_key -> DataFrame with NWSS data
@@ -195,24 +182,6 @@ def generate_nwss_metadata_table(
                     cleaned_targets.add(gt_clean)
                 gene_target_str = ', '.join(sorted(cleaned_targets))
 
-            # Normalization target - check what fecal indicator is used
-            norm_target_str = 'None'
-            if 'hum_frac_target_mic' in site_nwss.columns:
-                norm_targets = site_nwss['hum_frac_target_mic'].dropna().unique()
-                if any('pepper' in str(t).lower() or 'pmmov' in str(t).lower()
-                       for t in norm_targets):
-                    norm_target_str = 'PMMoV'
-                elif len(norm_targets) > 0:
-                    # Use whatever target is specified
-                    norm_target_str = str(norm_targets[0])
-
-            # Also check if pcr_target_mic_lin has non-null values (indicates normalization was done)
-            if norm_target_str == 'None':
-                has_norm_data = (site_nwss['pcr_target_mic_lin'].notna() &
-                                (site_nwss['pcr_target_mic_lin'] > 0)).any()
-                if has_norm_data:
-                    norm_target_str = 'PMMoV'  # Assume PMMoV if normalized data exists
-
             # Calculate median sampling frequency in days (using unique dates)
             site_nwss_dates = pd.to_datetime(site_nwss['sample_collect_date'])
             unique_dates = site_nwss_dates.drop_duplicates().sort_values()
@@ -241,7 +210,6 @@ def generate_nwss_metadata_table(
                 'Pathogen': PATHOGEN_DISPLAY_NAMES.get(pathogen_key, pathogen_key),
                 'PCR Type': pcr_type_str,
                 'Gene Target': gene_target_str,
-                'Normalization': norm_target_str,
                 'Median Freq (days)': median_freq,
                 'Source': source_str,
             })
@@ -288,15 +256,15 @@ def print_nwss_metadata_table_markdown(df):
     # Print as markdown table
     has_source = 'Source' in df.columns
     if has_source:
-        print("| Site | Pathogen | PCR Type | Gene Target | Normalization | Freq (days) | Source |")
-        print("|------|----------|----------|-------------|---------------|-------------|--------|")
+        print("| Site | Pathogen | PCR Type | Gene Target | Freq (days) | Source |")
+        print("|------|----------|----------|-------------|-------------|--------|")
     else:
-        print("| Site | Pathogen | PCR Type | Gene Target | Normalization | Freq (days) |")
-        print("|------|----------|----------|-------------|---------------|-------------|")
+        print("| Site | Pathogen | PCR Type | Gene Target | Freq (days) |")
+        print("|------|----------|----------|-------------|-------------|")
 
     for _, row in df.iterrows():
         freq = row['Median Freq (days)'] if pd.notna(row['Median Freq (days)']) else 'N/A'
-        base = f"| {row['Site']} | {row['Pathogen']} | {row['PCR Type']} | {row['Gene Target']} | {row['Normalization']} | {freq} |"
+        base = f"| {row['Site']} | {row['Pathogen']} | {row['PCR Type']} | {row['Gene Target']} | {freq} |"
         if has_source:
             source = row.get('Source', '')
             base = f"{base} {source} |"
@@ -309,7 +277,7 @@ def generate_correlation_table(
     mgs_data_dict,
     nwss_data_dict,
     site_info_dict,
-    normalization='pmmov',
+    normalization='tobamovirus',
     save_path=None
 ):
     """
@@ -321,7 +289,7 @@ def generate_correlation_table(
         mgs_data_dict: dict mapping pathogen_key -> DataFrame
         nwss_data_dict: dict mapping pathogen_key -> DataFrame
         site_info_dict: dict mapping site_name -> {sewershed_ids: [...], state: str}
-        normalization: Normalization method for MGS data ('pmmov', 'rrna', 'tobrfv', 'raw')
+        normalization: Normalization method for MGS data ('tobamovirus' or 'raw')
         save_path: Optional path to save TSV file
 
     Returns:
@@ -341,7 +309,6 @@ def generate_correlation_table(
 
     # Calculate date ranges for all sites
     site_date_ranges = {}
-    site_has_pmmov = {}
 
     for site_name in all_sites_initial:
         if site_name not in site_info_dict:
@@ -370,11 +337,6 @@ def generate_correlation_table(
                 if all_overlap_max is None or overlap_max > all_overlap_max:
                     all_overlap_max = overlap_max
 
-            # Check if NWSS has PMMoV-normalized data
-            if site_name not in site_has_pmmov and nwss_data is not None:
-                site_nwss_check = nwss_data[nwss_data['sewershed_id'].isin(sewershed_ids)]
-                site_has_pmmov[site_name] = (site_nwss_check['pcr_target_mic_lin'].notna()).sum() > 0
-
         if all_overlap_min is not None:
             site_date_ranges[site_name] = (all_overlap_min, all_overlap_max)
 
@@ -391,7 +353,6 @@ def generate_correlation_table(
         site_info = site_info_dict[site_name]
         sewershed_ids = site_info['sewershed_ids']
         date_min, date_max = site_date_ranges[site_name]
-        has_pmmov = site_has_pmmov.get(site_name, True)
         seq_labs = site_info.get('seq_labs', [site_info.get('seq_lab', 'MU')])
 
         for seq_lab in seq_labs:
@@ -449,7 +410,7 @@ def generate_correlation_table(
                 # Keep only the most frequent source to avoid mixing labs
                 site_nwss = filter_to_dominant_source(site_nwss)
 
-                nwss_col = 'pcr_target_mic_lin' if has_pmmov else 'pcr_target_avg_conc_lin'
+                nwss_col = 'pcr_target_avg_conc_lin'
                 site_nwss = site_nwss[
                     (site_nwss[nwss_col] >= 0) &
                     (site_nwss[nwss_col].notna())
@@ -474,7 +435,7 @@ def generate_correlation_table(
                     how='inner'
                 )
 
-                if len(merged) >= 3:
+                if len(merged) >= MIN_OVERLAP_WEEKS:
                     with warnings.catch_warnings():
                         warnings.simplefilter("ignore")
                         r, p = spearmanr(merged['mgs_value'], merged['nwss_value'])
@@ -522,311 +483,6 @@ def generate_correlation_table(
     return corr_df
 
 
-def generate_combined_correlation_table(
-    mgs_data_dict,
-    nwss_data_dict,
-    site_info_dict,
-    save_path=None
-):
-    """
-    Generate a combined correlation table with both PMMoV and ToBRFV normalization.
-
-    Args:
-        mgs_data_dict: dict mapping pathogen_key -> DataFrame
-        nwss_data_dict: dict mapping pathogen_key -> DataFrame
-        site_info_dict: dict mapping site_name -> {sewershed_ids: [...], state: str}
-        save_path: Optional path to save TSV file
-
-    Returns:
-        DataFrame with correlation results for both normalization methods
-    """
-    # Generate correlations for both normalization methods
-    results = {}
-    for norm in ['pmmov', 'tobrfv']:
-        corr_df = generate_correlation_table(
-            mgs_data_dict, nwss_data_dict, site_info_dict,
-            normalization=norm
-        )
-        if not corr_df.empty:
-            results[norm] = corr_df
-
-    if not results:
-        print("No correlations calculated for any normalization method")
-        return pd.DataFrame()
-
-    # Merge PMMoV and ToBRFV results
-    pmmov_df = results.get('pmmov')
-    tobrfv_df = results.get('tobrfv')
-
-    if pmmov_df is not None:
-        pmmov_df = pmmov_df[['pathogen', 'site_name', 'seq_lab',
-                              'r_value', 'p_value', 'n_points', 'r_formatted']].copy()
-        pmmov_df = pmmov_df.rename(columns={
-            'r_value': 'r_pmmov', 'p_value': 'p_pmmov',
-            'n_points': 'n_points_pmmov', 'r_formatted': 'r_pmmov_formatted'
-        })
-
-    if tobrfv_df is not None:
-        tobrfv_df = tobrfv_df[['pathogen', 'site_name',
-                                'r_value', 'p_value', 'n_points', 'r_formatted']].copy()
-        tobrfv_df = tobrfv_df.rename(columns={
-            'r_value': 'r_tobrfv', 'p_value': 'p_tobrfv',
-            'n_points': 'n_points_tobrfv', 'r_formatted': 'r_tobrfv_formatted'
-        })
-
-    if pmmov_df is not None and tobrfv_df is not None:
-        combined = pd.merge(pmmov_df, tobrfv_df, on=['pathogen', 'site_name'], how='outer')
-    elif pmmov_df is not None:
-        combined = pmmov_df
-    else:
-        combined = tobrfv_df
-
-    # Sort by seq_lab (MU first), site_name, then pathogen
-    pathogen_order = {NWSS_PATHOGEN_MAP[k]['label']: i for i, k in enumerate(NWSS_PATHOGEN_MAP)}
-    seq_lab_order = {'MU': 0, 'SB': 1}
-    combined['_seq_lab_order'] = combined['seq_lab'].map(seq_lab_order).fillna(2)
-    combined['_pathogen_order'] = combined['pathogen'].map(pathogen_order).fillna(len(pathogen_order))
-    combined = combined.sort_values(['_seq_lab_order', 'site_name', '_pathogen_order'])
-    combined = combined.drop(columns=['_seq_lab_order', '_pathogen_order'])
-
-    if save_path:
-        combined.to_csv(save_path, sep='\t', index=False)
-        print(f"Saved combined correlation table to {save_path}")
-
-    return combined
-
-
-def generate_manuscript_correlation_table(
-    combined_df,
-    save_path=None,
-    bold_best=True
-):
-    """
-    Generate a wide-format correlation table for the manuscript.
-
-    Produces a table with:
-    - Rows: Sites grouped by sequencing lab (MU-sequenced, SB-sequenced)
-    - Columns: Two groups (PMMoV-normalized, ToBRFV-normalized), each with 3 pathogens
-
-    Args:
-        combined_df: DataFrame from generate_combined_correlation_table
-        save_path: Optional path to save TSV file
-        bold_best: If True, bold the best correlation for each pathogen
-
-    Returns:
-        DataFrame in wide format suitable for manuscript
-    """
-    if combined_df.empty:
-        print("No correlation data to format")
-        return pd.DataFrame()
-
-    df = combined_df.copy()
-
-    # Standardize column names (handle both old and new naming conventions)
-    col_renames = {
-        'r_pmmov_formatted': 'r_pmmov_fmt',
-        'r_tobrfv_formatted': 'r_tobrfv_fmt',
-        'n_points_pmmov': 'n_pmmov',
-        'n_points_tobrfv': 'n_tobrfv',
-    }
-    df = df.rename(columns={k: v for k, v in col_renames.items() if k in df.columns})
-
-    # Create formatted R values if not present
-    def format_r(r, p):
-        if pd.isna(r) or pd.isna(p):
-            return ''
-        r_str = f"{r:.2f}"
-        if p < 0.001:
-            return f"{r_str}***"
-        elif p < 0.01:
-            return f"{r_str}**"
-        elif p < 0.05:
-            return f"{r_str}*"
-        return r_str
-
-    if 'r_pmmov_fmt' not in df.columns:
-        df['r_pmmov_fmt'] = df.apply(lambda row: format_r(row.get('r_pmmov'), row.get('p_pmmov')), axis=1)
-    if 'r_tobrfv_fmt' not in df.columns:
-        df['r_tobrfv_fmt'] = df.apply(lambda row: format_r(row.get('r_tobrfv'), row.get('p_tobrfv')), axis=1)
-
-    # Find best R value for each pathogen (across all sites and normalizations)
-    best_r_per_pathogen = {}
-    if bold_best:
-        for pathogen in df['pathogen'].unique():
-            pathogen_df = df[df['pathogen'] == pathogen]
-            pmmov_vals = pathogen_df['r_pmmov'].dropna().tolist()
-            tobrfv_vals = pathogen_df['r_tobrfv'].dropna().tolist() if 'r_tobrfv' in pathogen_df.columns else []
-            all_vals = pmmov_vals + tobrfv_vals
-            if all_vals:
-                best_r_per_pathogen[pathogen] = max(all_vals)
-
-    df['display_name'] = df['site_name']
-
-    # Get state and region for sorting
-    df['state'] = df['site_name'].apply(_state_from_site_name)
-    df['_region'] = df['state'].apply(get_state_region)
-
-    region_order_map = {region: i for i, region in enumerate(REGION_ORDER)}
-    df['_region_order'] = df['_region'].map(region_order_map).fillna(len(REGION_ORDER))
-
-    # Pathogen order for columns
-    pathogen_order = {'SARS-CoV-2': 0, 'Influenza A': 1, 'RSV': 2}
-    df['_pathogen_order'] = df['pathogen'].map(pathogen_order)
-
-    # Create a unique site identifier
-    df['site_key'] = df['site_name']
-
-    # Create pivot tables for formatted values
-    pmmov_fmt_pivot = df.pivot_table(
-        index=['site_key', 'display_name', 'seq_lab', 'state', '_region', '_region_order'],
-        columns='pathogen',
-        values='r_pmmov_fmt',
-        aggfunc='first'
-    ).reset_index()
-
-    pmmov_r_pivot = df.pivot_table(
-        index=['site_key'],
-        columns='pathogen',
-        values='r_pmmov',
-        aggfunc='first'
-    ).reset_index()
-
-    tobrfv_fmt_pivot = df.pivot_table(
-        index=['site_key'],
-        columns='pathogen',
-        values='r_tobrfv_fmt',
-        aggfunc='first'
-    ).reset_index()
-
-    tobrfv_r_pivot = df.pivot_table(
-        index=['site_key'],
-        columns='pathogen',
-        values='r_tobrfv',
-        aggfunc='first'
-    ).reset_index()
-
-    # Rename columns
-    pmmov_fmt_pivot = pmmov_fmt_pivot.rename(columns={
-        'SARS-CoV-2': 'pmmov_sars_fmt', 'Influenza A': 'pmmov_flu_fmt', 'RSV': 'pmmov_rsv_fmt'
-    })
-    pmmov_r_pivot = pmmov_r_pivot.rename(columns={
-        'SARS-CoV-2': 'pmmov_sars_r', 'Influenza A': 'pmmov_flu_r', 'RSV': 'pmmov_rsv_r'
-    })
-    tobrfv_fmt_pivot = tobrfv_fmt_pivot.rename(columns={
-        'SARS-CoV-2': 'tobrfv_sars_fmt', 'Influenza A': 'tobrfv_flu_fmt', 'RSV': 'tobrfv_rsv_fmt'
-    })
-    tobrfv_r_pivot = tobrfv_r_pivot.rename(columns={
-        'SARS-CoV-2': 'tobrfv_sars_r', 'Influenza A': 'tobrfv_flu_r', 'RSV': 'tobrfv_rsv_r'
-    })
-
-    # Merge all pivots
-    wide_df = pmmov_fmt_pivot.merge(pmmov_r_pivot, on='site_key', how='outer')
-    wide_df = wide_df.merge(tobrfv_fmt_pivot, on='site_key', how='outer')
-    wide_df = wide_df.merge(tobrfv_r_pivot, on='site_key', how='outer')
-
-    # Sort by seq_lab (MU first), then by region, then by state, then by site name
-    seq_lab_order = {'MU': 0, 'SB': 1}
-    wide_df['_seq_lab_order'] = wide_df['seq_lab'].map(seq_lab_order).fillna(2)
-    wide_df = wide_df.sort_values(
-        ['_seq_lab_order', '_region_order', 'state', 'display_name']
-    )
-
-    # Helper to bold if best
-    def maybe_bold(fmt_val, r_val, pathogen):
-        if not bold_best or pd.isna(r_val) or fmt_val == '' or pd.isna(fmt_val):
-            return fmt_val if not pd.isna(fmt_val) else ''
-        best_r = best_r_per_pathogen.get(pathogen)
-        if best_r is not None and abs(r_val - best_r) < 0.001:
-            import re
-            match = re.match(r'(-?[\d.]+)(\**)$', str(fmt_val))
-            if match:
-                num_part = match.group(1)
-                stars = match.group(2)
-                return f"**{num_part}**{stars}"
-            return f"**{fmt_val}**"
-        return fmt_val
-
-    # Create final output dataframe with proper column names
-    output_df = pd.DataFrame()
-    output_df['Sampling site'] = wide_df['display_name'].values
-    output_df['seq_lab'] = wide_df['seq_lab'].values
-
-    # PMMoV-normalized columns with bolding
-    output_df['SARS-CoV-2 (PMMoV)'] = [
-        maybe_bold(fmt, r, 'SARS-CoV-2')
-        for fmt, r in zip(wide_df.get('pmmov_sars_fmt', ['']*len(wide_df)),
-                         wide_df.get('pmmov_sars_r', [np.nan]*len(wide_df)))
-    ]
-    output_df['Influenza A (PMMoV)'] = [
-        maybe_bold(fmt, r, 'Influenza A')
-        for fmt, r in zip(wide_df.get('pmmov_flu_fmt', ['']*len(wide_df)),
-                         wide_df.get('pmmov_flu_r', [np.nan]*len(wide_df)))
-    ]
-    output_df['RSV (PMMoV)'] = [
-        maybe_bold(fmt, r, 'RSV')
-        for fmt, r in zip(wide_df.get('pmmov_rsv_fmt', ['']*len(wide_df)),
-                         wide_df.get('pmmov_rsv_r', [np.nan]*len(wide_df)))
-    ]
-
-    # ToBRFV-normalized columns with bolding
-    output_df['SARS-CoV-2 (ToBRFV)'] = [
-        maybe_bold(fmt, r, 'SARS-CoV-2')
-        for fmt, r in zip(wide_df.get('tobrfv_sars_fmt', ['']*len(wide_df)),
-                         wide_df.get('tobrfv_sars_r', [np.nan]*len(wide_df)))
-    ]
-    output_df['Influenza A (ToBRFV)'] = [
-        maybe_bold(fmt, r, 'Influenza A')
-        for fmt, r in zip(wide_df.get('tobrfv_flu_fmt', ['']*len(wide_df)),
-                         wide_df.get('tobrfv_flu_r', [np.nan]*len(wide_df)))
-    ]
-    output_df['RSV (ToBRFV)'] = [
-        maybe_bold(fmt, r, 'RSV')
-        for fmt, r in zip(wide_df.get('tobrfv_rsv_fmt', ['']*len(wide_df)),
-                         wide_df.get('tobrfv_rsv_r', [np.nan]*len(wide_df)))
-    ]
-
-    # Clean up NaN values - replace with empty string
-    output_df = output_df.fillna('')
-
-    if save_path:
-        output_df.to_csv(save_path, sep='\t', index=False)
-        print(f"Saved manuscript correlation table to {save_path}")
-
-    return output_df
-
-
-def print_manuscript_correlation_table_markdown(df):
-    """Print the manuscript correlation table in markdown format."""
-    print("\n" + "="*120)
-    print("SUPPLEMENTARY TABLE S3: Correlation between WW-MGS and NWSS PCR")
-    print("="*120 + "\n")
-
-    # Header
-    print("| Sampling site | SARS-CoV-2 | Influenza A | RSV | SARS-CoV-2 | Influenza A | RSV |")
-    print("|---------------|------------|-------------|-----|------------|-------------|-----|")
-    print("|               | **PMMoV-normalized** ||| **ToBRFV-normalized** |||")
-
-    current_seq_lab = None
-    for _, row in df.iterrows():
-        # Add section header if seq_lab changes
-        if row['seq_lab'] != current_seq_lab:
-            current_seq_lab = row['seq_lab']
-            lab_name = "MU-sequenced" if current_seq_lab == 'MU' else "SB-sequenced"
-            print(f"| **{lab_name}** | | | | | | |")
-
-        # Print data row
-        pmmov_sars = row.get('SARS-CoV-2 (PMMoV)', '')
-        pmmov_flu = row.get('Influenza A (PMMoV)', '')
-        pmmov_rsv = row.get('RSV (PMMoV)', '')
-        tobrfv_sars = row.get('SARS-CoV-2 (ToBRFV)', '')
-        tobrfv_flu = row.get('Influenza A (ToBRFV)', '')
-        tobrfv_rsv = row.get('RSV (ToBRFV)', '')
-
-        print(f"| {row['Sampling site']} | {pmmov_sars} | {pmmov_flu} | {pmmov_rsv} | {tobrfv_sars} | {tobrfv_flu} | {tobrfv_rsv} |")
-
-    print("\n" + "="*120 + "\n")
-
-
 def generate_nwss_correlation_display_tables(
     mgs_data_dict,
     nwss_data_dict,
@@ -842,7 +498,7 @@ def generate_nwss_correlation_display_tables(
     """
     # Generate correlations for all three normalizations
     corr_dfs = {}
-    for norm in ['pmmov', 'tobrfv', 'raw']:
+    for norm in ['raw', 'tobamovirus']:
         corr = generate_correlation_table(
             mgs_data_dict, nwss_data_dict, site_info_dict,
             normalization=norm
@@ -854,7 +510,7 @@ def generate_nwss_correlation_display_tables(
         return {'formatted': pd.DataFrame(), 'raw': pd.DataFrame()}
 
     # Merge all normalizations into one long-format DataFrame
-    norm_labels = {'pmmov': 'PMMoV', 'tobrfv': 'ToBRFV', 'raw': 'Raw'}
+    norm_labels = {'raw': 'Total reads', 'tobamovirus': 'Tobamovirus'}
     merged = None
     for norm_key, norm_label in norm_labels.items():
         if norm_key not in corr_dfs:
@@ -877,7 +533,7 @@ def generate_nwss_correlation_display_tables(
     mu_sites, sb_sites = get_ordered_sites(site_info_dict)
 
     pathogens_list = ['SARS-CoV-2', 'Influenza A', 'RSV']
-    norms_list = ['Raw', 'PMMoV', 'ToBRFV']
+    norms_list = ['Total reads', 'Tobamovirus']
 
     # --- Compute median sampling frequencies per (site_name, seq_lab) ---
     site_freq = {}
@@ -927,7 +583,7 @@ def generate_nwss_correlation_display_tables(
         if site_data.empty:
             continue
         sc2 = site_data[site_data['pathogen'] == 'SARS-CoV-2']
-        n_col = 'n_pmmov' if 'n_pmmov' in site_data.columns else 'n_tobrfv'
+        n_col = 'n_tobamovirus' if 'n_tobamovirus' in site_data.columns else 'n_raw'
         n = int(sc2[n_col].iloc[0]) if not sc2.empty and pd.notna(sc2[n_col].iloc[0]) else ''
         row = {'Sampling site': site_name_key, 'sequencing_lab': seq_lab_key, 'N (weeks)': n}
         for p in pathogens_list:
@@ -952,7 +608,7 @@ def generate_nwss_correlation_display_tables(
         if site_data.empty:
             continue
         sc2 = site_data[site_data['pathogen'] == 'SARS-CoV-2']
-        n_col = 'n_pmmov' if 'n_pmmov' in site_data.columns else 'n_tobrfv'
+        n_col = 'n_tobamovirus' if 'n_tobamovirus' in site_data.columns else 'n_raw'
         n = int(sc2[n_col].iloc[0]) if not sc2.empty and pd.notna(sc2[n_col].iloc[0]) else ''
         row = {'Sampling site': site_name_key, 'sequencing_lab': seq_lab_key, 'N (weeks)': n}
         for p in pathogens_list:
@@ -1153,7 +809,7 @@ def plot_mgs_nwss_supplementary_all(
     nwss_data_dict,
     site_info_dict,
     save_path=None,
-    normalization='pmmov',
+    normalization='tobamovirus',
     verbose=False
 ):
     """
@@ -1167,9 +823,8 @@ def plot_mgs_nwss_supplementary_all(
         site_info_dict: dict mapping site_name -> {sewershed_ids: [...], state: str}
         save_path: Optional path to save figure
         normalization: Normalization method for MGS data. Options:
-                       'pmmov' (default) - PMMoV-normalized
+                       'tobamovirus' (default) - Tobamovirus-normalized
                        'rrna' - rRNA-normalized (divide by 1 - rRNA fraction)
-                       'tobrfv' - ToBRFV-normalized
                        'raw' - raw relative abundance (no normalization)
 
     Returns:
@@ -1240,9 +895,7 @@ def plot_mgs_nwss_supplementary_all(
     global_date_max = max(site_date_ranges[s][1] for s in all_sites)
     global_date_range_days = (global_date_max - global_date_min).days
 
-    # First pass: determine which sites have PMMoV-normalized NWSS data
     # and collect y-axis ranges per subplot (based on smoothed data)
-    site_has_pmmov = {}
     subplot_mgs_max = {}
     subplot_nwss_max = {}
 
@@ -1268,11 +921,6 @@ def plot_mgs_nwss_supplementary_all(
             nwss_data = nwss_data_dict.get(pathogen_key)
 
             key = (site_idx, col_idx)
-
-            # Check if NWSS has PMMoV-normalized data for this site
-            if site_name not in site_has_pmmov and nwss_data is not None:
-                site_nwss_check = nwss_data[nwss_data['sewershed_id'].isin(sewershed_ids)]
-                site_has_pmmov[site_name] = (site_nwss_check['pcr_target_mic_lin'].notna()).sum() > 0
 
             # Track MGS start date (after skip) to clip NWSS display consistently
             mgs_start_date_yaxis = None
@@ -1323,8 +971,7 @@ def plot_mgs_nwss_supplementary_all(
                 ].copy()
                 site_nwss = filter_to_dominant_source(site_nwss)
                 if not site_nwss.empty:
-                    has_pmmov = site_has_pmmov.get(site_name, True)
-                    nwss_col = 'pcr_target_mic_lin' if has_pmmov else 'pcr_target_avg_conc_lin'
+                    nwss_col = 'pcr_target_avg_conc_lin'
                     valid_nwss = site_nwss[site_nwss[nwss_col].notna() & (site_nwss[nwss_col] >= 0)]
                     if not valid_nwss.empty:
                         nwss_smoothed = calculate_mmwr_smoothed_trend(
@@ -1434,7 +1081,6 @@ def plot_mgs_nwss_supplementary_all(
 
         sewershed_ids = site_info_dict[site_name]['sewershed_ids']
         date_min, date_max = site_date_ranges[site_name]
-        has_pmmov = site_has_pmmov.get(site_name, True)
 
         # Determine which lab this entry corresponds to (MU section vs SB section)
         entry_lab = 'MU' if site_idx < n_mu else 'SB'
@@ -1514,7 +1160,7 @@ def plot_mgs_nwss_supplementary_all(
                 site_nwss = filter_to_dominant_source(site_nwss)
 
                 if not site_nwss.empty:
-                    nwss_col = 'pcr_target_mic_lin' if has_pmmov else 'pcr_target_avg_conc_lin'
+                    nwss_col = 'pcr_target_avg_conc_lin'
 
                     # Get LLOD if available
                     if 'lod_sewage' in site_nwss.columns:
@@ -1558,7 +1204,7 @@ def plot_mgs_nwss_supplementary_all(
                                     on=['mmwr_year', 'mmwr_week'],
                                     how='inner'
                                 )
-                                if len(merged) >= 3:
+                                if len(merged) >= MIN_OVERLAP_WEEKS:
                                     with warnings.catch_warnings():
                                         warnings.simplefilter("ignore")
                                         r, p = spearmanr(merged['mgs_value'], merged['nwss_value'])

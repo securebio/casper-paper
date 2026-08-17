@@ -115,9 +115,60 @@ def load_all_vv_family_data(exclude_families=None, **kwargs):
     return df
 
 
+def _safe_divide(num, denom):
+    """Return num/denom, with NaN wherever denom is <= 0, NaN or non-finite.
+
+    Centralizes the division-by-zero policy for the normalized abundance
+    columns:
+
+      * clade_counts == 0 and denom > 0  -> 0.0
+      * denom == 0 or NaN or negative    -> NaN
+      * both NaN                         -> NaN
+    """
+    num = np.asarray(num, dtype=float)
+    denom = np.asarray(denom, dtype=float)
+    valid = np.isfinite(denom) & (denom > 0)
+    out = np.full_like(num, np.nan, dtype=float)
+    np.divide(num, denom, out=out, where=valid)
+    return out
+
+
 def load_all_relative_abundance(**kwargs):
-    """Load merged relative abundance (mj + custom targets)."""
-    return _load_csv("relative_abundance.csv")
+    """Load merged relative abundance (mj + custom targets).
+
+    Adds the Tobamovirus-normalized abundance column. The genus-level
+    Tobamovirus count (taxid 12234) lives in kraken_summary.csv rather
+    than relative_abundance.csv, so it is joined on `sra_accession` and
+    scaled to full library depth the same way the PMMoV and ToBRFV
+    columns already shipped in the CSV were:
+
+        scale                     = total_read_pairs / n_reads_profiled
+        tobamovirus_counts_scaled = tobamovirus_counts * scale
+        ra_clade_tobamovirus_norm = clade_counts / tobamovirus_counts_scaled
+
+    Tobamovirus is used in preference to PMMoV alone because it is far
+    better powered: median ~47,000 reads per sample versus ~3,000 for
+    PMMoV, and non-zero in every sample in the release.
+    """
+    df = _load_csv("relative_abundance.csv")
+
+    kraken_col = "n_reads_tobamovirus_12234_clade_non_rrna"
+    kraken = _load_csv("kraken_summary.csv")[["sra_accession", kraken_col]]
+    df = df.merge(kraken, on="sra_accession", how="left")
+
+    df["tobamovirus_counts"] = df[kraken_col]
+    df = df.drop(columns=[kraken_col])
+    df["tobamovirus_counts_scaled"] = (
+        df["tobamovirus_counts"] * df["total_read_pairs"] / df["n_reads_profiled"]
+    )
+    df["ra_clade_tobamovirus_norm"] = _safe_divide(
+        df["clade_counts"], df["tobamovirus_counts_scaled"]
+    )
+    df["ra_clade_dedup_tobamovirus_norm"] = _safe_divide(
+        df["clade_counts_dedup"], df["tobamovirus_counts_scaled"]
+    )
+
+    return df
 
 
 def load_all_virus_host_data(**kwargs):
@@ -203,7 +254,7 @@ def load_mgs_pathogen_data(taxids=None, **kwargs):
 
     Returns:
         DataFrame with columns including site_name, sra_accession, date,
-        taxid, ra_clade_pmmov_norm, etc.
+        taxid, ra_clade, ra_clade_tobamovirus_norm, etc.
     """
     df = load_all_relative_abundance()
     if taxids is not None:

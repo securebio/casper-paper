@@ -262,7 +262,7 @@ def plot_mgs_row(
 
                     # Smooth on full data to avoid edge effects
                     mgs_smoothed = calculate_mmwr_smoothed_trend(
-                        site_mgs, 'date', 'ra_clade_pmmov_norm'
+                        site_mgs, 'date', 'ra_clade_tobamovirus_norm'
                     )
 
                     color = get_location_color(site_name)
@@ -305,7 +305,8 @@ def plot_mgs_row(
         clinical_color = '#666666'
         if not clinical_filtered.empty:
             clinical_smoothed = calculate_mmwr_smoothed_trend(
-                clinical_filtered, 'date', clinical_col_name
+                clinical_filtered, 'date', clinical_col_name,
+                kernel=SOURCE_KERNELS['clinical']
             )
 
             if not clinical_smoothed.empty:
@@ -550,7 +551,8 @@ def plot_clinical_testing_supplement(
             # Calculate positivity rate and apply MMWR smoothing
             pathogen_testing['positivity_rate'] = (positives / tests * 100).replace([np.inf, -np.inf], np.nan)
             positivity_smoothed = calculate_mmwr_smoothed_trend(
-                pathogen_testing, 'date', 'positivity_rate'
+                pathogen_testing, 'date', 'positivity_rate',
+                kernel=SOURCE_KERNELS['clinical']
             )
             if not positivity_smoothed.empty:
                 ax_bar2.plot(positivity_smoothed['date'], positivity_smoothed['smoothed_values'],

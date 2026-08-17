@@ -319,9 +319,9 @@ def plot_vv_pathogen_combined(save_path=None, log_scale=True,
                                 continue
                             is_highlighted = (lab == 'MU' and site_name in highlight_sites)
                             if is_highlighted:
-                                y_values_for_ylim.extend(lab_data['ra_clade_pmmov_norm'].tolist())
+                                y_values_for_ylim.extend(lab_data['ra_clade_tobamovirus_norm'].tolist())
                             elif len(lab_data) >= 2:
-                                smoothed_df = calculate_mmwr_smoothed_trend(lab_data, 'date', 'ra_clade_pmmov_norm')
+                                smoothed_df = calculate_mmwr_smoothed_trend(lab_data, 'date', 'ra_clade_tobamovirus_norm')
                                 if not smoothed_df.empty:
                                     y_values_for_ylim.extend(smoothed_df['smoothed_values'].tolist())
                     else:
@@ -329,9 +329,9 @@ def plot_vv_pathogen_combined(save_path=None, log_scale=True,
                         if len(loc_data) == 0:
                             continue
                         if site_name in highlight_sites:
-                            y_values_for_ylim.extend(loc_data['ra_clade_pmmov_norm'].tolist())
+                            y_values_for_ylim.extend(loc_data['ra_clade_tobamovirus_norm'].tolist())
                         elif len(loc_data) >= 2:
-                            smoothed_df = calculate_mmwr_smoothed_trend(loc_data, 'date', 'ra_clade_pmmov_norm')
+                            smoothed_df = calculate_mmwr_smoothed_trend(loc_data, 'date', 'ra_clade_tobamovirus_norm')
                             if not smoothed_df.empty:
                                 y_values_for_ylim.extend(smoothed_df['smoothed_values'].tolist())
                 if y_values_for_ylim:
@@ -354,12 +354,12 @@ def plot_vv_pathogen_combined(save_path=None, log_scale=True,
                 continue
 
             # Compute fold-change for ylim
-            site_medians = taxid_data[taxid_data['ra_clade_pmmov_norm'] > 0].groupby('site_name')['ra_clade_pmmov_norm'].median()
+            site_medians = taxid_data[taxid_data['ra_clade_tobamovirus_norm'] > 0].groupby('site_name')['ra_clade_tobamovirus_norm'].median()
 
             def normalize_value(row):
                 site_name = row['site_name']
                 if site_name in site_medians and site_medians[site_name] > 0:
-                    return row['ra_clade_pmmov_norm'] / site_medians[site_name]
+                    return row['ra_clade_tobamovirus_norm'] / site_medians[site_name]
                 return np.nan
 
             taxid_data['plot_value'] = taxid_data.apply(normalize_value, axis=1)
@@ -514,10 +514,10 @@ def plot_vv_pathogen_combined(save_path=None, log_scale=True,
     leftmost_panel_x = axes_pathogen[0, 0].get_position().x0
     ylabel_x = leftmost_panel_x - 0.08
     if normalize_by_site_median:
-        fig.text(ylabel_x, pathogen_center_y, 'Fold change from site median\n(pathogen / PMMoV) / median',
+        fig.text(ylabel_x, pathogen_center_y, 'Fold change from site median\n(pathogen / Tobamovirus) / median',
                  ha='center', va='center', rotation='vertical', fontsize=FONT_MS + 2)
     else:
-        fig.text(ylabel_x, pathogen_center_y, 'Wastewater sequencing signal\n(pathogen / PMMoV abundance)',
+        fig.text(ylabel_x, pathogen_center_y, 'Wastewater sequencing signal\n(pathogen / Tobamovirus abundance)',
                  ha='center', va='center', rotation='vertical', fontsize=FONT_MS + 2)
 
     # Refresh positions after tight_layout

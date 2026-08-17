@@ -267,16 +267,6 @@ plt.show()
 
 ```{python}
 #| label: fig-s5
-#| fig-cap: "PMMoV and ToBRFV fraction over time across all sites."
-
-from plot_pmmov_tbrfv_panel import plot_pmmov_tbrfv_panel
-
-fig, axes = plot_pmmov_tbrfv_panel(kraken_data, virus_data, save_path='../figures/pmmov_tbrfv_panel.png')
-plt.show()
-```
-
-```{python}
-#| label: fig-s6
 #| fig-cap: "Vertebrate-infecting virus (VV) family composition over time for all sites."
 
 from plot_vv_family_timeseries_all import plot_vv_family_timeseries_all
@@ -286,7 +276,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s7
+#| label: fig-s6
 #| fig-cap: "VV family composition and respiratory pathogen dynamics (log scale)."
 
 from plot_vv_pathogen_combined_log import plot_vv_pathogen_combined as plot_vv_pathogen_combined_log
@@ -300,7 +290,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s8
+#| label: fig-s7
 #| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR data for all sites with available pairing."
 
 from plot_mgs_nwss_supplementary_all import plot_mgs_nwss_supplementary_all, _build_site_info_dict
@@ -326,7 +316,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s9
+#| label: fig-s8
 #| fig-cap: "Boston clinical respiratory virus testing volume and positivity rate."
 
 from plot_clinical_testing_supplement import (
@@ -357,7 +347,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s10
+#| label: fig-s9
 #| fig-cap: "Mean GC content (%) over time for all sites."
 
 from plot_gc_content_timeseries_all import plot_gc_content_timeseries_all
@@ -367,7 +357,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s11
+#| label: fig-s10
 #| fig-cap: "Median per-sequence Phred quality score (raw reads) over time for all sites."
 
 from plot_quality_score_timeseries_all import plot_quality_score_timeseries_all
@@ -379,7 +369,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s12
+#| label: fig-s11
 #| fig-cap: "QC pass rate over time for all sites."
 
 from plot_qc_pass_rate_timeseries_all import plot_qc_pass_rate_timeseries_all
@@ -394,7 +384,7 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s13
+#| label: fig-s12
 #| fig-cap: "Mean raw read length (bp) over time for all sites."
 
 from plot_read_length_timeseries_all import plot_read_length_timeseries_all
@@ -492,7 +482,7 @@ if not nwss_metadata_df.empty:
     display_df['Site'] = display_df['Site'].apply(
         lambda s: f'{s} ({sewershed_lookup[s]})' if s in sewershed_lookup else s
     )
-    display_df = display_df[['Site', 'Pathogen', 'Source', 'PCR Type', 'Gene Target', 'Normalization']]
+    display_df = display_df[['Site', 'Pathogen', 'Source', 'PCR Type', 'Gene Target']]
     display(Markdown(display_df.to_markdown(index=False)))
 ```
 
