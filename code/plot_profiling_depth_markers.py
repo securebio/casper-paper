@@ -5,12 +5,8 @@ Profiling depth and normalization marker read counts (supplementary figure).
 Shows, by sequencing laboratory:
 - (a) the size of the Kraken taxonomic profiling subsample
 - (b) Tobamovirus genus reads recovered in that subsample
-- (c) PMMoV reads recovered in that subsample
 
-Panels (b) and (c) share an x-axis so the two markers can be compared
-directly. Guide lines mark the read counts at which Poisson counting
-error reaches 10%, 5% and 1%, which is the quantity that matters when a
-marker is used as a normalization denominator.
+Dotted vertical lines mark the per-laboratory medians.
 """
 
 import sys
@@ -18,6 +14,7 @@ from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 
 sys.path.insert(0, str(Path(__file__).parent))
 from plot_config import *  # noqa: F401,F403
@@ -29,17 +26,17 @@ SB_COLOR = '#ff7f0e'
 TOBAMOVIRUS_COL = 'n_reads_tobamovirus_12234_clade_non_rrna'
 PMMOV_COL = 'n_reads_pmmov_12239_clade_non_rrna'
 
-# Poisson counting error 1/sqrt(N) reaches these values at N reads.
-CV_GUIDES = [(100, '10%'), (400, '5%'), (10_000, '1%')]
-
 
 def _log_hist(ax, mu_vals, sb_vals, lo, hi, nbins=40):
-    """Overlaid MU/SB histogram on a log-spaced bin grid."""
+    """Overlaid MU/SB histogram on a log-spaced bin grid, with median lines."""
     bins = np.logspace(np.log10(lo), np.log10(hi), nbins)
     ax.hist(mu_vals, bins=bins, color=MU_COLOR, alpha=0.75,
             edgecolor='none', label=f'MU (n={len(mu_vals):,})')
     ax.hist(sb_vals, bins=bins, color=SB_COLOR, alpha=0.75,
             edgecolor='none', label=f'SB (n={len(sb_vals):,})')
+    for vals, color in [(mu_vals, MU_COLOR), (sb_vals, SB_COLOR)]:
+        ax.axvline(float(np.median(vals)), color=color, linestyle=':',
+                   linewidth=1.8, zorder=5)
     ax.set_xscale('log')
     ax.set_xlim(lo, hi)
     ax.grid(True, alpha=0.3, zorder=0)
@@ -48,61 +45,37 @@ def _log_hist(ax, mu_vals, sb_vals, lo, hi, nbins=40):
     ax.spines['right'].set_visible(False)
 
 
-def _annotate_median(ax, vals, color, y_frac, label, ha='left'):
-    """Dashed vertical line at the median, labelled."""
-    m = float(np.median(vals))
-    ax.axvline(m, color=color, linestyle='--', linewidth=1.6, zorder=5)
-    pad = ' ' if ha == 'left' else ''
-    suffix = '' if ha == 'left' else ' '
-    ax.text(m, ax.get_ylim()[1] * y_frac,
-            f'{pad}{label} median{suffix}\n{pad}{m:,.0f}{suffix}',
-            color=color, fontsize=FONT_SIZE_SMALL - 1, va='top', ha=ha)
-
-
-def _add_cv_guides(ax):
-    """Vertical guides where Poisson counting error hits set thresholds."""
-    for n, lab in CV_GUIDES:
-        ax.axvline(n, color='#888888', linestyle=':', linewidth=1.2, zorder=1)
-        ax.text(n, ax.get_ylim()[1] * 0.02, f' {lab}',
-                color='#555555', fontsize=FONT_SIZE_SMALL - 2,
-                rotation=90, va='bottom', ha='right')
-
-
 def plot_profiling_depth_markers(kraken_data=None, save_path=None):
-    """Three stacked histograms: profiling depth, Tobamovirus reads, PMMoV reads."""
+    """Two stacked histograms: profiling depth and Tobamovirus reads."""
     df = load_all_kraken_data() if kraken_data is None else kraken_data
 
     mu = df[df['sequencing_lab'] == 'MU']
     sb = df[df['sequencing_lab'] == 'SB']
 
-    fig, axes = plt.subplots(3, 1, figsize=(9, 10))
+    fig, axes = plt.subplots(2, 1, figsize=(9, 7))
 
     # (a) profiling subsample size
     ax = axes[0]
     _log_hist(ax, mu['n_reads_profiled'], sb['n_reads_profiled'], 6e5, 2e7, nbins=45)
-    ax.set_xlabel('Reads in taxonomic profiling subsample', fontsize=FONT_SIZE_BASE)
+    ax.set_xlabel('Read pairs in shallow taxonomic profiling subsample',
+                  fontsize=FONT_SIZE_BASE)
     ax.set_ylabel('Samples', fontsize=FONT_SIZE_BASE)
-    _annotate_median(ax, mu['n_reads_profiled'], MU_COLOR, 0.95, 'MU', ha='right')
-    _annotate_median(ax, sb['n_reads_profiled'], SB_COLOR, 0.60, 'SB')
-    ax.legend(fontsize=FONT_SIZE_SMALL, frameon=False, loc='upper right')
+    handles, labels = ax.get_legend_handles_labels()
+    handles.append(Line2D([0], [0], color='#888888', linestyle=':', linewidth=1.8))
+    labels.append('Median')
+    ax.legend(handles, labels, fontsize=FONT_SIZE_SMALL, frameon=False,
+              loc='upper center')
 
-    # (b) and (c) marker reads, shared x range
+    # (b) Tobamovirus genus reads recovered in that subsample
+    ax = axes[1]
     lo, hi = 1, 2e6
-    for ax, col, name in [(axes[1], TOBAMOVIRUS_COL, 'Tobamovirus genus'),
-                          (axes[2], PMMOV_COL, 'PMMoV')]:
-        _log_hist(ax, mu[col].clip(lower=lo), sb[col].clip(lower=lo), lo, hi)
-        ax.set_xlabel(f'{name} reads in profiling subsample', fontsize=FONT_SIZE_BASE)
-        ax.set_ylabel('Samples', fontsize=FONT_SIZE_BASE)
-        _add_cv_guides(ax)
-        _annotate_median(ax, mu[col], MU_COLOR, 0.95, 'MU')
-        _annotate_median(ax, sb[col], SB_COLOR, 0.60, 'SB')
-        n_zero = int((df[col] == 0).sum())
-        if n_zero:
-            ax.text(0.02, 0.72, f'{n_zero} samples with zero reads',
-                    transform=ax.transAxes, fontsize=FONT_SIZE_SMALL - 1,
-                    color='#B22222')
+    _log_hist(ax, mu[TOBAMOVIRUS_COL].clip(lower=lo),
+              sb[TOBAMOVIRUS_COL].clip(lower=lo), lo, hi)
+    ax.set_xlabel('Tobamovirus genus read pairs in shallow taxonomic profiling subsample',
+                  fontsize=FONT_SIZE_BASE)
+    ax.set_ylabel('Samples', fontsize=FONT_SIZE_BASE)
 
-    for ax, letter in zip(axes, 'abc'):
+    for ax, letter in zip(axes, 'ab'):
         ax.text(-0.09, 1.02, letter, transform=ax.transAxes,
                 fontsize=FONT_SIZE_LARGE, fontweight='bold', va='bottom')
 
