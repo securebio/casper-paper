@@ -293,15 +293,14 @@ plt.show()
 
 ```{python}
 #| label: fig-s7
-#| fig-cap: "VV family composition and respiratory pathogen dynamics (log scale)."
+#| fig-cap: "Pathogen dynamics on a log Tobamovirus-normalized abundance scale, for the sites and targets shown in Figure 4c."
 
-from plot_vv_pathogen_combined_log import plot_vv_pathogen_combined as plot_vv_pathogen_combined_log
+from plot_pathogen_grid import prepare_pathogen_data
+from plot_vv_pathogen_log import plot_vv_pathogen_log, print_abundance_statistics
 
-fig = plot_vv_pathogen_combined_log(
-    save_path='../figures/vv_pathogen_combined_log.png',
-    log_scale=True,
-    normalize_by_site_median=False
-)
+print_abundance_statistics(prepare_pathogen_data())
+
+fig = plot_vv_pathogen_log(save_path='../figures/vv_pathogen_log.png')
 plt.show()
 ```
 
@@ -310,10 +309,10 @@ plt.show()
 #| fig-cap: "Absolute read counts assigned to each pathogen clade, for the sites and targets shown in Figure 4c."
 
 from plot_vv_pathogen_read_counts import (
-    plot_vv_pathogen_read_counts, print_read_count_statistics, _prepare_pathogen_data,
+    plot_vv_pathogen_read_counts, print_read_count_statistics,
 )
 
-print_read_count_statistics(_prepare_pathogen_data())
+print_read_count_statistics(prepare_pathogen_data())
 
 fig = plot_vv_pathogen_read_counts(save_path='../figures/vv_pathogen_read_counts.png')
 plt.show()
