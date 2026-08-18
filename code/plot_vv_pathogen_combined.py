@@ -112,13 +112,20 @@ def add_seasonal_shading(ax, date_min, date_max, alpha=0.3):
 
 def plot_pathogen_panel_on_axis(ax, mj_data, taxid, label, locations, highlight_sites,
                                  log_scale=True,
-                                 normalize_by_site_median=False):
+                                 normalize_by_site_median=False,
+                                 value_col=None, linthresh=1e-5):
     """
     Plot Tobamovirus-normalized abundance time series for a single pathogen.
 
     Sites in highlight_sites are shown in color, others in gray.
     Multi-lab sites (MULTI_LAB_SITES) are split by sequencing_lab:
     MU data uses the site's highlight status, SB data is always gray.
+
+    ``value_col`` plots that column verbatim instead of Tobamovirus-normalized
+    abundance, bypassing ``normalize_by_site_median``. Used by the read-count
+    supplement, where the quantity of interest is the unnormalized read count.
+    ``linthresh`` sets the symlog linear-region width and must be matched to
+    the plotted quantity (1e-5 for relative abundance, 1 for read counts).
     """
     taxid_data = mj_data[mj_data['taxid'] == taxid].copy()
 
@@ -130,7 +137,9 @@ def plot_pathogen_panel_on_axis(ax, mj_data, taxid, label, locations, highlight_
 
     has_lab = 'sequencing_lab' in taxid_data.columns
 
-    if normalize_by_site_median:
+    if value_col is not None:
+        taxid_data['plot_value'] = taxid_data[value_col]
+    elif normalize_by_site_median:
         site_medians = taxid_data[taxid_data['ra_clade_tobamovirus_norm'] > 0].groupby('site_name')['ra_clade_tobamovirus_norm'].median()
 
         def normalize_value(row):
@@ -198,7 +207,7 @@ def plot_pathogen_panel_on_axis(ax, mj_data, taxid, label, locations, highlight_
     ax.set_title(label, fontsize=FONT_SIZE_LARGE, weight='normal')
 
     if log_scale:
-        ax.set_yscale('symlog', linthresh=1e-5)
+        ax.set_yscale('symlog', linthresh=linthresh)
     ax.tick_params(axis='both', labelsize=FONT_SIZE_BASE)
 
     ax.grid(True, alpha=0.3, zorder=1)
