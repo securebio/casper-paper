@@ -53,20 +53,20 @@ from plot_config import MULTI_LAB_SITES, filter_timeseries_data
 # Row 3: Parainfluenza viruses
 # Row 4: Gastrointestinal viruses
 PATHOGENS = [
-    # Row 1 - Key respiratory pathogens
+    # Row 1 - Influenza and SARS-CoV-2
     (2697049, 'SARS-CoV-2'),
     (197911, 'Influenza A'),
     (197912, 'Influenza B'),
-    (3049954, 'RSV'),
+    (197913, 'Influenza C'),
     # Row 2 - Common cold coronaviruses
     (290028, 'HCoV-HKU1'),
     (277944, 'HCoV-NL63'),
     (11137, 'HCoV-229E'),
     (31631, 'HCoV-OC43'),
     # Row 3 - Other respiratory viruses
+    (3049954, 'RSV'),
     (2560525, 'Parainfluenza 2'),
     (11216, 'Parainfluenza 3'),
-    (3048148, 'Metapneumovirus'),
     (42789, 'Enterovirus D68'),
     # Row 4 - Gastrointestinal viruses
     (11983, 'Norovirus'),
@@ -813,12 +813,11 @@ def plot_vv_pathogen_combined(save_path=None, log_scale=False,
     pathogen_center_y = (axes_pathogen[0, 0].get_position().y1 + axes_pathogen[-1, 0].get_position().y0) / 2
     leftmost_panel_x = axes_pathogen[0, 0].get_position().x0
     ylabel_x = leftmost_panel_x - 0.05
-    if normalize_by_site_median:
-        fig.text(ylabel_x, pathogen_center_y, 'Fold change from site median\n(pathogen / Tobamovirus) / median',
-                 ha='center', va='center', rotation='vertical', fontsize=FONT_MS + 2)
-    else:
-        fig.text(ylabel_x, pathogen_center_y, 'Wastewater sequencing signal\n(pathogen / Tobamovirus abundance)',
-                 ha='center', va='center', rotation='vertical', fontsize=FONT_MS + 2)
+    pathogen_ylabel = ('Fold change from site median\n(pathogen / tobamovirus read pairs)'
+                       if normalize_by_site_median
+                       else 'Wastewater sequencing signal\n(pathogen / tobamovirus read pairs)')
+    add_stacked_rotated_label(fig, ylabel_x, pathogen_center_y, pathogen_ylabel,
+                              rotation=90, main_size=FONT_MS + 2)
 
     bbox_bars_mu = ax_bars_mu.get_position()
     bbox_boxplot_mu = ax_boxplot_mu.get_position()

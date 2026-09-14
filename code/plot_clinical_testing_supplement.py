@@ -38,7 +38,7 @@ from data_loaders import (
 )
 
 # Import correlation formatting function
-from plot_mgs_nwss_panel import format_r_with_stars
+from plot_mgs_pcr_clinical_lineage_panel import format_r_with_stars
 
 # Import ticker for custom formatting
 from matplotlib.ticker import FuncFormatter, ScalarFormatter

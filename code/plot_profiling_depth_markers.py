@@ -71,7 +71,7 @@ def plot_profiling_depth_markers(kraken_data=None, save_path=None):
     lo, hi = 1, 2e6
     _log_hist(ax, mu[TOBAMOVIRUS_COL].clip(lower=lo),
               sb[TOBAMOVIRUS_COL].clip(lower=lo), lo, hi)
-    ax.set_xlabel('Tobamovirus genus read pairs in shallow taxonomic profiling subsample',
+    ax.set_xlabel('tobamovirus genus read pairs in shallow taxonomic profiling subsample',
                   fontsize=FONT_SIZE_BASE)
     ax.set_ylabel('Samples', fontsize=FONT_SIZE_BASE)
 

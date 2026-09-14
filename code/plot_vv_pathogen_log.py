@@ -96,7 +96,7 @@ def plot_vv_pathogen_log(save_path=None, highlight_sites=None):
     return render_pathogen_grid(
         value_col=ABUNDANCE_COL,
         linthresh=LINTHRESH,
-        ylabel='Wastewater sequencing signal\n(pathogen / Tobamovirus abundance)',
+        ylabel='Wastewater sequencing signal\n(pathogen / tobamovirus read pairs)',
         tick_labeller=_abundance_tick_labels,
         y_floor_exp=FLOOR_EXP,
         ylabel_offset=0.09,

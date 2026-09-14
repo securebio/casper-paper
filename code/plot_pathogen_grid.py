@@ -361,8 +361,9 @@ def render_pathogen_grid(value_col, linthresh, ylabel, tick_labeller,
                fontsize=FONT_MS)
 
     center_y = (axes[0, 0].get_position().y1 + axes[-1, 0].get_position().y0) / 2
-    fig.text(axes[0, 0].get_position().x0 - ylabel_offset, center_y, ylabel,
-             ha='center', va='center', rotation='vertical', fontsize=FONT_MS + 2)
+    add_stacked_rotated_label(fig, axes[0, 0].get_position().x0 - ylabel_offset,
+                              center_y, ylabel, rotation=90,
+                              main_size=FONT_MS + 2)
 
     if save_path:
         save_figure(fig, save_path)
