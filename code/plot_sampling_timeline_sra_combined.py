@@ -590,7 +590,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     ax_sra_all.tick_params(axis='both', labelsize=FONT_SIZE_LARGE + 3)
     ax_sra_all.spines['top'].set_visible(False)
     ax_sra_all.spines['right'].set_visible(False)
-    ax_sra_all.set_title(ax_sra_all.get_title(), fontsize=FONT_SIZE_LARGE + 3, weight='normal', pad=24)
+    ax_sra_all.set_title('Wastewater sequencing on SRA', fontsize=FONT_SIZE_LARGE + 3, weight='normal', pad=24)
 
     mid_legend = ax_sra_all.get_legend()
     if mid_legend:
@@ -601,8 +601,12 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     for child in ax_sra_all.texts:
         child.set_fontsize(FONT_SIZE_LARGE + 3)
 
-    ax_sra_all.set_yticks([0, 100e6, 200e6, 300e6, 400e6, 500e6, 600e6])
-    ax_sra_all.set_yticklabels(['0', '', '200', '', '400', '', '600'])
+    # Ticks every 100 Tb up to the axis top, labelled every 200 Tb.
+    _tick_top = int(ax_sra_all.get_ylim()[1] // 100e6) * 100e6
+    _ticks = np.arange(0, _tick_top + 1, 100e6)
+    ax_sra_all.set_yticks(_ticks)
+    ax_sra_all.set_yticklabels(
+        [f'{t/1e6:.0f}' if (t / 200e6) % 1 == 0 else '' for t in _ticks])
 
     xlim_mid_left = pd.Timestamp('2011-01-01')
     xlim_mid_right = pd.Timestamp('2026-06-01')
