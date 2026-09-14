@@ -1,36 +1,39 @@
 #!/usr/bin/env python3
-"""
-Polished panel figure comparing MGS pathogen abundance with NWSS PCR data
-and clinical testing data.
+"""CASPER validated against external data, in one figure.
 
-Creates a 3-row (pathogens) x 5-column (4 sites + clinical) figure showing:
-- Row 1: SARS-CoV-2
-- Row 2: Influenza A
-- Row 3: RSV
+(a) Wastewater sequencing abundance beside wastewater PCR, four sites x three pathogens
+(b) Boston DITP sequencing beside MGH clinical testing
+(c) SARS-CoV-2 lineage composition beside CDC clinical genomic surveillance
+(d) Norovirus capsid genotype composition beside CaliciNet outbreak surveillance
 
-Site columns (1-4):
-- Chicago (CHI-A), IL
-- Columbia WWTP, MO
-- Riverside WQCP, CA
-- Boston DITP North, MA
+The four panels answer the same question at different resolutions: a and b ask whether
+abundance tracks independent measurements of how much virus is present, c and d whether
+composition tracks independent measurements of which strains are circulating.
 
-Clinical column (5):
-- Boston DITP MGS data compared with Massachusetts General Hospital (MGH)
-  clinical testing data
+This supersedes the separate NWSS-panel and lineage-comparison scripts. Their drawing code
+lives here so the four panels share one type scale and one set of date-axis conventions
+rather than being reconciled at the call site.
 
-Each site panel shows MGS abundance (left y-axis) alongside NWSS ddPCR
-measurements (right y-axis), restricted to overlapping date ranges.
+Usage:
+    python plot_mgs_pcr_clinical_lineage_panel.py
 """
 
+import argparse
 import sys
 from pathlib import Path
 import pandas as pd
 import numpy as np
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib.ticker as mticker
+from matplotlib.patches import Patch
+
+CODE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = CODE_DIR.parent
 
 # Import plotting config
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(CODE_DIR))
 from plot_config import *
 from plot_config import _state_from_site_name
 
@@ -94,8 +97,6 @@ CLINICAL_SITES = ['Boston DITP North, MA', 'Boston DITP South, MA']
 
 # Normalization key -> column and display label come from plot_config so
 # there is a single source of truth across figures and tables.
-NORMALIZATION_LABELS = dict(NORMALIZATION_LABELS)
-NORMALIZATION_LABELS['tobamovirus'] = 'Wastewater sequencing signal'
 
 
 def format_r_with_stars(r, p):
@@ -289,7 +290,7 @@ def _build_site_info_dict(matches):
     return site_info_dict
 
 
-def plot_mgs_nwss_panel(
+def plot_mgs_pcr_clinical_panel(
     mgs_data_dict,
     nwss_data_dict,
     site_info_dict,
@@ -298,7 +299,11 @@ def plot_mgs_nwss_panel(
     standardize_xlim=True,
     clip_comparison_to_mgs=True,
     normalization='tobamovirus',
-    verbose=False
+    verbose=False,
+    fig=None,
+    region=None,
+    panel_letters=('a', 'b'),
+    v_scale=1.0,
 ):
     """
     Create polished 3x5 panel figure comparing MGS and NWSS data, plus clinical.
@@ -309,6 +314,15 @@ def plot_mgs_nwss_panel(
         site_info_dict: dict mapping site_name -> {sewershed_ids: [...]}
         clinical_data: DataFrame with clinical positive test data (optional)
         save_path: Optional path to save figure
+        fig: Draw into this figure instead of creating one. Used when this grid is one
+            part of a larger combined figure.
+        region: (left, right, bottom, top) in figure fractions for the grid itself; the
+            headers and legends are placed above it. Defaults to the standalone layout.
+        panel_letters: Letters for the PCR grid and the clinical column.
+        v_scale: Scales the vertical offsets of the column headers and legends. These are
+            figure fractions tuned for the standalone figure's height, so a taller host
+            figure needs them scaled by its share of that height or the header floats far
+            above the grid.
         standardize_xlim: If True, use global MGS date range for x-axis limits
         clip_comparison_to_mgs: If True, only show NWSS/clinical data within MGS date range
         normalization: 'tobamovirus' (default) or 'raw'
@@ -332,19 +346,26 @@ def plot_mgs_nwss_panel(
     fig_width = 18 if has_clinical else 14
     fig_height = 11
 
+    left, right, bottom, top = region or (0.08, 0.95, 0.10, 0.68)
+    owns_figure = fig is None
+
     if has_clinical:
         from matplotlib.gridspec import GridSpec
-        fig = plt.figure(figsize=(fig_width, fig_height))
+        if owns_figure:
+            fig = plt.figure(figsize=(fig_width, fig_height))
         gs = GridSpec(n_rows, n_cols + 1, figure=fig,
                       width_ratios=[1, 1, 1, 1, 0.01, 1],
-                      wspace=0.35, hspace=0.35)
+                      wspace=0.35, hspace=0.35,
+                      left=left, right=right, bottom=bottom, top=top)
         axes = np.empty((n_rows, n_cols), dtype=object)
         for row in range(n_rows):
             for col in range(len(SITES_TO_PLOT)):
                 axes[row, col] = fig.add_subplot(gs[row, col])
             axes[row, len(SITES_TO_PLOT)] = fig.add_subplot(gs[row, 5])
     else:
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=(fig_width, fig_height))
+        if owns_figure:
+            fig = plt.figure(figsize=(fig_width, fig_height))
+        axes = fig.subplots(n_rows, n_cols)
 
     # Calculate global MGS date range
     global_mgs_min = None
@@ -1046,16 +1067,13 @@ def plot_mgs_nwss_panel(
             ax2.yaxis.set_major_locator(MaxNLocator(nbins=3, prune='both', integer=True))
             ax2.yaxis.set_major_formatter(FuncFormatter(clinical_int_formatter))
 
-    # Layout adjustments
-    plt.subplots_adjust(top=0.68, bottom=0.10, left=0.08, right=0.95)
-
     # Add header boxes and column titles
     from matplotlib.patches import Rectangle
 
     nwss_axes_positions = [axes[0, col_idx].get_position() for col_idx in range(len(SITES_TO_PLOT))]
     clinical_col_idx_pos = len(SITES_TO_PLOT) if has_clinical else None
 
-    title_y = nwss_axes_positions[0].y1 + 0.035
+    title_y = nwss_axes_positions[0].y1 + 0.035 * v_scale
 
     for col_idx, site_name in enumerate(SITES_TO_PLOT):
         bbox = nwss_axes_positions[col_idx]
@@ -1077,8 +1095,8 @@ def plot_mgs_nwss_panel(
     nwss_left = nwss_axes_positions[0].x0
     nwss_right = nwss_axes_positions[-1].x1
 
-    header_height = 0.045
-    header_y = title_y + 0.035
+    header_height = 0.045 * v_scale
+    header_y = title_y + 0.035 * v_scale
 
     rect_nwss = Rectangle((nwss_left, header_y), nwss_right - nwss_left, header_height,
                            transform=fig.transFigure,
@@ -1090,7 +1108,7 @@ def plot_mgs_nwss_panel(
              ha='center', va='center', zorder=10)
 
     fig.text(nwss_left - 0.02, header_y + header_height + 0.005,
-             'a', fontsize=LABEL_FONT + 4, weight='bold',
+             panel_letters[0], fontsize=LABEL_FONT + 4, weight='bold',
              ha='right', va='bottom', zorder=10)
 
     if has_clinical:
@@ -1107,14 +1125,14 @@ def plot_mgs_nwss_panel(
                  ha='center', va='center', zorder=10)
 
         fig.text(clinical_bbox.x0 - clinical_extend - 0.02, header_y + header_height + 0.005,
-                 'b', fontsize=LABEL_FONT + 4, weight='bold',
+                 panel_letters[1], fontsize=LABEL_FONT + 4, weight='bold',
                  ha='right', va='bottom', zorder=10)
 
     # Legends
     from matplotlib.lines import Line2D
 
-    legend_y = header_y + header_height + 0.025
-    legend_top = legend_y + 0.18
+    legend_y = header_y + header_height + 0.025 * v_scale
+    legend_top = legend_y + 0.18 * v_scale
 
     col1_handles = []
     col1_labels = []
@@ -1141,12 +1159,12 @@ def plot_mgs_nwss_panel(
         col2_labels.append('MGH clinical testing (Boston, MA)')
 
     title_x = nwss_left + 0.01
-    legend_title_y = legend_top - 0.01
+    legend_title_y = legend_top - 0.01 * v_scale
     fig.text(title_x, legend_title_y, 'CASPER wastewater sequencing',
              fontsize=LABEL_FONT, weight='normal', ha='left', va='top')
 
     legend1 = fig.legend(col1_handles, col1_labels, loc='upper left',
-                        bbox_to_anchor=(nwss_left, legend_top - 0.025), frameon=False,
+                        bbox_to_anchor=(nwss_left, legend_top - 0.025 * v_scale), frameon=False,
                         fontsize=LABEL2_FONT, ncol=1,
                         handletextpad=0.7, labelspacing=0.3)
 
@@ -1155,7 +1173,7 @@ def plot_mgs_nwss_panel(
     col1_bottom = legend1_bbox.y0
 
     col1_width = 0.30
-    legend_bottom_y = col1_bottom - 0.015
+    legend_bottom_y = col1_bottom - 0.015 * v_scale
     legend2 = fig.legend(col2_handles, col2_labels, loc='lower left',
                         bbox_to_anchor=(nwss_left + col1_width, legend_bottom_y), frameon=False,
                         fontsize=LABEL2_FONT, ncol=1,
@@ -1179,7 +1197,7 @@ def plot_mgs_nwss_panel(
     pathogen_labels = {'sars-cov-2': 'SARS-CoV-2', 'influenza_a': 'Influenza A', 'rsv': 'RSV'}
     row_label_width = 0.025
     row_label_x = 0.001
-    pathogen_extend = 0.015
+    pathogen_extend = 0.015 * v_scale
 
     first_row_bbox = axes[0, 0].get_position()
     last_row_bbox = axes[n_rows - 1, 0].get_position()
@@ -1201,13 +1219,13 @@ def plot_mgs_nwss_panel(
 
     y_center = (all_axes_bottom + all_axes_top) / 2
     y_label_x = row_label_x + row_label_width + 0.02
-    fig.text(y_label_x, y_center, mgs_y_label,
-             fontsize=LABEL_FONT, ha='center', va='center', rotation=90)
+    add_stacked_rotated_label(fig, y_label_x, y_center, mgs_y_label,
+                              rotation=90, main_size=LABEL_FONT)
 
     col4_bbox = axes[1, 3].get_position()
-    fig.text(col4_bbox.x1 + 0.032, y_center,
-             'Wastewater PCR signal',
-             fontsize=LABEL_FONT, ha='center', va='center', rotation=270)
+    add_stacked_rotated_label(fig, col4_bbox.x1 + 0.032, y_center,
+                              'Wastewater PCR concentration\n(copies/L or copies/g)',
+                              rotation=270, main_size=LABEL_FONT)
 
     if has_clinical:
         col5_bbox = axes[1, clinical_col_idx_pos].get_position()
@@ -1221,7 +1239,7 @@ def plot_mgs_nwss_panel(
         tsv_path = str(Path(save_path).parent.parent / 'tables' / (Path(save_path).stem + '_correlations.tsv'))
     print_correlation_summary(all_correlations, save_tsv_path=tsv_path, verbose=verbose)
 
-    if save_path:
+    if save_path and owns_figure:
         save_figure(fig, save_path)
 
     return fig, axes
@@ -1517,3 +1535,421 @@ def generate_clinical_correlation_display_tables(
         raw_df.to_csv(raw_save, sep='\t', index=False)
 
     return {'formatted': formatted_df, 'raw': raw_df}
+
+
+# ==========================================================================
+# Composition rows (panels c and d)
+# ==========================================================================
+
+# The composition rows below reuse the type scale set above for the PCR grid, so all four
+# panels share one set of sizes.
+TITLE_FONT = LABEL_FONT
+PANEL_LABEL_FONT = LABEL_FONT + 4
+
+# Lineage and genotype categories have no counterpart in the shared palettes
+# (STATE_COLORS, TAXONOMIC_COLORS, VIRUS_HOST_COLORS), so a dedicated categorical set is
+# used here. Hues are assigned in a fixed order and never cycled: anything beyond the named
+# categories falls into a neutral grey rather than taking a generated hue. The eight hues
+# are colourblind-separable as an adjacent-pair sequence, which is how a stack is read.
+SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300",
+                 "#4a3aa7", "#e34948"]
+# The norovirus panel uses a different hue family from the SARS-CoV-2 panel — teal, plum,
+# ochre, indigo, sage, dusty red — so the two panels read as distinct rather than as one
+# continuous scheme. Validated as a set: worst adjacent colourblind separation dE 17.6,
+# every hue inside the lightness band and above the chroma floor.
+#
+# Two things constrain this more than they appear to. Desaturated "earth tone" palettes
+# fall below the chroma floor and render as grey, so distinction has to come from shifting
+# hues rather than dulling them. And a palette built at constant lightness always fails
+# colourblind separation, because deuteranopia collapses hue toward a blue-yellow axis and
+# leaves lightness as the only cue; the lightness variation across these six slots is what
+# carries the separation.
+NORO_COLORS = ["#00bdbe", "#853e80", "#ce7a3b", "#5a66b9", "#83c575", "#ba5661"]
+OTHER_COLOR = "#b7b6b0"
+MISSING_COLOR = "#9b9a92"
+# Hue is pinned to the group, not to its rank, so showing or hiding a group never repaints
+# the others. NB.1.8.1 takes the eighth hue, which nothing else was using.
+SARS2_COLORS = {
+    "XBB*": "#2a78d6",
+    "JN.1* (other)": "#eb6834",
+    "KP.2*": "#1baf7a",
+    "KP.3*": "#eda100",
+    "XEC*": "#e87ba4",
+    "LP.8.1*": "#008300",
+    "NB.1.8.1*": "#e34948",
+    "XFG*": "#4a3aa7",
+}
+
+UNREPORTED_COLOR = "#e8e7e2"
+GRID_COLOR = "#dedcd5"
+
+GENOTYPE_ORDER = ["GII.4", "GII.17", "GII.2", "GII.3", "GII.6", "GI (all)", "Other genotypes"]
+CALICINET_OTHER = "Other genotypes (not reported separately)"
+
+# SARS-CoV-2 groups are ordered by when each swept, so colours and the legend follow the
+# same left-to-right progression the stacked bars show.
+SARS2_ORDER = ["XBB*", "BA.2.86* (excl. JN.1)", "JN.1* (other)", "KP.2*", "KP.3*",
+               "XEC*", "LP.8.1*", "NB.1.8.1*", "XFG*"]
+
+# Every month is plotted. The depth row beneath each CASPER row shows the coverage each
+# estimate rests on, so a reader can judge the low-coverage months directly rather than
+# having them silently withheld. Months below MIN_BREADTH of the genome at >=10x are
+# listed in the printed diagnostic.
+MIN_BREADTH = 0.25
+
+# The depth row shows MEASURED mean coverage: aligned bases over reference length, computed
+# the same way on both sides. SARS-CoV-2 comes from the per-base depth of each monthly pool
+# against the whole genome; norovirus comes from aligned bases against the VP1 panel, the
+# region genotype is resolved on. An earlier nominal version (read pairs x 300 bp over
+# reference length) was dropped: it overstated depth, and was not even the same quantity on
+# the two sides, since the SARS-CoV-2 figure counted extracted reads while the norovirus
+# figure counted reads that had already aligned.
+COVERAGE_COLOR = "#8c8b85"
+COVERAGE_POINT_COLOR = "#55544d"
+
+
+def color_map(categories, palette=None):
+    """Fixed-order hues for named categories; neutral grey for any Other bucket."""
+    palette = palette or SERIES_COLORS
+    mapping, slot = {}, 0
+    for name in categories:
+        if name.startswith("Other"):
+            mapping[name] = UNREPORTED_COLOR if "not reported" in name else OTHER_COLOR
+        else:
+            mapping[name] = palette[slot % len(palette)]
+            slot += 1
+    return mapping
+
+
+def date_axis(ax, months=6, rotate=45):
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=months))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+    ax.tick_params(axis="both", labelsize=TICK_FONT)
+    for label in ax.get_xticklabels():
+        label.set_rotation(rotate)
+        label.set_horizontalalignment("right")
+
+
+def stacked_bars(ax, frame, order, colors, value_col="fraction", x_col="month",
+                 category_col="category", width=24):
+    """Composition as one stacked bar per month; missing months read as gaps."""
+    wide = frame.pivot_table(index=x_col, columns=category_col, values=value_col,
+                             aggfunc="sum")
+    order = list(dict.fromkeys(c for c in order if c in wide.columns))
+    if wide.empty or not order:
+        return wide
+    wide = wide[order].dropna(how="all")
+    x = pd.to_datetime(wide.index.astype(str) + "-01")
+    bottom = np.zeros(len(wide))
+    for category in order:
+        values = wide[category].fillna(0).to_numpy(float)
+        ax.bar(x, values, bottom=bottom, width=width, color=colors[category],
+               edgecolor="white", linewidth=0.6)
+        bottom += values
+    ax.set_ylim(0, 1)
+    ax.set_yticks([0, 0.5, 1.0])
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    return wide
+
+
+def comparison_rows(axes, frames, order, colors, titles, xlim):
+    """Two stacked-bar rows on a shared x axis: CASPER above, its comparator below."""
+    for ax, frame, title in zip(axes, frames, titles):
+        stacked_bars(ax, frame, order, colors)
+        ax.set_title(title, loc="left", fontsize=TITLE_FONT, color="black", pad=16)
+        ax.set_ylabel("Fraction", fontsize=LABEL2_FONT)
+        ax.set_xlim(*xlim)
+        date_axis(ax)
+    for ax in axes[:-1]:
+        ax.set_xticklabels([])
+
+
+def panel_titles(fig, axes, titles, x_offset=0.012, y_offset=0.052):
+    """Pathogen name beside each panel letter, matching add_panel_labels placement."""
+    for ax, title in zip(axes, titles):
+        bbox = ax.get_position()
+        fig.text(bbox.x0 + x_offset, bbox.y1 + y_offset, title,
+                 fontsize=PANEL_LABEL_FONT, fontweight="bold", ha="left", va="bottom")
+
+
+def compact_number(value, _=None):
+    """1, 10, 100, 1k, 10k, 100k — short enough for a thin axis."""
+    if value >= 1e6:
+        return f"{value / 1e6:g}M"
+    if value >= 1e3:
+        return f"{value / 1e3:g}k"
+    return f"{value:g}"
+
+
+def coverage_row(ax, months, coverage, xlim, ylabel):
+    """Measured mean coverage depth per month, on a log axis under its composition row."""
+    x = pd.to_datetime(pd.Index(months).astype(str) + "-01")
+    values = np.asarray(coverage, dtype=float)
+    # Anchor the floor to a decade so bars start exactly on the lowest tick rather than
+    # floating above it
+    smallest = np.nanmin(values[values > 0]) if np.any(values > 0) else 1.0
+    floor = max(1.0, 10.0 ** np.floor(np.log10(smallest)))
+    # A line on a log axis reads by position; a bar would encode length from an arbitrary
+    # baseline, since a log scale has no zero.
+    ax.plot(x, values, "-o", color=COVERAGE_COLOR, linewidth=2.8, markersize=7,
+            markerfacecolor=COVERAGE_POINT_COLOR, markeredgecolor="white",
+            markeredgewidth=1.0, zorder=3, clip_on=False)
+    ax.set_yscale("log")
+    ax.set_ylim(floor, np.nanmax(values) * 2.5)
+    # Label a few decades across the range. A short axis defaults to a single tick, but
+    # every decade would crowd it, so decades are strided down to at most four labels.
+    top = np.nanmax(values)
+    lo_exp = int(np.round(np.log10(floor)))
+    hi_exp = int(np.floor(np.log10(top)))
+    exps = list(range(lo_exp, hi_exp + 1))
+    if len(exps) > 4:  # thin only when every decade would crowd the row
+        # Take every nth decade rather than sampling evenly across the list: sampling gave
+        # ticks 1, 2 and 1 decades apart, so the middle tick sat visibly off-centre.
+        exps = exps[::int(np.ceil(len(exps) / 4))]
+    ticks = [10 ** e for e in exps]
+    ax.set_yticks(ticks)
+    # Keep every tick mark, but on a thin row label only alternate ones so the text does
+    # not overlap. Counting back from the top keeps the highest decade labelled.
+    labelled = set(range(len(ticks) - 1, -1, -2)) if len(ticks) > 3 else set(range(len(ticks)))
+    ax.set_yticklabels([compact_number(t) if i in labelled else ""
+                        for i, t in enumerate(ticks)])
+    ax.yaxis.set_minor_locator(mticker.NullLocator())
+    ax.grid(axis="y", color=GRID_COLOR, linewidth=0.9, zorder=0)
+    ax.set_axisbelow(True)
+    ax.set_xlim(*xlim)
+    ax.set_ylabel(ylabel, fontsize=LABEL2_FONT - 6)
+    ax.tick_params(axis="both", labelsize=TICK_FONT - 4, labelcolor="black")
+    ax.set_xticklabels([])
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+
+def tuck_under(fig, upper_ax, lower_ax, gap):
+    """Move a depth row up so it sits just beneath its composition row."""
+    fig.canvas.draw()
+    upper = upper_ax.get_position()
+    lower = lower_ax.get_position()
+    height = lower.height
+    lower_ax.set_position([lower.x0, upper.y0 - gap - height, lower.width, height])
+
+
+def mark_missing(ax, months, xlim):
+    """Short hatched stubs where the comparator published nothing, so a gap is not read
+    as a genuine zero."""
+    if months is None or not len(months):
+        return
+    import matplotlib as mpl
+    x = pd.to_datetime(pd.Index(months).astype(str) + "-01")
+    with mpl.rc_context({"hatch.linewidth": 1.1}):
+        ax.bar(x, 0.075, width=24, facecolor="white", edgecolor=MISSING_COLOR,
+               hatch="///", linewidth=0.9, zorder=2)
+    ax.text(x.min() + (x.max() - x.min()) / 2, 0.13, "No CaliciNet data available",
+            ha="center", va="bottom", fontsize=TICK_FONT - 5, color="black", zorder=4)
+    ax.set_xlim(*xlim)
+
+
+def legend_row(ax, handles, ncol):
+    """Legend filling left-to-right. Matplotlib fills columns first, so the handles are
+    pre-shuffled to make the displayed reading order match the order given."""
+    n_rows = int(np.ceil(len(handles) / ncol))
+    reordered = []
+    for col in range(ncol):
+        for row in range(n_rows):
+            i = row * ncol + col
+            if i < len(handles):
+                reordered.append(handles[i])
+    ax.axis("off")
+    ax.legend(handles=reordered, loc="center", ncol=ncol, frameon=False,
+              fontsize=LABEL2_FONT, handlelength=1.4, handleheight=1.0,
+              columnspacing=1.4, handletextpad=0.6)
+
+
+# ==========================================================================
+# Assembling the four panels
+# ==========================================================================
+
+FIG_WIDTH, FIG_HEIGHT = 18, 19
+
+# The PCR panel is laid out in inches rather than as a share of the figure. Its headers and
+# legends are sized in points, so the space above the grid has to stay fixed in inches; only
+# the grid itself is compressed to bring its row height down. Tying both to a single
+# fraction, as an earlier version did, shrank the header space and ran the site legend into
+# the "Wastewater PCR" bar.
+PCR_HEADER_IN = 3.52         # column headers and legends above the grid
+PCR_GRID_IN = 5.42           # the 3 x 5 grid itself
+PCR_STANDALONE_IN = 11       # height the panel's offsets were tuned against
+PCR_LEFT, PCR_RIGHT = 0.08, 0.95
+
+# Gridspec span of one composition block, and where the two are placed. BLOCK_SPAN is set
+# so a composition row renders the same height as one of the panel a rows; both were
+# measured rather than guessed. A rendered block runs taller than its span, because
+# tuck_under pushes the legend below it to clear the rotated date labels. The gaps below
+# are held in inches, not figure fractions, so they stay put if the figure height changes
+# instead of growing with it.
+BLOCK_SPAN = 0.307
+BLOCK_TOP = 0.417
+# c and d sit side by side rather than stacked, which halves the height they need. At half
+# width the legends have to wrap into fewer columns and the date ticks thin back out to
+# six-monthly, matching panels a and b.
+BLOCK_COLUMNS = ((0.075, 0.485), (0.565, 0.985))
+COVERAGE_GAP_IN = 0.34      # composition row to its depth row
+COMPARATOR_GAP_IN = 0.88    # depth row to the comparator composition row
+LEGEND_GAP_IN = 1.38        # comparator row to the legend, clearing rotated date labels
+PANEL_TITLE_IN = 0.58       # panel letter/name above the axes, clearing the "CASPER" title
+GAP_UNDER_AB_IN = 1.55      # below the PCR grid's tick labels, before panels c and d
+GAP_BETWEEN_CD_IN = 0.35    # panel c's legend to panel d's title
+
+
+def pcr_region():
+    """Grid rectangle, leaving fixed inches above it for the headers and legends."""
+    top = 1.0 - PCR_HEADER_IN / FIG_HEIGHT
+    return PCR_LEFT, PCR_RIGHT, top - PCR_GRID_IN / FIG_HEIGHT, top
+
+
+def pcr_v_scale():
+    """Keep the header and legend offsets the size they are in the standalone figure."""
+    return PCR_STANDALONE_IN / FIG_HEIGHT
+
+
+def load_pcr_inputs():
+    nwss_data = load_nwss_data()
+    matches = load_mgs_nwss_matches()
+    site_info = {r["site_name"]: {"sewershed_ids": r["sewershed_ids"], "state": r["state"]}
+                 for _, r in matches.iterrows() if r["site_name"] in SITES_TO_PLOT}
+    mgs = {}
+    for key in PATHOGENS_TO_PLOT:
+        data = load_mgs_pathogen_data(taxids=NWSS_PATHOGEN_MAP[key]["taxids"])
+        if not data.empty:
+            mgs[key] = data
+    return mgs, nwss_data, site_info, load_clinical_positives_tests_data()
+
+
+def lineage_blocks(data_dir):
+    """Frames, colours and legends for the two composition panels."""
+    noro = pd.read_csv(data_dir / "lineage_norovirus_monthly.csv")
+    sars2 = pd.read_csv(data_dir / "lineage_sars2_monthly.csv")
+    pooled = pd.read_csv(data_dir / "lineage_sars2_pool_coverage.csv")
+    noro_cov = pd.read_csv(data_dir / "lineage_norovirus_coverage.csv").sort_values("month")
+
+    months = pd.to_datetime(noro.month.astype(str) + "-01")
+    xlim = (months.min() - pd.Timedelta(days=22), months.max() + pd.Timedelta(days=22))
+
+    present = sars2.groupby("group_label")[["casper_fraction", "cdc_fraction"]].max().max(axis=1)
+    ranked = present.drop(labels=["Other"], errors="ignore").sort_values(ascending=False)
+    # Other carries its own grey rather than a palette slot, so all eight hues are
+    # available to named groups.
+    named = set(ranked.head(len(SERIES_COLORS)).index)
+    groups = [g for g in SARS2_ORDER if g in named] + ["Other"]
+    sars2 = sars2.copy()
+    sars2["category"] = np.where(sars2.group_label.isin(named), sars2.group_label, "Other")
+    sars2 = sars2.groupby(["month", "category"], as_index=False)[
+        ["casper_fraction", "cdc_fraction"]].sum(min_count=1)
+    group_colors = {g: SARS2_COLORS.get(g, OTHER_COLOR) for g in groups}
+    group_colors["Other"] = OTHER_COLOR
+
+    genotype_colors = color_map(GENOTYPE_ORDER, palette=NORO_COLORS)
+    casper_noro = noro.rename(columns={"genotype": "category",
+                                       "casper_fraction": "fraction"})
+    # CaliciNet reports GII.4 and GII.17 against a total-outbreak denominator, so the
+    # remainder is everything else and shares the "Other genotypes" bucket and grey with
+    # the CASPER row above, rather than carrying a second, separately shaded category.
+    cal = noro.dropna(subset=["calicinet_fraction"]).copy()
+    cal["category"] = np.where(cal.genotype.isin(["GII.4", "GII.17"]),
+                               cal.genotype, "Other genotypes")
+    cal = (cal.groupby(["month", "category"], as_index=False)
+           .calicinet_fraction.sum().rename(columns={"calicinet_fraction": "fraction"}))
+    cal_missing = sorted(set(noro.month.astype(str)) - set(cal.month.astype(str)))
+
+    pooled = pooled.sort_values("month")
+    return xlim, [
+        dict(letter="c", title="SARS-CoV-2", order=groups, colors=group_colors, ncol=5,
+             rows=["CASPER wastewater sequencing",
+                   "CDC clinical genomic surveillance"],
+             frames=[sars2.rename(columns={"casper_fraction": "fraction"}).dropna(subset=["fraction"]),
+                     sars2.rename(columns={"cdc_fraction": "fraction"}).dropna(subset=["fraction"])],
+             cov_months=pooled.month, cov_values=pooled.mean_depth,
+             legend=[Patch(facecolor=group_colors[g], label=g)
+                     for g in ([g for g in groups if g != "Other"][:4] + ["Other"]
+                               + [g for g in groups if g != "Other"][4:])]),
+        dict(letter="d", title="Norovirus", order=GENOTYPE_ORDER,
+             colors=genotype_colors, ncol=4,
+             rows=["CASPER wastewater sequencing",
+                   "CaliciNet clinical outbreak surveillance"],
+             frames=[casper_noro, cal],
+             cov_months=noro_cov.month, cov_values=noro_cov.mean_depth,
+                          missing=cal_missing,
+             legend=([Patch(facecolor=genotype_colors[g], label=g)
+                      for g in GENOTYPE_ORDER[:3]]
+                     + [Patch(facecolor=genotype_colors["Other genotypes"], label="Other")]
+                     + [Patch(facecolor=genotype_colors[g], label=g)
+                        for g in GENOTYPE_ORDER[3:6]])),
+    ], pooled
+
+
+def draw_lineage_block(fig, block, xlim, top, left, right):
+    """One composition panel: CASPER, its depth row, its comparator and a legend."""
+    gs = fig.add_gridspec(4, 1, height_ratios=[1.0, 0.30, 1.0, 0.42], hspace=0.62,
+                          left=left, right=right, top=top, bottom=top - BLOCK_SPAN)
+    ax1, axcov, ax2, axleg = (fig.add_subplot(gs[i]) for i in range(4))
+    comparison_rows([ax1, ax2], block["frames"], block["order"], block["colors"],
+                    block["rows"], xlim)
+    mark_missing(ax2, block.get("missing"), xlim)
+    ax1.set_xticklabels([])
+    # The depth row is thin, so its scale is named in a small title above it rather than a
+    # rotated y label, which crowded the axis at this height.
+    coverage_row(axcov, block["cov_months"], block["cov_values"], xlim, "")
+    axcov.set_title("Coverage (×)", loc="left", fontsize=TICK_FONT, color="black",
+                    pad=2)
+    legend_row(axleg, block["legend"], ncol=block["ncol"])
+    tuck_under(fig, ax1, axcov, gap=COVERAGE_GAP_IN / FIG_HEIGHT)
+    tuck_under(fig, axcov, ax2, gap=COMPARATOR_GAP_IN / FIG_HEIGHT)
+    tuck_under(fig, ax2, axleg, gap=LEGEND_GAP_IN / FIG_HEIGHT)
+
+    # The offset is in inches: the "CASPER" row title sits a fixed number of points above
+    # the axes, so a figure-fraction offset collides with it whenever the figure is short.
+    pos = ax1.get_position()
+    title_y = pos.y1 + PANEL_TITLE_IN / FIG_HEIGHT
+    fig.text(pos.x0 - 0.014, title_y, block["letter"], fontsize=PANEL_LABEL_FONT,
+             fontweight="bold", ha="right", va="bottom")
+    fig.text(pos.x0, title_y, block["title"], fontsize=PANEL_LABEL_FONT,
+             fontweight="bold", ha="left", va="bottom")
+    return ax1
+
+
+def build(data_dir=None, output=None):
+    """Draw the figure. Called directly from the manuscript notebook, so it takes plain
+    arguments rather than reading the command line."""
+    data_dir = data_dir or REPO_ROOT / "data"
+    output = output or REPO_ROOT / "figures/mgs_pcr_clinical_lineage_panel.png"
+
+    init_plotting_style()
+    fig = plt.figure(figsize=(FIG_WIDTH, FIG_HEIGHT))
+
+    mgs, nwss_data, site_info, clinical = load_pcr_inputs()
+    plot_mgs_pcr_clinical_panel(mgs, nwss_data, site_info, clinical_data=clinical,
+                                fig=fig, region=pcr_region(), panel_letters=("a", "b"),
+                                v_scale=pcr_v_scale())
+
+    xlim, blocks, pooled = lineage_blocks(data_dir)
+    for block, (left, right) in zip(blocks, BLOCK_COLUMNS):
+        draw_lineage_block(fig, block, xlim, top=BLOCK_TOP, left=left, right=right)
+
+    save_figure(fig, output)
+    low = sorted(set(pooled.loc[pooled.breadth_10x < MIN_BREADTH, "month"].astype(str)))
+    print(f"  {pooled.month.nunique()} lineage months; {len(low)} below "
+          f"{MIN_BREADTH:.0%} breadth: {low}")
+    return fig
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--data-dir", type=Path, default=REPO_ROOT / "data")
+    parser.add_argument("--output", type=Path,
+                        default=REPO_ROOT / "figures/mgs_pcr_clinical_lineage_panel.png")
+    args = parser.parse_args()
+    build(args.data_dir, args.output)
+
+
+if __name__ == "__main__":
+    main()
