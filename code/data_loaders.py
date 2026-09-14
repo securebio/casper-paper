@@ -96,8 +96,29 @@ def load_sample_metadata(**kwargs):
 
 
 def load_all_kraken_data(**kwargs):
-    """Load kraken_summary — domain-level taxonomic composition per sample."""
-    return _load_csv("kraken_summary.csv")
+    """Load kraken_summary — domain-level taxonomic composition per sample.
+
+    Backfills `fraction_qc_filtered` where it is missing. Libraries summarised
+    before that column was introduced carry NaN, and because the column is a
+    denominator for the QC-adjusted rRNA fraction, a NaN silently removes the
+    affected sites from boxplots and QC summaries rather than erroring. It is
+    recomputed from the profiled read counts in the same file, which is the
+    definition the populated rows already follow (agreement to ~1e-16).
+    """
+    df = _load_csv("kraken_summary.csv")
+
+    needed = {"fraction_qc_filtered", "n_reads_profiled",
+              "n_reads_profiled_passed_qc"}
+    if needed.issubset(df.columns):
+        missing = df["fraction_qc_filtered"].isna()
+        if missing.any():
+            df.loc[missing, "fraction_qc_filtered"] = _safe_divide(
+                df.loc[missing, "n_reads_profiled"]
+                - df.loc[missing, "n_reads_profiled_passed_qc"],
+                df.loc[missing, "n_reads_profiled"],
+            )
+
+    return df
 
 
 def load_all_vv_family_data(exclude_families=None, **kwargs):

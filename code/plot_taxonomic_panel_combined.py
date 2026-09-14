@@ -205,8 +205,17 @@ def _plot_rrna_boxplot_on_axis(ax, locations, kraken_data, show_xlabel=True):
     positions = []
     colors_list = []
 
+    # Non-finite values must be dropped, not just counted: matplotlib's
+    # boxplot propagates NaN through the quartiles and draws nothing, while
+    # scatter skips them silently, so a single bad value would leave a row of
+    # points with no box behind it.
+    site_values = {}
+    for site_name in locations:
+        vals = df[df['site_name'] == site_name]['rrna_fraction'].values
+        site_values[site_name] = vals[np.isfinite(vals)]
+
     for idx, site_name in enumerate(locations):
-        loc_data = df[df['site_name'] == site_name]['rrna_fraction'].values
+        loc_data = site_values[site_name]
         if len(loc_data) > 0:
             data_to_plot.append(loc_data)
             positions.append(idx)
@@ -227,7 +236,7 @@ def _plot_rrna_boxplot_on_axis(ax, locations, kraken_data, show_xlabel=True):
         patch.set_alpha(0.7)
 
     for idx, site_name in enumerate(locations):
-        loc_data = df[df['site_name'] == site_name]['rrna_fraction'].values
+        loc_data = site_values[site_name]
         if len(loc_data) > 0:
             y_jitter = np.random.normal(0, 0.08, size=len(loc_data))
             y_positions = idx + y_jitter
@@ -640,7 +649,7 @@ def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_tobamovirus_mu, ax_tobamovirus_sb, f
     ax_rrna_sb.spines['right'].set_visible(False)
 
     # Format Tobamovirus axes
-    ax_tobamovirus_mu.set_ylabel('Tobamovirus fraction', fontsize=LABEL_FONT)
+    ax_tobamovirus_mu.set_ylabel('tobamovirus fraction', fontsize=LABEL_FONT)
     ax_tobamovirus_mu.set_yscale('log')
     ax_tobamovirus_mu.set_ylim(1e-6, None)
     ax_tobamovirus_mu.set_xlim(mu_date_min, mu_date_max)
