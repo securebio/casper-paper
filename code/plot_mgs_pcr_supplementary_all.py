@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Supplementary figure comparing MGS pathogen abundance with NWSS PCR data for ALL sites.
+Supplementary figure comparing MGS pathogen abundance with wastewater
+digital PCR data for ALL sites.
 
-Creates a multi-row (sites) x 3-column (pathogens) figure showing MGS vs NWSS
-comparison for all sites that have NWSS ddPCR data pairing.
+Creates a multi-row (sites) x 3-column (pathogens) figure showing MGS vs PCR
+comparison for all sites with a matching sewershed in the NWSS data portal.
 
 Sites as rows, pathogens (SARS-CoV-2, Influenza A, RSV) as columns.
-Uses same styling as the main panel figure (plot_mgs_nwss_panel.py).
+Uses same styling as the main panel figure (plot_mgs_pcr_clinical_lineage_panel.py).
 """
 
 import sys
@@ -34,7 +35,7 @@ from data_loaders import (
 )
 
 # Import correlation summary function from panel script
-from plot_mgs_nwss_panel import print_correlation_summary, format_r_with_stars
+from plot_mgs_pcr_clinical_lineage_panel import print_correlation_summary, format_r_with_stars
 
 # Import scipy for correlation calculations
 from scipy.stats import spearmanr
@@ -804,7 +805,7 @@ def _build_site_info_dict(matches):
     return site_info_dict
 
 
-def plot_mgs_nwss_supplementary_all(
+def plot_mgs_pcr_supplementary_all(
     mgs_data_dict,
     nwss_data_dict,
     site_info_dict,
@@ -1474,17 +1475,17 @@ def plot_mgs_nwss_supplementary_all(
                ncol=1, fontsize=FONT_SIZE_LARGE, frameon=False)
 
     # Shared axis labels
-    mgs_y_label_short = 'CASPER wastewater sequencing signal'
-    fig.text(0.04, 0.5, mgs_y_label_short, va='center', ha='center',
-             rotation=90, fontsize=FONT_SIZE_LARGE)
-    fig.text(0.98, 0.5, 'Wastewater PCR signal', va='center', ha='center',
-             rotation=270, fontsize=FONT_SIZE_LARGE)
+    add_stacked_rotated_label(fig, 0.04, 0.5, mgs_y_label,
+                              rotation=90, main_size=FONT_SIZE_LARGE)
+    add_stacked_rotated_label(fig, 0.98, 0.5,
+                              'Wastewater PCR concentration\n(copies/L or copies/g)',
+                              rotation=270, main_size=FONT_SIZE_LARGE)
 
     # Save correlation TSV
     tsv_path = None
     if save_path:
         data_dir = Path(save_path).parent.parent / 'tables'
-        tsv_path = str(data_dir / 'mgs_nwss_supplementary_all_correlations.tsv')
+        tsv_path = str(data_dir / 'mgs_pcr_supplementary_all_correlations.tsv')
     print_correlation_summary(all_correlations, save_tsv_path=tsv_path, verbose=verbose)
 
     if save_path:
