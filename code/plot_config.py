@@ -54,13 +54,23 @@ NORMALIZATION_LABELS_SHORT = {
     'rrna': 'rRNA',
 }
 
+# Sequencing/processing laboratory colours. Steel blue (MU) / amber (SB):
+# comfortably separated under deuteranopia and protanopia. Colour is the only
+# encoding of processing partner on the map, so any replacement pair needs
+# checking for a luminance gap too -- this pair's is modest (0.125), so it is
+# weaker in greyscale than in colour; darken the blue if that matters.
+LAB_COLORS = {
+    'MU': '#7896c3',
+    'SB': '#ec9d37',
+}
+
 # Long labels used for figure axis titles.
 NORMALIZATION_LABELS = {
     'raw': 'Relative abundance',
-    'tobamovirus': 'CASPER wastewater sequencing signal (Tobamovirus-norm)',
-    'pmmov': 'CASPER wastewater sequencing signal (PMMoV-norm)',
-    'tobrfv': 'CASPER wastewater sequencing signal (ToBRFV-norm)',
-    'rrna': 'CASPER wastewater sequencing signal (rRNA-norm)',
+    'tobamovirus': 'Wastewater sequencing signal\n(pathogen / tobamovirus read pairs)',
+    'pmmov': 'Wastewater sequencing signal\n(pathogen / PMMoV read pairs)',
+    'tobrfv': 'Wastewater sequencing signal\n(pathogen / ToBRFV read pairs)',
+    'rrna': 'Wastewater sequencing signal\n(pathogen / rRNA read pairs)',
 }
 
 # ============================================================================
@@ -655,3 +665,43 @@ def format_bp(x, pos=None):
 # ============================================================================
 
 init_plotting_style()
+
+
+# ============================================================================
+# SHARED LABEL HELPERS
+# ============================================================================
+
+def add_stacked_rotated_label(fig, x, y, label, rotation=90,
+                              main_size=FONT_SIZE_LARGE, sub_scale=0.8,
+                              sub_size=None, gap_scale=0.62, **kwargs):
+    """Draw a two-line rotated axis label whose second line is smaller.
+
+    ``label`` is the usual newline-separated axis label: the first line is
+    the quantity, the second the qualifier (units, denominator). Matplotlib
+    applies a single font size per text object, so the qualifier is drawn as
+    its own text, offset perpendicular to the reading direction. Offsets are
+    in points so the gap tracks the font size rather than the figure size.
+
+    For rotation=90 the lines stack along x with the first line at smaller x;
+    at rotation=270 that order flips, so the sign follows the rotation. A
+    label with no second line is drawn as a single centered text.
+    """
+    from matplotlib.transforms import offset_copy
+
+    main, _, sub = label.partition('\n')
+    if not sub:
+        return fig.text(x, y, main, fontsize=main_size, rotation=rotation,
+                        ha='center', va='center', **kwargs)
+
+    if sub_size is None:
+        sub_size = main_size * sub_scale
+    half_gap = gap_scale * (main_size + sub_size) / 2
+    sign = -1.0 if rotation % 360 == 90 else 1.0
+
+    def _t(dx):
+        return offset_copy(fig.transFigure, fig=fig, x=dx, y=0, units='points')
+
+    fig.text(x, y, main, fontsize=main_size, rotation=rotation,
+             ha='center', va='center', transform=_t(sign * half_gap), **kwargs)
+    fig.text(x, y, sub, fontsize=sub_size, rotation=rotation,
+             ha='center', va='center', transform=_t(-sign * half_gap), **kwargs)
