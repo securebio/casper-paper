@@ -51,10 +51,13 @@ CASPER_BIOPROJECTS = ["PRJNA1247874", "PRJNA1198001"]
 # ============================================================================
 
 def _load_csv(filename):
-    """Load a CSV from the data directory."""
+    """Load a CSV from the data directory. The larger files are gzipped."""
     path = _DATA_DIR / filename
     if not path.exists():
-        raise FileNotFoundError(f"Data file not found: {path}")
+        gzipped = path.with_name(path.name + ".gz")
+        if not gzipped.exists():
+            raise FileNotFoundError(f"Data file not found: {path}")
+        path = gzipped
     df = pd.read_csv(path)
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"])
