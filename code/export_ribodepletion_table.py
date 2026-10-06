@@ -1,21 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary table: the SB libraries prepared without rRNA-depletion probes.
-
-Lists every sample affected by the reagent-preparation error described in the
-Methods, so a reader reusing this release can identify and exclude or flag them.
-The window and the status derivation are imported from
-``plot_ribodepletion_effect`` rather than restated here, so the figure, this
-table and the `ribodepletion_status` metadata column cannot drift apart.
-
-The table is deliberately an identification list and carries no measurements:
-the effect on rRNA and vertebrate-infecting virus recovery is what the
-accompanying figure shows, and repeating per-sample values here would invite the
-two to disagree.
-
-Accessions are BioSample (``SAMN...``) accessions, which is what the
-``sra_accession`` column of the release metadata actually holds; they resolve to
-SRA runs under the release BioProject.
+"""Supplementary table: the SecureBio libraries prepared without
+rRNA-depletion probes.
 """
 
 import sys

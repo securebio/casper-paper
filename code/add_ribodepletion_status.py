@@ -1,30 +1,5 @@
 #!/usr/bin/env python3
-"""
-Add the repo-only `ribodepletion_status` column to data/sample_metadata.csv.
-
-The release metadata records concentration, extraction and platform but nothing
-about rRNA depletion, so a reader cannot tell from the shipped files which
-libraries were affected by the reagent-preparation error described in the
-Methods. This script materialises that fact as a column.
-
-It is a script rather than a hand edit because `data/sample_metadata.csv` is a
-generated artifact: it is exported upstream from the internal library metadata,
-so a manual edit would be unauditable and lost on the next export. Keeping the
-rule in committed code makes the derivation inspectable and the result
-reproducible. The derivation itself lives in `plot_ribodepletion_effect`, which
-is also what the figure and the table use, so the three cannot disagree.
-
-The status cannot be read from the internal metadata either: the `ribodepleted`
-field there is a per-laboratory constant (true for every SB library, false for
-every MU one) and does not record the omission, which is why it is derived from
-laboratory and collection date here.
-
-Re-running is a no-op: the column is recomputed and overwritten with identical
-content, and no other column is touched.
-
-Note this column is not in the SRA or BioSample metadata; it exists only in this
-repository.
-"""
+"""Add the ribodepletion_status column to data/sample_metadata.csv."""
 
 import sys
 from pathlib import Path

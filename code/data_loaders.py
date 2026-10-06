@@ -374,12 +374,12 @@ def load_clinical_positives_tests_data(filter_test_types=True,
     tests from Massachusetts General Hospital.
 
     Args:
-        filter_test_types: Ignored (pre-filtered in export). Kept for API compat.
+        filter_test_types: Ignored; the export is already filtered.
         drop_last_n_weeks: Drop last N weeks (0 = keep all).
 
     Returns:
         DataFrame pivoted with date index and pathogen columns containing
-        positive counts, matching the internal loader's output format.
+        positive counts.
     """
     path = _DATA_DIR / "clinical_testing_data.csv"
     if not path.exists():

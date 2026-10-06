@@ -217,7 +217,7 @@ def plot_pathogen_panel_on_axis(ax, mj_data, taxid, label, locations, highlight_
 
 
 # =========================================================================
-# Helper functions ported from plot_vv_family_composition_aggregated.py
+# Helper functions
 # =========================================================================
 
 def aggregate_vv_family_composition_for_site(merged_data, site_name, top_families):

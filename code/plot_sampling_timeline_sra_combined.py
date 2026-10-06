@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Combined visualization: sampling timeline + read counts + SRA comparison + cost.
-
-Creates a 2-row figure:
-- Top row (a, b): Sample collection timeline and read count distributions
-- Bottom row (c, d, e): CASPER cumulative reads, SRA comparison, and median depth with cost
-
-Figure 2 in the CASPER manuscript.
+"""Main figure: sampling timeline, sequencing depth, and CASPER as a share of
+wastewater sequencing on the SRA.
 """
 
 import sys
@@ -622,7 +616,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
 
     # Use median_gb_untargeted (public column name) converted to bp for axis scale
     _median_col = 'median_gb_untargeted'
-    _gb_to_bp = 1e9  # convert Gb to bases to match internal axis scale
+    _gb_to_bp = 1e9  # convert Gb to bases to match the axis scale
     plot_lit_review_scatter(ax_median_bp, lit_review_path,
                            y_column=_median_col,
                            y_label='Median bases per sample',

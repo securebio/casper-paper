@@ -1,35 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure: VV fraction from shallow Kraken profiling against the
-dedicated vertebrate-infecting virus (VV) pipeline.
-
-Two independent routes through the data estimate how much of a library is
-vertebrate-infecting virus. The shallow route classifies a subsample of reads
-with Kraken2 and sums those whose virus is annotated to a vertebrate host. The
-deep route runs the full VV pipeline over the whole library. This figure plots
-one against the other, per sample, to show how far the cheap estimate tracks
-the expensive one.
-
-Both axes are a fraction of reads, so the two routes are comparable despite
-profiling different numbers of them:
-
-    kraken_fraction   = n_reads_host_vertebrate / n_reads_profiled_passed_qc
-    pipeline_fraction = total_virus_hits / total_read_pairs
-
-The Kraken denominator is the post-QC profiled count, not `n_reads_profiled`.
-Kraken2 classifies the reads that survive FASTP, and the classified and
-unclassified counts sum exactly to `n_reads_profiled_passed_qc` in all 1,206
-libraries. The distinction is not cosmetic here: the two laboratories lose
-different amounts at QC -- MU retains 99.5% of profiled reads and SB 89.9% --
-so dividing by the pre-QC count would understate SB's fraction by about a tenth
-and inflate its apparent gap from the pipeline.
-
-Under uniform random subsampling a fraction is an unbiased estimator of the
-whole-library fraction, so neither axis should depend on how many reads were
-profiled; `print_vv_fraction_statistics` reports the test of that.
-
-Points are coloured by sequencing laboratory because the two protocols differ in
-how much VV they recover, and the offset from the 1:1 line differs with them.
+"""Supplementary figure: vertebrate-infecting virus fraction from shallow
+Kraken profiling against the dedicated VV pipeline.
 """
 
 import sys

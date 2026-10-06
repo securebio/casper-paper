@@ -1,21 +1,6 @@
 #!/usr/bin/env python3
-"""CASPER validated against external data, in one figure.
-
-(a) Wastewater sequencing abundance beside wastewater PCR, four sites x three pathogens
-(b) Boston DITP sequencing beside MGH clinical testing
-(c) SARS-CoV-2 lineage composition beside CDC clinical genomic surveillance
-(d) Norovirus capsid genotype composition beside CaliciNet outbreak surveillance
-
-The four panels answer the same question at different resolutions: a and b ask whether
-abundance tracks independent measurements of how much virus is present, c and d whether
-composition tracks independent measurements of which strains are circulating.
-
-This supersedes the separate NWSS-panel and lineage-comparison scripts. Their drawing code
-lives here so the four panels share one type scale and one set of date-axis conventions
-rather than being reconciled at the call site.
-
-Usage:
-    python plot_mgs_pcr_clinical_lineage_panel.py
+"""Main figure: wastewater sequencing compared with wastewater PCR, clinical
+testing, and lineage and genotype surveillance.
 """
 
 import argparse
@@ -1542,24 +1527,13 @@ def generate_clinical_correlation_display_tables(
 TITLE_FONT = LABEL_FONT
 PANEL_LABEL_FONT = LABEL_FONT + 4
 
-# Lineage and genotype categories have no counterpart in the shared palettes
-# (STATE_COLORS, TAXONOMIC_COLORS, VIRUS_HOST_COLORS), so a dedicated categorical set is
-# used here. Hues are assigned in a fixed order and never cycled: anything beyond the named
-# categories falls into a neutral grey rather than taking a generated hue. The eight hues
-# are colourblind-separable as an adjacent-pair sequence, which is how a stack is read.
+# Lineage and genotype categories, assigned in a fixed order and never cycled; anything
+# beyond the named categories takes a neutral grey. Colourblind-separable as adjacent
+# pairs, which is how a stack is read.
 SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300",
                  "#4a3aa7", "#e34948"]
-# The norovirus panel uses a different hue family from the SARS-CoV-2 panel — teal, plum,
-# ochre, indigo, sage, dusty red — so the two panels read as distinct rather than as one
-# continuous scheme. Validated as a set: worst adjacent colourblind separation dE 17.6,
-# every hue inside the lightness band and above the chroma floor.
-#
-# Two things constrain this more than they appear to. Desaturated "earth tone" palettes
-# fall below the chroma floor and render as grey, so distinction has to come from shifting
-# hues rather than dulling them. And a palette built at constant lightness always fails
-# colourblind separation, because deuteranopia collapses hue toward a blue-yellow axis and
-# leaves lightness as the only cue; the lightness variation across these six slots is what
-# carries the separation.
+# A different hue family from SERIES_COLORS so the norovirus and SARS-CoV-2 panels read
+# as distinct. Worst adjacent colourblind separation dE 17.6.
 NORO_COLORS = ["#00bdbe", "#853e80", "#ce7a3b", "#5a66b9", "#83c575", "#ba5661"]
 OTHER_COLOR = "#b7b6b0"
 MISSING_COLOR = "#9b9a92"
@@ -1593,13 +1567,10 @@ SARS2_ORDER = ["XBB*", "BA.2.86* (excl. JN.1)", "JN.1* (other)", "KP.2*", "KP.3*
 # listed in the printed diagnostic.
 MIN_BREADTH = 0.25
 
-# The depth row shows MEASURED mean coverage: aligned bases over reference length, computed
+# The depth row shows measured mean coverage: aligned bases over reference length, computed
 # the same way on both sides. SARS-CoV-2 comes from the per-base depth of each monthly pool
-# against the whole genome; norovirus comes from aligned bases against the VP1 panel, the
-# region genotype is resolved on. An earlier nominal version (read pairs x 300 bp over
-# reference length) was dropped: it overstated depth, and was not even the same quantity on
-# the two sides, since the SARS-CoV-2 figure counted extracted reads while the norovirus
-# figure counted reads that had already aligned.
+# against the whole genome; norovirus from aligned bases against the VP1 panel, the region
+# genotype is resolved on.
 COVERAGE_COLOR = "#8c8b85"
 COVERAGE_POINT_COLOR = "#55544d"
 
@@ -1768,10 +1739,8 @@ def legend_row(ax, handles, ncol):
 FIG_WIDTH, FIG_HEIGHT = 18, 19
 
 # The PCR panel is laid out in inches rather than as a share of the figure. Its headers and
-# legends are sized in points, so the space above the grid has to stay fixed in inches; only
-# the grid itself is compressed to bring its row height down. Tying both to a single
-# fraction, as an earlier version did, shrank the header space and ran the site legend into
-# the "Wastewater PCR" bar.
+# legends are sized in points, so the space above the grid stays fixed in inches; only the
+# grid itself is compressed to bring its row height down.
 PCR_HEADER_IN = 3.52         # column headers and legends above the grid
 PCR_GRID_IN = 5.42           # the 3 x 5 grid itself
 PCR_STANDALONE_IN = 11       # height the panel's offsets were tuned against

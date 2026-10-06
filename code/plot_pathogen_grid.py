@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""
-Shared renderer for the standalone 4x4 pathogen time-series grid.
-
-Two supplementary figures show the same grid of pathogens, sites and smoothing
-as Figure 4c but against a different y quantity: `plot_vv_pathogen_read_counts`
-plots unnormalized clade read counts, `plot_vv_pathogen_log` plots
-Tobamovirus-normalized abundance on a log scale. Everything except the plotted
-column, the symlog threshold and the tick labels is identical between them, so
-the grid itself lives here rather than being copied into each script.
-
-Axis sizing follows the rule used by the main-text figure: the top of each axis
-is placed so the highest *smoothed* trace among the highlighted sites sits at
-`PEAK_AXIS_FRACTION` of the axis height, and non-highlighted (grey) sites are
-allowed to run past it. Sizing to raw per-sample values from grey sites instead
-lets a single outlying sample compress every highlighted trace into the floor.
-Because these axes are symlog rather than linear, the placement is solved
-through the symlog transform so it means the same thing it does in Figure 4c.
-"""
+"""Shared renderer for the pathogen time-series grid."""
 
 import sys
 from pathlib import Path
@@ -89,7 +72,7 @@ def top_for_peak(peak, linthresh, fraction=PEAK_AXIS_FRACTION,
                  linscale=DEFAULT_LINSCALE):
     """Axis top placing ``peak`` at ``fraction`` of the height, floor at 0.
 
-    On the linear axis of Figure 4c this is simply ``peak / fraction``. Here the
+    On a linear axis this is simply ``peak / fraction``. Here the
     axis is symlog, so the same proportion is solved in transformed space, where
     the transform of 0 is 0 and the linear region occupies a fixed share.
     """

@@ -1,24 +1,5 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure: absolute read counts behind the Figure 4c pathogen panel.
-
-Figure 4c plots fold change from the site median of Tobamovirus-normalized
-abundance, and the log-scale supplement plots Tobamovirus-normalized abundance.
-Neither shows how many reads actually underlie each point. This figure plots the
-same 4x4 pathogen grid, same sites and same smoothing, against unnormalized
-`clade_counts` -- the read pairs assigned to each pathogen clade by the VV
-pipeline -- so the detection depth behind every trend is visible directly.
-
-The y-axis is symlog with a linear region below 1 read, so zero-count samples
-are drawn on the axis floor rather than dropped. That distinction matters here:
-across the highlighted sites, several respiratory targets are zero in the
-majority of samples, and the count scale is what makes those non-detections
-legible as non-detections.
-
-Counts are not depth-corrected. Sequencing depth varies about 1.4x across the
-interquartile range of samples (p25 0.82e9, p75 1.17e9 read pairs), so counts
-are broadly but not exactly comparable between samples.
-"""
+"""Supplementary figure: read pairs assigned to each pathogen clade over time."""
 
 import sys
 from pathlib import Path

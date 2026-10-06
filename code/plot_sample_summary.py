@@ -66,9 +66,9 @@ def parse_population_value(pop_str):
         return np.nan
 
 
-def generate_table1_sampling_sites(site_data, save_path=None):
+def generate_sampling_sites_table(site_data, save_path=None):
     """
-    Generate Table 1: Summary of CASPER sampling sites.
+    Summarise the CASPER sampling sites.
 
     Computes start date and median sampling interval from actual data.
     Includes location type, sample type, population served from metadata.
@@ -79,7 +79,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
         save_path: Optional path to save CSV
 
     Returns:
-        DataFrame with Table 1 data
+        DataFrame of per-site summary rows
     """
     # Load metadata
     site_meta = load_site_metadata()
@@ -193,7 +193,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
     df = pd.DataFrame(rows)
 
     if df.empty:
-        print("No data for Table 1")
+        print("No site data")
         return df
 
     # Sort by region order, then state alphabetically, then site name
@@ -201,7 +201,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
     df['_region_order'] = df['region'].map(region_order_map).fillna(len(REGION_ORDER))
     df = df.sort_values(['_region_order', 'state', 'Sampling site'])
 
-    # Drop internal columns
+    # Drop the working columns
     df = df.drop(columns=['_region_order'])
 
     if save_path:

@@ -1,29 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure: effect of the ribodepletion step on vertebrate-infecting
-virus recovery.
-
-A reagent preparation error omitted the RiboPOOLs depletion probes from SB
-samples processed between 2025-05-13 and 2025-07-01 inclusive (Methods). MU
-never ribodepletes. Boston DITP North and South were split between the two
-laboratories over the same period, so for those two systems the MU series is a
-control on the same wastewater: anything seasonal shows up in both arms, and
-anything protocol-driven shows up in one.
-
-Two quantities are drawn per sample, on twin axes:
-
-    rrna_fraction = rRNA reads / reads passing QC        (left axis, linear)
-    vv_fraction   = VV read pairs / total read pairs     (right axis, log)
-
-The VV fraction comes from the dedicated VV pipeline over the whole library
-(`calculate_vv_fraction_per_library`); the rRNA fraction comes from the shallow
-Kraken profiling subsample. Both are fractions, so neither depends on how many
-reads were profiled.
-
-The figure exists because rRNA fraction alone is a poor marker of the omission.
-At Boston the rRNA fraction barely moves across the window while the VV fraction
-falls by more than an order of magnitude; only at Miami does rRNA show the
-textbook rise.
+"""Supplementary figure: effect of the rRNA-depletion step on
+vertebrate-infecting virus recovery.
 """
 
 import sys

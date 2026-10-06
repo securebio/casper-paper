@@ -71,12 +71,12 @@ def pathogen_series(keys):
     return out
 
 
-# --- Main figures and Table 1 ------------------------------------------------
+# --- Main figures and the site summary ------------------------------------------------
 
 def sampling_sites(d):
-    from plot_sample_summary import generate_table1_sampling_sites
+    from plot_sample_summary import generate_sampling_sites_table
 
-    generate_table1_sampling_sites(
+    generate_sampling_sites_table(
         d["site_data"], save_path=str(TABLES / "sampling_sites.tsv"))
 
 

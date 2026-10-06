@@ -15,9 +15,6 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 
-# The analytical smoothing kernel lives in `smoothing.py` so it is not
-# hidden inside a plotting module. Re-exported here for back-compat with
-# the many scripts that import it from plot_config.
 from smoothing import (  # noqa: F401
     MIN_NONZERO_WEEKS,
     MIN_OVERLAP_WEEKS,
@@ -54,11 +51,8 @@ NORMALIZATION_LABELS_SHORT = {
     'rrna': 'rRNA',
 }
 
-# Sequencing/processing laboratory colours. Steel blue (MU) / amber (SB):
-# comfortably separated under deuteranopia and protanopia. Colour is the only
-# encoding of processing partner on the map, so any replacement pair needs
-# checking for a luminance gap too -- this pair's is modest (0.125), so it is
-# weaker in greyscale than in colour; darken the blue if that matters.
+# Processing laboratory colours, separable under deuteranopia and protanopia.
+# The luminance gap is modest (0.125), so they read less well in greyscale.
 LAB_COLORS = {
     'MU': '#7896c3',
     'SB': '#ec9d37',
@@ -482,7 +476,7 @@ def sort_locations_by_state_and_name(df, loc_id_column='site_name',
     Args:
         df: DataFrame containing location data.
         loc_id_column: Name of the column containing site names (default: 'site_name').
-        use_paper_names: Ignored (kept for API compatibility).
+        use_paper_names: Ignored.
 
     Returns:
         DataFrame sorted by region, state, and site name.

@@ -71,15 +71,15 @@ clinical_data = load_clinical_positives_tests_data()
 #| label: tbl-1
 #| tbl-cap: "Summary of CASPER sampling sites."
 
-from plot_sample_summary import generate_table1_sampling_sites
+from plot_sample_summary import generate_sampling_sites_table
 
-table1 = generate_table1_sampling_sites(
+table1 = generate_sampling_sites_table(
     site_data,
     save_path='../tables/sampling_sites.tsv'
 )
 
-def format_table1_html(df):
-    """Format Table 1 with region headers as bold rows."""
+def format_sites_table_html(df):
+    """Render region headers as bold rows."""
     rows = []
     current_region = None
     cols = ['Sampling site', 'NWSS sewershed ID', 'Location type', 'Sample type', 'Approx. population served',
@@ -92,7 +92,7 @@ def format_table1_html(df):
         rows.append({col: str(row[col]) if pd.notna(row[col]) else '' for col in cols})
     return pd.DataFrame(rows)
 
-display_df = format_table1_html(table1)
+display_df = format_sites_table_html(table1)
 Markdown(display_df.to_markdown(index=False))
 ```
 

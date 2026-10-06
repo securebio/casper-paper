@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplemental figure: CASPER as fraction of untargeted SRA data + total sequencing effort by study.
-
-Creates a 1x2 figure:
-- Left (a): CASPER as fraction of untargeted wastewater sequencing on SRA
-- Right (b): Total untargeted sequencing effort by study (scatter)
-
-Figure S2 in the CASPER manuscript.
+"""Supplementary figure: CASPER as a share of untargeted wastewater
+sequencing on the SRA, and total bases by study.
 """
 
 import sys

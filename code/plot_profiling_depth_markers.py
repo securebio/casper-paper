@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Profiling depth and normalization marker read counts (supplementary figure).
-
-Shows, by sequencing laboratory:
-- (a) the size of the Kraken taxonomic profiling subsample
-- (b) Tobamovirus genus reads recovered in that subsample
-
-Dotted vertical lines mark the per-laboratory medians.
+"""Supplementary figure: shallow profiling depth and normalization marker
+read counts.
 """
 
 import sys

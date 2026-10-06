@@ -1,29 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary table: detection frequency and sequencing depth per pathogen.
-
-Reports, for each target in the Figure 4c panel, how often it was detected at
-all and how many read pairs sat behind a detection. Supports the requests for
-the absolute alignment counts underlying the normalized abundance trends, and
-for a sense of the spread behind them.
-
-Every statistic here is a plain per-sample descriptive over the full release
-(all 1,206 samples, no temporal-outlier filtering), so the columns are directly
-comparable down the table. Dispersion of observations *around the smoothed
-trend* is deliberately not included: it is computed per site-and-laboratory
-series and then summarized across series, excludes non-detects, and depends on
-the smoothing kernel, so it does not share a denominator with these columns. It
-is reported in the Results text instead.
-
-Two summaries are given for each of the median and the IQR:
-
-* over all samples, where non-detects count as zero. This is what the release
-  looks like as a whole, but it collapses to zero for any target detected in
-  fewer than half of samples.
-* over detecting samples only. This is the depth behind an actual detection,
-  and is only interpretable alongside the non-detect column: a median of 2 read
-  pairs for a target absent from 91% of samples means "when anything was seen,
-  it was typically 2 reads".
+"""Supplementary table: how often each pathogen was detected, and the read
+depth behind a detection.
 """
 
 import sys

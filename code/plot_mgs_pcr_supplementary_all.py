@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure comparing MGS pathogen abundance with wastewater
-digital PCR data for ALL sites.
-
-Creates a multi-row (sites) x 3-column (pathogens) figure showing MGS vs PCR
-comparison for all sites with a matching sewershed in the NWSS data portal.
-
-Sites as rows, pathogens (SARS-CoV-2, Influenza A, RSV) as columns.
-Uses same styling as the main panel figure (plot_mgs_pcr_clinical_lineage_panel.py).
+"""Supplementary figure: wastewater sequencing against wastewater PCR for
+every site with a paired sewershed.
 """
 
 import sys

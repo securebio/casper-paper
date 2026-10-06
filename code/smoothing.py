@@ -1,46 +1,5 @@
-"""MMWR-week smoothing and Spearman correlation helpers.
-
-This module owns the time-series preprocessing shared by every plotting
-script that draws a smoothed trend and by the correlation tables. It was
-extracted from `plot_config.py` so the analytical kernel is no longer
-hidden inside a plotting module.
-
-Public helpers:
-
-* ``calculate_mmwr_smoothed_trend(df, date_col, value_col, smooth_window=5,
-  kernel="log1p")``
-    The core kernel. Aggregates a per-sample series to MMWR weeks via a
-    log1p-shifted mean (``log1p`` -> mean -> ``expm1``) or a plain
-    arithmetic mean, then applies a centered ``smooth_window``-week
-    moving average. Output dates are MMWR-week midpoints (Wednesday).
-    Window defaults to 5 weeks to match the Methods.
-
-* ``smooth_value_series(df, date_col, value_col, kernel="log1p")``
-    Thin wrapper that filters to non-negative, non-null values before
-    calling :func:`calculate_mmwr_smoothed_trend`. Zeros are kept — they
-    are real measurements. Returns ``None`` if no rows survive the
-    filter or the smoother returns empty.
-
-* ``smooth_for_source(df, date_col, value_col, source)``
-    Looks the kernel up from :data:`SOURCE_KERNELS` so the choice is
-    single-sourced rather than repeated at each call site.
-
-* ``spearman_on_smoothed(s1, s2, min_overlap=3)``
-    Inner-joins two smoothed series on (mmwr_year, mmwr_week) and
-    returns ``(spearman_r, p_value, n_overlap_weeks)``.
-
-The pre-filter convention is ``value.notna() & (value >= 0)``: NaN and
-negative values are dropped; zeros pass through (``log1p(0) = 0`` keeps
-the aggregation finite).
-
-A note on the "log1p" kernel: ``expm1(mean(log1p(x)))`` is a
-log1p-shifted mean, which behaves as a geometric mean for values well
-above 1 (WW-PCR concentrations, ~1e3-1e6 copies/L) but converges to an
-arithmetic mean for values well below 1 (WW-MGS relative abundance,
-~1e-8 to 1e-4, where ``log1p(x) ~ x``). It is described here as a
-log1p-shifted mean rather than a geometric mean for that reason. Because
-the reported correlations are Spearman (rank-based), the distinction does
-not affect them.
+"""MMWR-week aggregation and smoothing, and Spearman correlation on the
+smoothed series.
 """
 
 from __future__ import annotations
@@ -52,23 +11,16 @@ import pandas as pd
 from scipy.stats import spearmanr
 
 
-# Reporting threshold: a Spearman correlation between two MMWR-smoothed
-# series is reported only if at least this many MMWR weeks overlap. The
-# `min_overlap` argument to `spearman_on_smoothed` (default 3) is a
-# separate, lower computational floor — the smallest number of weeks for
-# which the rank correlation can be computed at all. Every consumer that
-# reports correlations uses this constant; nobody hard-codes the literal.
+# Weeks of overlap a correlation needs before it is reported. The
+# `min_overlap` argument to `spearman_on_smoothed` is the lower floor at
+# which the rank correlation can be computed at all.
 MIN_OVERLAP_WEEKS = 10
 
 # Minimum non-zero weeks required on each side of a paired comparison.
 MIN_NONZERO_WEEKS = 2
 
-# Source -> smoothing kernel. Clinical encounter, test and positivity
-# series are count-like and use an arithmetic mean over the smoothing
-# window; WW-MGS relative abundance and WW-PCR concentration are
-# multiplicative-noise series and use a log1p-shifted mean. Every
-# consumer of source-aware smoothing should call ``smooth_for_source``
-# rather than hard-coding the kernel string.
+# Source -> smoothing kernel. Count-like clinical series use an arithmetic
+# mean; relative abundance and PCR concentration use a log1p-shifted mean.
 SOURCE_KERNELS = {
     "pcr": "log1p",
     "mgs": "log1p",

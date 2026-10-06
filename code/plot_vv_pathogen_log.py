@@ -1,19 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure: Figure 4c pathogen dynamics on a log abundance scale.
-
-Figure 4c plots fold change from each site's median, which makes trends
-comparable across sites but hides the abundance level they sit at. This figure
-plots the same grid, sites and smoothing against Tobamovirus-normalized
-abundance directly, so absolute levels -- notably the gap between enteric and
-respiratory targets -- are visible.
-
-The symlog threshold is set at 1e-8, near the smallest non-zero normalized
-abundance observed (about 1e-8 for the respiratory targets). Setting it higher
-folds the bulk of the respiratory data into the linear region and flattens
-those panels: the median non-zero abundance is 7e-7 to 2e-6 for most
-respiratory targets, so a 1e-5 threshold puts the typical value below the log
-region entirely.
+"""Supplementary figure: the pathogen time-series grid on a log abundance
+scale.
 """
 
 import math
@@ -30,18 +17,12 @@ from plot_pathogen_grid import (
 from plot_vv_pathogen_combined import PATHOGENS, DEFAULT_HIGHLIGHT_SITES
 
 # Tobamovirus-genus-normalized clade abundance, the quantity used for the
-# time-series panels in Figure 4c and Figure 5.
+# pathogen time-series grid and the PCR and clinical panel.
 ABUNDANCE_COL = 'ra_clade_tobamovirus_norm'
 
-# symlog linear region, set to the detection quantum: the median abundance
-# contributed by a single read pair is 1.17e-7 (p5 2.1e-8, p25 5.4e-8, measured
-# as ra_clade_tobamovirus_norm / clade_counts across all sample-taxon pairs).
-# No sample can take a non-zero value below its own quantum, so extending the
-# log region further down only buys empty axis -- and the smoothed traces do
-# reach it, down to 1.1e-9, because a 5-week log1p mean of mostly-zero weeks
-# interpolates below the quantum. Those sub-quantum values are smoothing
-# artefacts rather than measurements, and giving them decades of log space is
-# what stretched trend lines into near-vertical drops toward zero.
+# symlog linear region, set to the detection quantum: a single read pair
+# contributes a median abundance of 1.17e-7. Smoothed traces can fall below it,
+# but those values are artefacts of the window rather than measurements.
 LINTHRESH = 1e-7
 
 # Lowest decade to carry a tick, matching LINTHRESH.

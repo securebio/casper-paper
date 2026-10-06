@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""
-Combined taxonomic composition panel figure (Figure 3).
-
-Creates a single large panel figure combining:
-- (a) Aggregate composition across all samples (taxonomic + virus host)
-- (b) Aggregate composition by site and sequencing partner (horizontal bars)
-- (c) Temporal variation in composition for selected sites
-- (d) Distribution of rRNA fraction by site (boxplots)
-- (e) rRNA fraction and Tobamovirus relative abundance over time
-
-Figure dimensions: 18x24 inches
-"""
+"""Main figure: taxonomic composition of the sequencing data."""
 
 import sys
 from pathlib import Path
@@ -148,7 +137,7 @@ def _plot_bars_on_axis(ax, locations, df, location_stats, title):
         locations: List of site names to plot
         df: DataFrame with merged kraken and virus data
         location_stats: DataFrame with location statistics
-        title: Title for this panel (unused, kept for API compat)
+        title: Ignored.
     """
     categories = ['virus', 'eukaryota', 'bacteria', 'archaea', 'unclassified', 'ribosomal']
     colors = get_taxonomic_colors()

@@ -1,37 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure: MU vs SB protocol comparison at the paired Boston site.
-
-Boston DITP North and South were sampled once and the material split between
-two laboratories, so every SB library has an MU library from the same outfall
-on the same collection date. That makes the two series a paired benchmark: any
-difference between them is protocol, not biology, because the biology is
-literally the same water.
-
-This figure asks three questions of that benchmark, one per row:
-
-* row 1 -- do the two protocols track each other? Both Tobamovirus-normalized
-  trends on one axis, so a systematic level offset between protocols is visible
-  as well as the agreement in shape.
-* row 2 -- does either protocol agree better with wastewater PCR?
-* row 3 -- does either protocol agree better with MGH clinical testing?
-
-Columns are the three respiratory targets of Figure 5, each split into the two
-outfalls (South, then North).
-
-Smoothing, correlation and styling follow Figure 5 exactly: MMWR-week
-aggregation with a log1p-shifted mean for the wastewater series and an
-arithmetic mean for clinical counts, a centered 5-week moving average, and
-Spearman correlation on the smoothed weekly series.
-
-Two conventions are specific to this figure:
-
-* Correlations are computed only over MMWR weeks in which *both* laboratories
-  have data. MU ran from March 2024 and SB from February 2025, so an
-  unrestricted comparison would credit MU with an extra season of signal and
-  the two agreement numbers would not be comparable.
-* Trends are smoothed on each laboratory's full series to avoid edge effects,
-  then clipped to the display window, as in Figure 5.
+"""Supplementary figure: the two laboratory protocols compared on paired
+Boston DITP samples, and each against wastewater PCR and clinical testing.
 """
 
 import sys
@@ -87,11 +56,11 @@ ROWS = [
     ('clinical', 'vs clinical testing', 'vs clinical testing'),
 ]
 
-# Grey comparison series, styled as in Figure 5.
+# Grey comparison series, styled as in the PCR and clinical panel.
 COMPARISON_COLOR = '#666666'
 COMPARISON_STYLE = {'pcr': '--', 'clinical': ':'}
 
-# NWSS column holding raw concentration, as used by Figure 5 (not the
+# NWSS column holding raw concentration, as used by the PCR panel (not the
 # PMMoV-normalized pcr_target_mic_lin).
 NWSS_COL = 'pcr_target_avg_conc_lin'
 
@@ -102,7 +71,7 @@ NWSS_COL = 'pcr_target_avg_conc_lin'
 # not recovery.
 RAW_ABUNDANCE_COL = 'ra_clade'
 
-# Font sizes, matching Figure 5's scale.
+# Font sizes, matching the PCR and clinical panel.
 LABEL_FONT = 22
 LABEL2_FONT = 19
 TICK_FONT = 15
@@ -281,7 +250,7 @@ def _paired_sample_agreement(labs, mgs_col, raw_col=RAW_ABUNDANCE_COL):
 def compute_correlations(series, mgs_col):
     """All agreement statistics behind the figure and table, as a tidy frame.
 
-    Correlations follow one convention throughout, matching Figure 5 and the
+    Correlations follow one convention throughout, matching the PCR panel and the
     other correlation tables in the supplement: MMWR-week aggregation with a
     centered five-week moving average, correlated by Spearman on the weeks two
     series share. Reporting a single statistic keeps the between-protocol and
@@ -519,7 +488,7 @@ def print_protocol_comparison_statistics(corr_df):
 # =============================================================================
 
 class _CleanScalarFormatter(ScalarFormatter):
-    """Figure 5's tick formatter: scientific offset, integer mantissa, bare 0."""
+    """Tick formatter: scientific offset, integer mantissa, bare 0."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -852,7 +821,7 @@ def _add_annotations(fig, axes, n_rows, n_cols, pcr_unit=None):
                  NWSS_PATHOGEN_MAP[pathogen_key]['label'],
                  fontsize=LABEL_FONT, ha='center', va='center', zorder=10)
 
-    # Row band on the left, mirroring Figure 5's pathogen band.
+    # Row band on the left, mirroring the PCR panel's pathogen band.
     band_x, band_width, band_pad = 0.001, 0.028, 0.012
     band_top = axes[0, 0].get_position().y1 + band_pad
     band_bottom = axes[n_rows - 1, 0].get_position().y0 - band_pad
