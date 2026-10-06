@@ -17,7 +17,6 @@ import pandas as pd
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
 _DATA_DIR = _REPO_ROOT / "data"
-_SUPP_DIR = _REPO_ROOT / "tables"
 _SRA_DIR = _DATA_DIR / "sra_statistics"
 
 
@@ -313,7 +312,7 @@ def load_nwss_site_matches():
     Returns:
         DataFrame with columns: site_name, sewershed_id.
     """
-    path = _SUPP_DIR / "sewershed_ids.tsv"
+    path = _DATA_DIR / "sewershed_ids.tsv"
     if not path.exists():
         raise FileNotFoundError(f"Sewershed ID mapping not found: {path}")
 
@@ -779,7 +778,7 @@ def print_sra_statistics():
 
 def print_lit_review_statistics():
     """Print literature review comparison statistics."""
-    path = _SUPP_DIR / "lit_review_table.tsv"
+    path = _DATA_DIR / "lit_review_table.tsv"
     if path.exists():
         df = pd.read_csv(path, sep="\t")
         print(f"Literature review: {len(df)} studies")
@@ -798,7 +797,7 @@ def print_lit_review_statistics():
 
 def print_cost_statistics():
     """Print sequencing cost statistics."""
-    path = _SUPP_DIR / "sequencing_cost_table.tsv"
+    path = _DATA_DIR / "sequencing_cost_table.tsv"
     if path.exists():
         df = pd.read_csv(path, sep="\t")
         print(f"Cost data: {len(df)} entries")
@@ -871,19 +870,16 @@ def print_read_length_statistics(qc_data):
 def generate_cost_table(save_path=None):
     """Generate manuscript cost table with derived columns.
 
-    Reads the full sequencing_cost_table.tsv (Cost per Mb from NHGRI),
-    filters to Jan 2007 onward, and adds 'Cost per median CASPER sample'.
-    Saves as sequencing_cost_table_manuscript.tsv.
-
-    The original file is kept intact for use by plot_sampling_timeline_sra_combined.
+    Reads the NHGRI cost-per-Mb series, filters to Jan 2007 onward, and adds
+    a cost per median CASPER sample.
     """
-    path = _SUPP_DIR / "sequencing_cost_table.tsv"
+    path = _DATA_DIR / "sequencing_cost_table.tsv"
     if not path.exists():
         print("Cost table not found")
         return pd.DataFrame()
 
     # Get median CASPER sample size from lit review table
-    lit_path = _SUPP_DIR / "lit_review_table.tsv"
+    lit_path = _DATA_DIR / "lit_review_table.tsv"
     lit_df = pd.read_csv(lit_path, sep="\t")
     casper_median_gb = lit_df.loc[
         lit_df["bioproject"] == "PRJNA1247874", "median_gb_untargeted"
@@ -925,9 +921,6 @@ def generate_cost_table(save_path=None):
     df = df[["Date", "Cost per Mb", "Cost per median CASPER sample", "Source"]]
 
     if save_path:
-        # Save manuscript version alongside the original
-        out = Path(save_path)
-        manuscript_path = out.parent / (out.stem + "_manuscript" + out.suffix)
-        df.to_csv(manuscript_path, sep="\t", index=False)
-        print(f"Saved manuscript cost table to {manuscript_path}")
+        df.to_csv(save_path, sep="\t", index=False)
+        print(f"Saved {save_path}")
     return df

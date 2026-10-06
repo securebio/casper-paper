@@ -36,7 +36,7 @@ from data_loaders import (
 # Paths
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
-_SUPP_DIR = _REPO_ROOT / "tables"
+_DATA_DIR = _REPO_ROOT / "data"
 
 
 def _get_sequencing_lab_column(df):
@@ -416,7 +416,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     sra_timeline_collection = load_sra_timeline(by_collection_date=True)
 
     # Paths
-    lit_review_path = _SUPP_DIR / 'lit_review_table.tsv'
+    lit_review_path = _DATA_DIR / 'lit_review_table.tsv'
 
     # =========================================================================
     # Prepare site data for top row panels
@@ -663,7 +663,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     plt.setp(ax_median_bp.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
     # ---- Cost overlay (bases_per_1k mode) ----
-    cost_path = _SUPP_DIR / 'sequencing_cost_table.tsv'
+    cost_path = _DATA_DIR / 'sequencing_cost_table.tsv'
     cost_df = pd.read_csv(cost_path, sep='\t')
 
     cost_df['parsed_date'] = pd.to_datetime(cost_df['Date'], format='%b %Y')

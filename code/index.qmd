@@ -500,7 +500,7 @@ plt.show()
 from export_lit_review_table import print_summary as print_lit_review_summary
 print_lit_review_summary()
 
-supp_table = pd.read_csv('../tables/lit_review_table.tsv', sep='\t')
+supp_table = pd.read_csv('../data/lit_review_table.tsv', sep='\t')
 Markdown(supp_table.to_markdown(index=False))
 ```
 
@@ -509,7 +509,7 @@ Markdown(supp_table.to_markdown(index=False))
 #| tbl-cap: "Historical cost of sequencing one median CASPER sample."
 
 cost_table = generate_cost_table(
-    save_path='../tables/sequencing_cost_table.tsv'
+    save_path='../tables/sequencing_cost_table_manuscript.tsv'
 )
 Markdown(cost_table.to_markdown(index=False))
 ```
