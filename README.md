@@ -1,6 +1,6 @@
 ## Data and code for:
 
-Justen, L. et al. Deep untargated wastewater metagenomic sequencing from sewersheds across the United States. medRxiv 2026.03.05.26345726 (2026) [doi:10.64898/2026.03.05.26345726](https://doi.org/10.64898/2026.03.05.26345726)
+Justen, L. et al. Deep untargeted wastewater metagenomic sequencing from sewersheds across the United States. medRxiv 2026.03.05.26345726 (2026) [doi:10.64898/2026.03.05.26345726](https://doi.org/10.64898/2026.03.05.26345726)
 
 ## Structure
 
@@ -8,6 +8,18 @@ Justen, L. et al. Deep untargated wastewater metagenomic sequencing from sewersh
 - `code/` — Plotting scripts and data loaders used to generate manuscript figures
 - `figures/` — Manuscript figures
 - `tables/` — Main text and supplementary tables (sampling sites, sequencing costs, correlation tables, literature review)
+
+## Ribodepletion status
+
+`data/sample_metadata.csv` carries a `ribodepletion_status` column with three values:
+
+- `none` — University of Missouri (MU) libraries, which are not rRNA-depleted.
+- `ribopool` — SecureBio (SB) libraries prepared with Pan-Bacterial RiboPOOLs probes.
+- `ribopool_omitted` — SB libraries from which the probes were omitted through a reagent preparation error, affecting samples collected 2025-05-13 to 2025-07-01 inclusive (22 samples; see Methods).
+
+This column is specific to this repository and is not part of the SRA or BioSample metadata. It is derived from the sequencing laboratory and the collection date rather than transcribed per sample, so the rule is auditable and a correction is a one-line change. Regenerate it with `python code/add_ribodepletion_status.py` from `code/` (add `--check` to recompute and report without writing). The derivation lives in `code/plot_ribodepletion_effect.py`, which also produces `figures/ribodepletion_effect.png` and backs `tables/ribodepletion_omitted_samples.tsv`.
+
+A separate enzymatic rRNA pretreatment was applied to a subset of MU Columbia WWTP, MO samples collected 2024-01-02 to 2024-03-19 (Methods). That is a different intervention, and data from samples processed under multiple treatment conditions were merged before release, so it is deliberately not encoded in this column.
 
 ## Data licensing
 
