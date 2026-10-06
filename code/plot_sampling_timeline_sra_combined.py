@@ -337,10 +337,11 @@ def _plot_boxplot_panel(ax, locations, df, show_xlabel=True):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
 
+    rng = np.random.default_rng(0)
     for idx, site_name in enumerate(locations):
         loc_data = df[df['site_name'] == site_name]['total_read_pairs'].values
         if len(loc_data) > 0:
-            y_jitter = np.random.normal(0, 0.08, size=len(loc_data))
+            y_jitter = rng.normal(0, 0.08, size=len(loc_data))
             y_positions = idx + y_jitter
 
             ax.scatter(loc_data, y_positions,

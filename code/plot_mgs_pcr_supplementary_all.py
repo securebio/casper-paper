@@ -46,11 +46,6 @@ PATHOGENS_TO_PLOT = ['sars-cov-2', 'influenza_a', 'rsv']
 # NORMALIZATION_COLUMNS and NORMALIZATION_LABELS come from plot_config so
 # there is a single source of truth across figures and tables.
 
-# Sites with temporal outliers to skip (first N samples)
-# NOTE: Boston DITP first-sample skip is now handled by filter_timeseries_data
-# in plot_config (MU-only). This dict is kept for any future site-specific skips.
-SITE_SKIP_FIRST_N = {}
-
 # Sites to exclude from supplementary figure (no overlapping NWSS data)
 SITES_TO_EXCLUDE = [
     'Central Oklahoma (OK-A), OK',   # NWSS data ends before MGS sampling began
@@ -383,14 +378,6 @@ def generate_correlation_table(
 
                 site_mgs = site_mgs.sort_values('date')
 
-                # Skip first N dates if configured
-                if site_name in SITE_SKIP_FIRST_N:
-                    n_skip = SITE_SKIP_FIRST_N[site_name]
-                    unique_dates = site_mgs['date'].unique()
-                    if len(unique_dates) > n_skip:
-                        skip_dates = unique_dates[:n_skip]
-                        site_mgs = site_mgs[~site_mgs['date'].isin(skip_dates)]
-
                 if site_mgs.empty:
                     continue
 
@@ -686,14 +673,6 @@ def get_overlapping_date_range(mgs_data, nwss_data, site_name, sewershed_ids, ta
 
     if mgs_filtered.empty:
         return None, None
-
-    # Skip first N samples if configured (temporal outliers)
-    if site_name in SITE_SKIP_FIRST_N:
-        mgs_filtered = mgs_filtered.sort_values('date')
-        unique_dates = sorted(mgs_filtered['date'].unique())
-        if len(unique_dates) > SITE_SKIP_FIRST_N[site_name]:
-            skip_dates = unique_dates[:SITE_SKIP_FIRST_N[site_name]]
-            mgs_filtered = mgs_filtered[~mgs_filtered['date'].isin(skip_dates)]
 
     if mgs_filtered.empty:
         return None, None

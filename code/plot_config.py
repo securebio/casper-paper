@@ -271,8 +271,6 @@ SCATTER_SIZE_LARGE = 40
 SCATTER_ALPHA = 0.6
 LINE_ALPHA = 0.8
 
-SMOOTH_WINDOW = 7
-
 # ============================================================================
 # DATE FORMATTING FOR TIME SERIES
 # ============================================================================
@@ -527,17 +525,6 @@ def get_sorted_location_order(locations, **kwargs):
 # ============================================================================
 # UTILITY FUNCTIONS
 # ============================================================================
-
-
-def apply_smooth(data, window=SMOOTH_WINDOW):
-    """Apply rolling average smoothing (DEPRECATED — use calculate_mmwr_smoothed_trend)."""
-    if not isinstance(data, pd.Series):
-        data = pd.Series(data)
-    return data.rolling(window=window, center=True, min_periods=1).mean()
-
-
-# `calculate_mmwr_smoothed_trend` now lives in smoothing.py and is
-# re-exported at the top of this module.
 
 
 # ============================================================================

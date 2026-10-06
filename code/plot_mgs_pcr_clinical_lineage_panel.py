@@ -1233,11 +1233,7 @@ def plot_mgs_pcr_clinical_panel(
                  'Positive tests',
                  fontsize=LABEL_FONT, ha='center', va='center', rotation=270)
 
-    # Save correlation TSV
-    tsv_path = None
-    if save_path:
-        tsv_path = str(Path(save_path).parent.parent / 'tables' / (Path(save_path).stem + '_correlations.tsv'))
-    print_correlation_summary(all_correlations, save_tsv_path=tsv_path, verbose=verbose)
+    print_correlation_summary(all_correlations, verbose=verbose)
 
     if save_path and owns_figure:
         save_figure(fig, save_path)
