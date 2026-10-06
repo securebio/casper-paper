@@ -62,6 +62,7 @@ qc_data = load_all_qc_data()
 virus_data = load_all_site_data()
 virus_host_data = load_all_virus_host_data()
 vv_family_data = load_all_vv_family_data()
+clinical_data = load_clinical_positives_tests_data()
 ```
 
 ## Main Figures
@@ -189,35 +190,11 @@ plt.show()
 
 ```{python}
 #| label: fig-5
-#| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR and MGH clinical testing data for selected sites."
+#| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR and MGH clinical testing data, and of WW-MGS SARS-CoV-2 lineage and norovirus genotype composition with CDC and CaliciNet genomic surveillance."
 
-from plot_mgs_nwss_panel import plot_mgs_nwss_panel, SITES_TO_PLOT, PATHOGENS_TO_PLOT
+from plot_mgs_pcr_clinical_lineage_panel import build as plot_mgs_pcr_clinical_lineage_panel
 
-# Load NWSS data
-nwss_data = load_nwss_data()
-matches = load_mgs_nwss_matches()
-
-# Build site info dict
-site_info_dict = {}
-for _, row in matches.iterrows():
-    site_name = row['site_name']
-    if site_name in SITES_TO_PLOT:
-        site_info_dict[site_name] = {
-            'sewershed_ids': row['sewershed_ids'],
-            'state': row['state']
-        }
-
-# Load MGS data for all pathogens
-mgs_data_dict = {}
-for pathogen_key in PATHOGENS_TO_PLOT:
-    pathogen_config = NWSS_PATHOGEN_MAP[pathogen_key]
-    mgs_data = load_mgs_pathogen_data(taxids=pathogen_config['taxids'])
-    if not mgs_data.empty:
-        mgs_data_dict[pathogen_key] = mgs_data
-
-clinical_data = load_clinical_positives_tests_data()
-
-fig = plot_mgs_nwss_panel(mgs_data_dict, nwss_data, site_info_dict, clinical_data=clinical_data, save_path='../figures/mgs_nwss_panel.png')
+fig = plot_mgs_pcr_clinical_lineage_panel(output='../figures/mgs_pcr_clinical_lineage_panel.png')
 plt.show()
 ```
 
@@ -322,7 +299,7 @@ plt.show()
 #| label: fig-s8
 #| fig-cap: "Comparison of WW-MGS pathogen abundance with NWSS ddPCR data for all sites with available pairing."
 
-from plot_mgs_nwss_supplementary_all import plot_mgs_nwss_supplementary_all, _build_site_info_dict
+from plot_mgs_pcr_supplementary_all import plot_mgs_pcr_supplementary_all, _build_site_info_dict
 
 nwss_data_all = load_nwss_data()
 matches_all = load_mgs_nwss_matches()
@@ -337,9 +314,9 @@ for pathogen_key in ['sars-cov-2', 'influenza_a', 'rsv']:
     if not mgs_data.empty:
         mgs_data_dict_all[pathogen_key] = mgs_data
 
-fig, axes = plot_mgs_nwss_supplementary_all(
+fig, axes = plot_mgs_pcr_supplementary_all(
     mgs_data_dict_all, nwss_data_all, site_info_dict_all,
-    save_path='../figures/mgs_nwss_supplementary_all.png'
+    save_path='../figures/mgs_pcr_supplementary_all.png'
 )
 plt.show()
 ```
@@ -424,6 +401,96 @@ fig, axes = plot_read_length_timeseries_all(qc_data_rl, site_data, save_path='..
 plt.show()
 ```
 
+```{python}
+#| label: fig-s-protocol-comparison
+
+from plot_boston_protocol_comparison import (
+    plot_boston_protocol_comparison, print_protocol_comparison_statistics,
+    SITES as PROTOCOL_SITES, PATHOGEN_KEYS as PROTOCOL_PATHOGENS,
+)
+
+protocol_matches = load_mgs_nwss_matches()
+protocol_sewersheds = sorted({
+    int(sid)
+    for _, row in protocol_matches[
+        protocol_matches['site_name'].isin(PROTOCOL_SITES)].iterrows()
+    for sid in row['sewershed_ids']
+})
+
+protocol_nwss = {
+    key: df[df['sewershed_id'].isin(protocol_sewersheds)].copy()
+    for key, df in load_nwss_data().items()
+}
+protocol_mgs = {
+    key: load_mgs_pathogen_data(taxids=NWSS_PATHOGEN_MAP[key]['taxids'])
+    for key in PROTOCOL_PATHOGENS
+}
+
+fig, axes, protocol_corr, protocol_table = plot_boston_protocol_comparison(
+    protocol_mgs, protocol_nwss, clinical_data,
+    save_path='../figures/boston_protocol_comparison.png',
+    table_path='../tables/boston_protocol_comparison.tsv',
+)
+print_protocol_comparison_statistics(protocol_corr)
+plt.show()
+```
+
+```{python}
+#| label: fig-s-vv-fraction-methods
+
+from plot_vv_fraction_kraken_vs_pipeline import (
+    plot_vv_fraction_kraken_vs_pipeline, prepare_vv_fraction_data,
+    print_vv_fraction_statistics,
+)
+
+vv_fraction_methods = prepare_vv_fraction_data()
+print_vv_fraction_statistics(vv_fraction_methods)
+
+fig, ax = plot_vv_fraction_kraken_vs_pipeline(
+    vv_fraction_methods,
+    save_path='../figures/vv_fraction_kraken_vs_pipeline.png',
+)
+plt.show()
+```
+
+```{python}
+#| label: fig-s-pipeline-benchmark
+#| fig-cap: "Read-level accuracy of the vertebrate-infecting virus (VV) identification pipeline on simulated reads. Reads were simulated from genomes the pipeline's reference index contains (in-index) and from genomes of the same species absent from it (out-of-index), then scored against the genome each read came from. Each read is filed at the finest taxonomic rank its assignment gets right, so a read assigned to the correct genus but the wrong species counts as correct at genus. Incorrect pools reads assigned above genus, assigned to the wrong lineage, and not recovered at all."
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..').resolve() / 'benchmark'))
+from assignment_evaluation.plot_composition import (
+    plot_pipeline_benchmark, print_benchmark_statistics,
+)
+
+print_benchmark_statistics()
+
+fig = plot_pipeline_benchmark(save_path='../figures/pipeline_benchmark.png')
+plt.show()
+```
+
+```{python}
+#| label: fig-s-ribodepletion
+#| fig-cap: "Effect of the rRNA-depletion step on vertebrate-infecting virus (VV) recovery. A reagent preparation error omitted the Pan-Bacterial RiboPOOLs probes from SecureBio (SB) libraries whose samples were collected between 13 May and 1 July 2025 inclusive (22 samples; Methods), marked by the shaded band. University of Missouri (MU) libraries are never rRNA-depleted, so in the MU panels the same interval is outlined rather than filled. Boston Deer Island Treatment Plant (DITP) North and South were split between the two laboratories over this period, so for those two systems the MU series is a control on the same wastewater. Each panel shows rRNA fraction (grey, dashed, left axis, linear) and VV read fraction (lab colour, solid, right axis, log) per sample, unsmoothed and connected in collection order, with both scales shared across panels; VV read fraction is VV read pairs from the dedicated VV pipeline divided by total read pairs, and rRNA fraction is from the shallow Kraken profiling subsample. Annotations give the ratio of median VV read fraction inside the window to outside it. Miami-Dade Central District Wastewater Treatment Plant (CDWWTP) was sequenced by SB only, so it has no MU panel. Values for the affected samples are tabulated in @tbl-s-ribodepletion-omitted."
+
+from plot_ribodepletion_effect import (
+    plot_ribodepletion_effect, prepare_ribodepletion_data,
+    print_ribodepletion_statistics,
+)
+
+ribodepletion_data = prepare_ribodepletion_data(
+    kraken_data, site_data, vv_family_data
+)
+print_ribodepletion_statistics(ribodepletion_data)
+
+fig, axes = plot_ribodepletion_effect(
+    ribodepletion_data, save_path='../figures/ribodepletion_effect.png'
+)
+plt.show()
+```
+
 ## Supplementary Tables
 
 ```{python}
@@ -464,7 +531,7 @@ if not sewershed_df.empty:
 #| label: tbl-s4
 #| tbl-cap: "Correlation between wastewater metagenomic sequencing and wastewater PCR data."
 
-from plot_mgs_nwss_supplementary_all import generate_nwss_correlation_display_tables
+from plot_mgs_pcr_supplementary_all import generate_nwss_correlation_display_tables
 import io, contextlib
 
 with contextlib.redirect_stdout(io.StringIO()):
@@ -487,7 +554,7 @@ display(Markdown(nwss_corr_tables['raw'].to_markdown(index=False)))
 #| label: tbl-s5
 #| tbl-cap: "Wastewater PCR assay details and data source designations."
 
-from plot_mgs_nwss_supplementary_all import generate_nwss_metadata_table, SITES_TO_EXCLUDE
+from plot_mgs_pcr_supplementary_all import generate_nwss_metadata_table, SITES_TO_EXCLUDE
 
 site_info_for_metadata = {
     k: v for k, v in site_info_dict_all.items()
@@ -519,11 +586,11 @@ if not nwss_metadata_df.empty:
 #| label: tbl-s6
 #| tbl-cap: "Correlation between wastewater metagenomic sequencing and clinical respiratory virus testing data."
 
-from plot_mgs_nwss_panel import generate_clinical_correlation_display_tables
+from plot_mgs_pcr_clinical_lineage_panel import generate_clinical_correlation_display_tables
 
 with contextlib.redirect_stdout(io.StringIO()):
     clinical_corr_tables = generate_clinical_correlation_display_tables(
-        mgs_data_dict, clinical_data,
+        mgs_data_dict_clinical, clinical_data,
         save_path='../tables/clinical_correlation_table.tsv'
     )
 
@@ -535,4 +602,69 @@ display(Markdown(clinical_corr_tables['formatted'].to_markdown(index=False)))
 #| tbl-cap: "Raw correlation values: wastewater metagenomic sequencing vs clinical data."
 
 display(Markdown(clinical_corr_tables['raw'].to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s-pathogen-detection
+#| tbl-cap: "Sequencing depth behind each pathogen shown in Figure 4c. Non-detects are samples with no read pairs assigned to the pathogen clade. Distributions are reported over all 1,206 samples in this release, in which non-detects contribute zero, and over the subset of samples with at least one assigned read pair. Values are read pairs assigned by the vertebrate-infecting virus (VV) pipeline and are not adjusted for sequencing depth. IQR, interquartile range."
+
+from export_detection_table import build_detection_table
+
+detection_table = build_detection_table()
+detection_table.to_csv('../tables/pathogen_detection.tsv', sep='\t', index=False)
+
+display(Markdown(detection_table.to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s-protocol-comparison
+
+display(Markdown(protocol_table.to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s-pipeline-benchmark
+#| tbl-cap: "Accuracy of the vertebrate-infecting virus (VV) identification pipeline on reads simulated from three panels of reference genomes: genomes the reference index contains, genomes of the same species absent from it, and the most abundant non-VV organisms in this study's libraries plus the human genome. Reads are counted at the finest rank their assignment gets right. Percentages are of the read pairs simulated for that panel; the genus column includes the species-correct reads, so it and the incorrect column sum to 100%. Incorrect also covers reads the pipeline did not recover. On the negative panel any VV assignment is a false positive, equivalent to 89 spurious read pairs per billion wastewater read pairs (95% upper bound 1,242)."
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..').resolve() / 'benchmark'))
+from export_benchmark_table import build_benchmark_table
+
+benchmark_table = build_benchmark_table()
+benchmark_table.to_csv('../tables/pipeline_benchmark.tsv', sep='\t', index=False)
+
+display(Markdown(benchmark_table.to_markdown(index=False)))
+```
+
+```{python}
+#| label: tbl-s-pipeline-benchmark-family
+#| tbl-cap: "Accuracy of vertebrate-infecting virus identification by virus family, for each positive panel. Taxa are those the family contributes to that panel; percentages are of the read pairs simulated for the family in that panel. As in @tbl-s-pipeline-benchmark, the genus column includes the species-correct reads, so it and the incorrect column sum to 100%, and incorrect covers reads assigned no finer than family, reads assigned to the wrong lineage, and reads not recovered at all."
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..').resolve() / 'benchmark'))
+from export_benchmark_table import build_family_table
+
+family_table = build_family_table()
+family_table.to_csv('../tables/pipeline_benchmark_by_family.tsv', sep='\t', index=False)
+
+display(Markdown(family_table.to_markdown(index=False)))
+```
+
+
+```{python}
+#| label: tbl-s-ribodepletion-omitted
+#| tbl-cap: "SecureBio (SB) libraries prepared without rRNA-depletion probes. The Pan-Bacterial RiboPOOLs probes were omitted through a reagent preparation error from samples collected between 13 May and 1 July 2025 inclusive (Methods). The effect on ribosomal RNA content and vertebrate-infecting virus recovery is shown in @fig-s-ribodepletion. Accessions are BioSample accessions, which resolve to SRA runs under the release BioProject."
+
+from export_ribodepletion_table import build_ribodepletion_table
+
+ribodepletion_table = build_ribodepletion_table(ribodepletion_data)
+ribodepletion_table.to_csv(
+    '../tables/ribodepletion_omitted_samples.tsv', sep='\t', index=False
+)
+
+display(Markdown(ribodepletion_table.to_markdown(index=False)))
 ```
