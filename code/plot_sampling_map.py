@@ -76,13 +76,12 @@ CLUSTER_RADIUS_BY_CITY = {
     'Kansas City, MO': 0.16,
 }
 
-# Legend font, kept apart from the city labels so the shape key reads as
-# annotation rather than as another place name. Plain 'Avenir' rather than
-# 'Avenir Next': the latter is registered only at weight 700, so matplotlib
-# renders it bold and it overpowers the map labels.
-LEGEND_FONT_FAMILY = 'Avenir'
-# Same typeface, registered at weight 700; 'Avenir' carries no bold face.
-LEGEND_TITLE_FONT_FAMILY = 'Avenir Next'
+# Legend fonts, listed with fallbacks because Avenir ships only with macOS.
+# 'Avenir Next' is registered at weight 700 and carries the bold title; plain
+# 'Avenir' carries the entries.
+LEGEND_FONT_FAMILY = ['Avenir', 'Nimbus Sans', 'DejaVu Sans', 'sans-serif']
+LEGEND_TITLE_FONT_FAMILY = ['Avenir Next', 'Nimbus Sans', 'DejaVu Sans',
+                            'sans-serif']
 
 
 def loc_type_marker(loc_type):

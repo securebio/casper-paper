@@ -24,6 +24,8 @@ from matplotlib.patches import Rectangle
 
 # Import plotting config
 sys.path.insert(0, str(Path(__file__).parent))
+
+_FIGURES_DIR = Path(__file__).resolve().parent.parent / "figures"
 from plot_config import *
 from plot_config import _state_from_site_name
 
@@ -363,7 +365,7 @@ def main():
     parser.add_argument(
         '--output',
         type=str,
-        default='figures/taxonomic_composition_timeseries_all.png',
+        default=str(_FIGURES_DIR / 'taxonomic_composition_timeseries_all.png'),
         help='Output file path for the figure'
     )
 

@@ -23,6 +23,8 @@ from matplotlib.lines import Line2D
 
 # Import plotting config
 sys.path.insert(0, str(Path(__file__).parent))
+
+_FIGURES_DIR = Path(__file__).resolve().parent.parent / "figures"
 from plot_config import *
 from plot_config import get_virus_host_colors, _state_from_site_name, MULTI_LAB_SITES, filter_timeseries_data
 
@@ -946,7 +948,7 @@ def main():
     parser.add_argument(
         '--output',
         type=str,
-        default='figures/taxonomic_panel_combined.png',
+        default=str(_FIGURES_DIR / 'taxonomic_panel_combined.png'),
         help='Output file path'
     )
 

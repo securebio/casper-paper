@@ -1,0 +1,15 @@
+# Figures and tables
+pandas>=2.0
+numpy>=1.26
+matplotlib>=3.8
+scipy>=1.11
+seaborn>=0.13
+epiweeks>=2.3
+tabulate>=0.9
+
+# Sampling map. Needs GEOS and PROJ system libraries, and downloads Natural
+# Earth shapefiles on first use.
+cartopy>=0.22
+
+# Rendering code/index.qmd with Quarto
+ipykernel>=6.29
