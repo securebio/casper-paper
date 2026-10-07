@@ -31,6 +31,10 @@ BENCHMARK = REPO_ROOT / "benchmark"
 
 sys.path.insert(0, str(CODE_DIR))
 
+# Importing plot_config applies the shared matplotlib style. Done here so every run
+# renders the same way whether or not the stages selected would have imported it.
+import plot_config  # noqa: E402,F401
+
 from data_loaders import (  # noqa: E402
     NWSS_PATHOGEN_MAP,
     load_all_kraken_data,
