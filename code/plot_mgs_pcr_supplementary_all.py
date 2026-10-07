@@ -1453,12 +1453,7 @@ def plot_mgs_pcr_supplementary_all(
                               'Wastewater PCR concentration\n(copies/L or copies/g)',
                               rotation=270, main_size=FONT_SIZE_LARGE)
 
-    # Save correlation TSV
-    tsv_path = None
-    if save_path:
-        data_dir = Path(save_path).parent.parent / 'tables'
-        tsv_path = str(data_dir / 'mgs_pcr_supplementary_all_correlations.tsv')
-    print_correlation_summary(all_correlations, save_tsv_path=tsv_path, verbose=verbose)
+    print_correlation_summary(all_correlations, verbose=verbose)
 
     if save_path:
         save_figure(fig, save_path)

@@ -109,54 +109,19 @@ def format_r_with_stars(r, p):
         return r_str
 
 
-def print_correlation_summary(correlations, save_tsv_path=None, verbose=False):
+def print_correlation_summary(correlations, verbose=False):
     """
     Print a summary table of all correlations with R and p-values.
 
     Args:
         correlations: list of dicts with keys: pathogen, mgs_site, comparison_type,
                       comparison_source, r_value, p_value, n_points
-        save_tsv_path: Optional path to save correlations as TSV file
         verbose: If True, print full correlation tables to stdout.
     """
     if not correlations:
         if verbose:
             print("\nNo correlations calculated.")
         return
-
-    if save_tsv_path:
-        corr_df = pd.DataFrame(correlations)
-        sort_cols = [c for c in ['comparison_type', 'pathogen', 'mgs_site', 'site_name'] if c in corr_df.columns]
-        corr_df = corr_df.sort_values(sort_cols)
-
-        def format_r_with_asterisks(row):
-            r = row['r_value']
-            p = row['p_value']
-            if np.isnan(r) or np.isnan(p):
-                return 'nan'
-            r_str = f"{r:.2f}"
-            if p < 0.001:
-                return f"{r_str}***"
-            elif p < 0.01:
-                return f"{r_str}**"
-            elif p < 0.05:
-                return f"{r_str}*"
-            else:
-                return r_str
-
-        corr_df['r_formatted'] = corr_df.apply(format_r_with_asterisks, axis=1)
-
-        base_cols = ['pathogen', 'mgs_site']
-        if 'site_name' in corr_df.columns:
-            base_cols.append('site_name')
-        if 'seq_lab' in corr_df.columns:
-            base_cols.append('seq_lab')
-        base_cols.extend(['comparison_type', 'comparison_source',
-                          'r_value', 'p_value', 'n_points', 'r_formatted'])
-        cols = [c for c in base_cols if c in corr_df.columns]
-        corr_df = corr_df[cols]
-
-        corr_df.to_csv(save_tsv_path, sep='\t', index=False)
 
     if not verbose:
         return

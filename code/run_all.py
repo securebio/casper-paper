@@ -189,7 +189,6 @@ def vv_pathogen_read_counts(d):
 
 
 def pcr_supplementary(d):
-    """Also writes tables/mgs_pcr_supplementary_all_correlations.tsv."""
     from plot_mgs_pcr_supplementary_all import (
         _build_site_info_dict, plot_mgs_pcr_supplementary_all,
     )
