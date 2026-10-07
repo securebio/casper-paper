@@ -270,13 +270,6 @@ def protocol_comparison(d):
         table_path=str(TABLES / "boston_protocol_comparison.tsv"))
 
 
-def vv_fraction_methods(d):
-    from plot_vv_fraction_kraken_vs_pipeline import plot_vv_fraction_kraken_vs_pipeline
-
-    plot_vv_fraction_kraken_vs_pipeline(
-        save_path=str(FIGURES / "vv_fraction_kraken_vs_pipeline.png"))
-
-
 def ribodepletion(d):
     from plot_ribodepletion_effect import (
         plot_ribodepletion_effect, prepare_ribodepletion_data,
@@ -368,7 +361,6 @@ STAGES = [
     ("fig-s12", qc_pass_rate, False),
     ("fig-s13", read_length, False),
     ("fig-s-protocol-comparison", protocol_comparison, False),
-    ("fig-s-vv-fraction-methods", vv_fraction_methods, False),
     ("fig-s-pipeline-benchmark", pipeline_benchmark, True),
     ("fig-s-ribodepletion", ribodepletion, False),
     ("tbl-s2", cost_table, False),

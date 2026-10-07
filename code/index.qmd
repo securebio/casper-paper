@@ -436,24 +436,6 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-s-vv-fraction-methods
-
-from plot_vv_fraction_kraken_vs_pipeline import (
-    plot_vv_fraction_kraken_vs_pipeline, prepare_vv_fraction_data,
-    print_vv_fraction_statistics,
-)
-
-vv_fraction_methods = prepare_vv_fraction_data()
-print_vv_fraction_statistics(vv_fraction_methods)
-
-fig, ax = plot_vv_fraction_kraken_vs_pipeline(
-    vv_fraction_methods,
-    save_path='../figures/vv_fraction_kraken_vs_pipeline.png',
-)
-plt.show()
-```
-
-```{python}
 #| label: fig-s-pipeline-benchmark
 #| fig-cap: "Read-level accuracy of the vertebrate-infecting virus (VV) identification pipeline on simulated reads. Reads were simulated from genomes the pipeline's reference index contains (in-index) and from genomes of the same species absent from it (out-of-index), then scored against the genome each read came from. Each read is filed at the finest taxonomic rank its assignment gets right, so a read assigned to the correct genus but the wrong species counts as correct at genus. Incorrect pools reads assigned above genus, assigned to the wrong lineage, and not recovered at all."
 
