@@ -1,0 +1,94 @@
+taxid	ncbi_scientific_name	ncbi_rank	species_taxid	species_name	family_name	in_index_genomes	out_of_index_genomes
+2697049	Severe acute respiratory syndrome coronavirus 2	no rank	3418604	Betacoronavirus pandemicum	Coronaviridae	MN908947.3	QB015708.1
+11320	Influenza A virus	no rank	2955291	Alphainfluenzavirus influenzae	Orthomyxoviridae	J02146.1,J02147.1,J02150.1,J02151.1,V00603.1,V01088.1,V01099.1,V01106.1	
+11520	Influenza B virus	no rank	2955465	Betainfluenzavirus influenzae	Orthomyxoviridae	AF101982.1,AF102017.1,J02094.1,J02095.1,J02096.1,K00423.1,K01395.1,M14880.1	PZ994623.1,PZ994624.1,PZ994625.1,PZ994626.1,PZ994627.1,PZ994628.1,PZ994629.1,PZ994630.1
+11552	Influenza C virus	no rank	2955935	Gammainfluenzavirus influenzae	Orthomyxoviridae	AB126191.2,AB126192.2,AB126193.2,AB126194.2,AB126195.1,AB126196.2,AB283001.1	PZ716978.1,PZ716979.1,PZ716980.1,PZ716981.1,PZ716982.1,PZ716983.1,PZ716984.1
+11250	human respiratory syncytial virus	no rank	3049954	Orthopneumovirus hominis	Pneumoviridae	M74568.1	OZ546872.1
+11234	Measles morbillivirus	no rank	3052345	Morbillivirus hominis	Paramyxoviridae	AB016162.1	PX475770.1
+10244	Monkeypox virus	no rank	3431483	Orthopoxvirus monkeypox	Poxviridae	AF380138.1	OZ501920.1
+162145	human metapneumovirus	no rank	3048148	Metapneumovirus hominis	Pneumoviridae	AF371337.2	PZ317218.1
+12730	Human respirovirus 1	no rank	3049952	Respirovirus laryngotracheitidis	Paramyxoviridae	AF457102.1	PX380245.1
+2560525	Human orthorubulavirus 2	no rank	3052557	Orthorubulavirus laryngotracheitidis	Paramyxoviridae	X57559.1	PV224536.1
+11216	Human respirovirus 3	no rank	3049953	Respirovirus pneumoniae	Paramyxoviridae	EU326526.1	PX360996.1
+2560526	Human orthorubulavirus 4	no rank	3052556	Orthorubulavirus hominis	Paramyxoviridae	AB543336.1	PV224554.1
+42789	enterovirus D68	no rank	3428506	Enterovirus deconjuncti	Picornaviridae	AY426531.1	PQ612530.1
+138950	Enterovirus C	no rank	3428505	Enterovirus coxsackiepol	Picornaviridae	V01149.1	PX000255.1
+12092	Hepatovirus A	no rank	3407641	Hepatovirus ahepa	Picornaviridae	M14707.1	PZ362770.1
+10407	Hepatitis B virus	no rank	3431302	Orthohepadnavirus hominoidei	Hepadnaviridae	V01460.1	PZ495775.1
+3052230	Hepacivirus hominis	species	3052230	Hepacivirus hominis	Flaviviridae	AF009606.1	PQ638484.1
+12475	Hepatitis delta virus	no rank	2844074	Deltavirus italiense	Kolmioviridae	D01075.1	PZ211806.1
+2560602	Mumps orthorubulavirus	no rank	3052560	Orthorubulavirus parotitidis	Paramyxoviridae	AB040874.1	PZ015904.1
+11041	Rubella virus	no rank	2846071	Rubivirus rubellae	Matonaviridae	JN635296.1	LC778127.1
+10335	Human alphaherpesvirus 3	no rank	3050294	Varicellovirus humanalpha3	Orthoherpesviridae	X04370.1	PV845296.1
+28875	Rotavirus A	no rank	3432193	Rotavirus alphagastroenteritidis	Sedoreoviridae	DQ838599.2,DQ838610.2,DQ838615.2,DQ838620.2,DQ838625.2,DQ838630.2,DQ838635.2,DQ838640.2,DQ838645.2,DQ838650.2,DQ841262.2	LC929456.1,LC929457.1,LC929458.1,LC929459.1,LC929460.1,LC929461.1,LC929462.1,LC929463.1,LC929464.1,LC929465.1,LC929466.1
+337041	Alphapapillomavirus 9	species	337041	Alphapapillomavirus 9	Papillomaviridae	J04353.1	PX463233.1
+11089	Yellow fever virus	no rank	3046277	Orthoflavivirus flavi	Flaviviridae	X03700.1	PV710595.1
+11072	Japanese encephalitis virus	no rank	3048158	Orthoflavivirus japonicum	Flaviviridae	M18370.1	PV666486.1
+11292	Lyssavirus rabies	species	11292	Lyssavirus rabies	Rhabdoviridae	M13215.1	PX896059.1
+11084	Tick-borne encephalitis virus	no rank	3052465	Orthoflavivirus encephalitidis	Flaviviridae	X07755.1	
+12637	Dengue virus	no rank	3052464	Orthoflavivirus denguei	Flaviviridae	U87411.1	OZ318994.1
+64320	Zika virus	no rank	3048459	Orthoflavivirus zikaense	Flaviviridae	AY632535.2	PQ433000.1
+37124	Chikungunya virus	no rank	3426298	Alphavirus chikungunya	Togaviridae	AF369024.2	PV685660.1
+11021	Eastern equine encephalitis virus	no rank	3426299	Alphavirus eastern	Togaviridae	X63135.1	PQ220306.1
+11039	Western equine encephalitis virus	no rank	3426323	Alphavirus western	Togaviridae	GQ287646.1	
+11080	St. Louis encephalitis virus	no rank	3052468	Orthoflavivirus louisense	Flaviviridae	DQ525916.1	PZ205952.1
+11083	Powassan virus	no rank	3048287	Orthoflavivirus powassanense	Flaviviridae	L06436.1	PX666892.1
+11577	La Crosse virus	no rank	3052409	Orthobunyavirus lacrosseense	Peribunyaviridae	EF485030.1,EF485031.1,EF485032.1	PV208367.1,PV208368.1,PV208369.1
+35511	Jamestown Canyon virus	no rank	3052402	Orthobunyavirus jamestownense	Peribunyaviridae	HM007350.1,HM007351.1,HM007352.1	
+3052429	Orthobunyavirus oropoucheense	species	3052429	Orthobunyavirus oropoucheense	Peribunyaviridae	AF441119.1,AF484424.1,AY237111.1	PQ329253.1,PQ329254.1,PQ329255.1
+186538	Zaire ebolavirus	no rank	3052462	Orthoebolavirus zairense	Filoviridae	AF086833.2	OZ538111.1
+186540	Sudan ebolavirus	no rank	3052460	Orthoebolavirus sudanense	Filoviridae	AY729654.1	
+3052505	Orthomarburgvirus marburgense	species	3052505	Orthomarburgvirus marburgense	Filoviridae	DQ217792.2	PV700541.1
+3052310	Mammarenavirus lassaense	species	3052310	Mammarenavirus lassaense	Arenaviridae	J04324.1,U73034.2	PZ239818.1,PZ239819.1
+3052518	Orthonairovirus haemorrhagiae	species	3052518	Orthonairovirus haemorrhagiae	Nairoviridae	AF467768.2,AY389361.2,U88410.1	PX874928.1,PX875024.1,PX875130.1
+3052225	Henipavirus nipahense	species	3052225	Henipavirus nipahense	Paramyxoviridae	AF212302.2	PX130165.1
+3052223	Henipavirus hendraense	species	3052223	Henipavirus hendraense	Paramyxoviridae	AF017149.3	
+3052676	Phlebovirus riftense	species	3052676	Phlebovirus riftense	Phenuiviridae	DQ375403.1,DQ380151.1,DQ380206.1	PV231432.1,PV231436.1,PV231440.1
+1335626	Middle East respiratory syndrome-related coronavirus	no rank	3433633	Betacoronavirus cameli	Coronaviridae	JX869059.2	OR987489.1
+694009	Severe acute respiratory syndrome-related coronavirus	no rank	3418604	Betacoronavirus pandemicum	Coronaviridae	AY274119.3	QB015708.1
+3052317	Mammarenavirus machupoense	species	3052317	Mammarenavirus machupoense	Arenaviridae	AY129248.1,AY358021.2	
+2169991	Mammarenavirus juninense	species	2169991	Mammarenavirus juninense	Arenaviridae	AY358022.2,AY358023.2	
+3052307	Mammarenavirus guanaritoense	species	3052307	Mammarenavirus guanaritoense	Arenaviridae	AY129247.1,AY358024.2	PZ066131.1,PZ066132.1
+3052302	Mammarenavirus chapareense	species	3052302	Mammarenavirus chapareense	Arenaviridae	EU260463.1,EU260464.1	
+3052314	Mammarenavirus lujoense	species	3052314	Mammarenavirus lujoense	Arenaviridae	FJ952384.1,FJ952385.1	PX353117.1,PX353118.1
+10255	Variola virus	no rank	3431487	Orthopoxvirus variola	Poxviridae	X69198.1	
+1980456	Orthohantavirus andesense	species	1980456	Orthohantavirus andesense	Hantaviridae	AF291702.1,AF291703.2,AF291704.5	PV808473.1,PV808474.1,PV808475.1
+3052499	Orthohantavirus sinnombreense	species	3052499	Orthohantavirus sinnombreense	Hantaviridae	L37902.1,L37903.1,L37904.1	
+3052480	Orthohantavirus hantanense	species	3052480	Orthohantavirus hantanense	Hantaviridae	M14626.1,M14627.1,X55901.1	PV600323.1,PV600334.1,PV600345.1
+11676	Human immunodeficiency virus 1	no rank	3418650	Lentivirus humimdef1	Retroviridae	AF033819.3	PZ802244.1
+11709	Human immunodeficiency virus 2	no rank	3418651	Lentivirus humimdef2	Retroviridae	M30502.1	LC927253.1
+11983	Norwalk virus	no rank	3431196	Norovirus norwalkense	Caliciviridae	M87661.2	PZ051348.1
+95342	Sapporo virus	no rank	3432266	Sapovirus sapporoense	Caliciviridae	HM002617.1	PP313551.1
+3430629	Mamastrovirus hominis	species	3430629	Mamastrovirus hominis	Astroviridae	Z25771.1	PV189393.1
+3430631	Mamastrovirus melbournense	species	3430631	Mamastrovirus melbournense	Astroviridae	FJ222451.1	LC940228.1
+130309	Human mastadenovirus F	no rank	3241426	Mastadenovirus faecale	Adenoviridae	L19443.1	PZ360999.1
+129875	Human mastadenovirus A	no rank	3241402	Mastadenovirus adami	Adenoviridae	X73487.1	PX905700.1
+108098	Human mastadenovirus B	no rank	3241406	Mastadenovirus blackbeardi	Adenoviridae	DQ086466.1	PV980175.1
+129951	Human mastadenovirus C	no rank	3241411	Mastadenovirus caesari	Adenoviridae	J01917.1	PX461437.1
+130310	Human mastadenovirus D	no rank	3241420	Mastadenovirus dominans	Adenoviridae	AJ854486.1	PV359444.1
+3052040	Bocaparvovirus primate1	species	3052040	Bocaparvovirus primate1	Parvoviridae	JQ923422.1	LC922662.1
+72149	Kobuvirus aichi	species	72149	Kobuvirus aichi	Picornaviridae	AB040749.1	PZ353127.1
+138948	Enterovirus A	no rank	3428500	Enterovirus alphacoxsackie	Picornaviridae	AY421760.1	PV437489.1
+138949	Enterovirus B	no rank	3428502	Enterovirus betacoxsackie	Picornaviridae	M88483.1	PZ117055.1
+147711	Rhinovirus A	no rank	3428501	Enterovirus alpharhino	Picornaviridae	FJ445111.1	PX282722.1
+147712	Rhinovirus B	no rank	3428503	Enterovirus betarhino	Picornaviridae	DQ473485.1	LC889320.1
+463676	Rhinovirus C	no rank	3428504	Enterovirus cerhino	Picornaviridae	EF077279.1	PX282783.1
+28876	Rotavirus B	no rank	3432195	Rotavirus betagastroenteritidis	Sedoreoviridae	AY238384.1,AY238385.1,AY238388.1,AY238389.1,AY238390.1,AY238391.1,AY238392.1,AY238393.1,AY238394.1,EU490415.1,EU490418.1	PV833406.1,PV833421.1,PV833436.1,PV833451.1,PV833466.1,PV833481.1,PV833496.1,PV833511.1,PV833526.1,PV833541.1,PV833556.1
+36427	Rotavirus C	no rank	3432203	Rotavirus tritogastroenteritidis	Sedoreoviridae	AJ132203.1,AJ132204.1,AJ132205.1,AJ303139.1,AJ304859.1,M81488.2,X59843.2,X77257.1,X79442.1,X83967.1,X96697.1	PQ329026.1,PQ329027.1,PQ329028.1,PQ329029.1,PQ329030.1,PQ329031.1,PQ329032.1,PQ329033.1,PQ329034.1,PQ329035.1,PQ329036.1
+11137	Human coronavirus 229E	no rank	3433756	Alphacoronavirus chicagoense	Coronaviridae	AF304460.1	OZ250410.1
+277944	Human coronavirus NL63	no rank	3433809	Alphacoronavirus amsterdamense	Coronaviridae	AY567487.2	PP910352.1
+694003	Betacoronavirus 1	no rank	3433757	Betacoronavirus gravedinis	Coronaviridae	AY585228.1	PV798433.1
+290028	Human coronavirus HKU1	no rank	3433758	Betacoronavirus hongkongense	Coronaviridae	AY597011.2	PX441742.1
+10298	Human alphaherpesvirus 1	no rank	3050292	Simplexvirus humanalpha1	Orthoherpesviridae	JN555585.1	OZ348992.1
+10310	Human alphaherpesvirus 2	no rank	3050293	Simplexvirus humanalpha2	Orthoherpesviridae	JN561323.2	PZ135825.1
+10376	human gammaherpesvirus 4	no rank	3050299	Lymphocryptovirus humangamma4	Orthoherpesviridae	AJ507799.2	OR134767.1
+10359	Human betaherpesvirus 5	no rank	3050295	Cytomegalovirus humanbeta5	Orthoherpesviridae	AY446894.2	PQ851839.1
+32603	Human betaherpesvirus 6A	no rank	3050296	Roseolovirus humanbeta6a	Orthoherpesviridae	X83413.2	PX645526.2
+32604	Human betaherpesvirus 6B	no rank	3050297	Roseolovirus humanbeta6b	Orthoherpesviridae	AF157706.1	
+10372	Human betaherpesvirus 7	no rank	3050298	Roseolovirus humanbeta7	Orthoherpesviridae	AF037218.1	
+37296	Human gammaherpesvirus 8	no rank	3050300	Rhadinovirus humangamma8	Orthoherpesviridae	AF148805.2	
+1891762	Betapolyomavirus hominis	species	1891762	Betapolyomavirus hominis	Polyomaviridae	V01108.1	PZ129846.1
+3052189	Erythroparvovirus primate1	species	3052189	Erythroparvovirus primate1	Parvoviridae	AY386330.1	LC945221.1
+10279	Molluscum contagiosum virus	no rank	3430922	Molluscipoxvirus molluscum	Poxviridae	U60315.1	
+3052608	Pegivirus hominis	species	3052608	Pegivirus hominis	Flaviviridae	U44402.1	PV555123.1
+3052606	Pegivirus columbiaense	species	3052606	Pegivirus columbiaense	Flaviviridae	KT439329.1	

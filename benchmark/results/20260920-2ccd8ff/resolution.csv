@@ -1,0 +1,9 @@
+panel,category,n_reads,n_allocated
+in_index,correct_species,856038,929999
+in_index,correct_genus,47844,929999
+in_index,correct_family,2530,929999
+in_index,incorrect,23587,929999
+out_of_index,correct_species,655980,760001
+out_of_index,correct_genus,38763,760001
+out_of_index,correct_family,495,760001
+out_of_index,incorrect,64763,760001

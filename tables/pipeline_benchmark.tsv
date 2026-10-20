@@ -1,0 +1,4 @@
+Panel	Taxa	Correct at species (%)	Correct at genus (%)	Incorrect (%)	False positives
+In-index (positive)	92	92.05	97.19	2.81	—
+Out-of-index (positive)	76	86.31	91.41	8.59	—
+Negative	189	—	—	—	22 (2.3 × 10⁻⁵%)

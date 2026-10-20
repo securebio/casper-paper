@@ -1,0 +1,513 @@
+genome_id	panel	taxid	species_taxid	name	expect_vv	read_fraction	length	genome
+MN908947.3	in_index	2697049	3418604	Betacoronavirus pandemicum	true		29903	GCA_009858895.3
+J02146.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		1413	GCA_000865725.1
+J02147.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		1565	GCA_000865725.1
+J02150.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		890	GCA_000865725.1
+J02151.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		2341	GCA_000865725.1
+V00603.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		2341	GCA_000865725.1
+V01088.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		1778	GCA_000865725.1
+V01099.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		1027	GCA_000865725.1
+V01106.1	in_index	211044	2955291	Alphainfluenzavirus influenzae	true		2233	GCA_000865725.1
+AF101982.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		2313	GCA_000820495.2
+AF102017.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		2204	GCA_000820495.2
+J02094.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		1191	GCA_000820495.2
+J02095.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		1557	GCA_000820495.2
+J02096.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		1096	GCA_000820495.2
+K00423.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		1882	GCA_000820495.2
+K01395.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		1841	GCA_000820495.2
+M14880.1	in_index	518987	2955465	Betainfluenzavirus influenzae	true		2368	GCA_000820495.2
+AB126191.2	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		2365	GCA_000856665.2
+AB126192.2	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		2363	GCA_000856665.2
+AB126193.2	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		2183	GCA_000856665.2
+AB126194.2	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		2073	GCA_000856665.2
+AB126195.1	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		1807	GCA_000856665.2
+AB126196.2	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		1180	GCA_000856665.2
+AB283001.1	in_index	11553	2955935	Gammainfluenzavirus influenzae	true		935	GCA_000856665.2
+M74568.1	in_index	11250	3049954	Orthopneumovirus hominis	true		15222	GCA_002815475.1
+AB016162.1	in_index	11234	3052345	Morbillivirus hominis	true		15894	GCA_000854845.1
+AF380138.1	in_index	619591	3431483	Orthopoxvirus monkeypox	true		196858	GCA_000857045.1
+AF371337.2	in_index	162145	3048148	Metapneumovirus hominis	true		13350	GCA_002815375.1
+AF457102.1	in_index	188538	3049952	Respirovirus laryngotracheitidis	true		15600	GCA_000848705.1
+X57559.1	in_index	2560525	3052557	Orthorubulavirus laryngotracheitidis	true		15646	GCA_000863525.1
+EU326526.1	in_index	11216	3049953	Respirovirus pneumoniae	true		15462	GCA_006298365.1
+AB543336.1	in_index	11224	3052556	Orthorubulavirus hominis	true		17052	GCA_000910675.1
+AY426531.1	in_index	42789	3428506	Enterovirus deconjuncti	true		7367	GCA_002816725.1
+V01149.1	in_index	12081	3428505	Enterovirus coxsackiepol	true		7440	GCA_000861165.1
+M14707.1	in_index	12092	3407641	Hepatovirus ahepa	true		7478	GCA_000860505.1
+V01460.1	in_index	10407	3431302	Orthohepadnavirus hominoidei	true		3182	GCA_000861825.2
+AF009606.1	in_index	2847144	3052230	Hepacivirus hominis	true		9646	GCA_000861845.1
+D01075.1	in_index	12475	2844074	Deltavirus italiense	true		1682	GCA_000856565.1
+AB040874.1	in_index	2560602	3052560	Orthorubulavirus parotitidis	true		15384	GCA_000856685.1
+JN635296.1	in_index	11041	2846071	Rubivirus rubellae	true		9761	GCA_024749945.1
+X04370.1	in_index	10338	3050294	Varicellovirus humanalpha3	true		124884	GCA_000858285.1
+DQ838599.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		1614	GCA_000880735.1
+DQ838610.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		1105	GCA_000880735.1
+DQ838615.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		1059	GCA_000880735.1
+DQ838620.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		1062	GCA_000880735.1
+DQ838625.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		751	GCA_000880735.1
+DQ838630.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		667	GCA_000880735.1
+DQ838635.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		2693	GCA_000880735.1
+DQ838640.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		3302	GCA_000880735.1
+DQ838645.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		2591	GCA_000880735.1
+DQ838650.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		1356	GCA_000880735.1
+DQ841262.2	in_index	28875	3432193	Rotavirus alphagastroenteritidis	true		2362	GCA_000880735.1
+J04353.1	in_index	10585	337041	Alphapapillomavirus 9	true		7912	GCA_003179095.1
+X03700.1	in_index	11089	3046277	Orthoflavivirus flavi	true		10862	GCA_000857725.1
+M18370.1	in_index	11072	3048158	Orthoflavivirus japonicum	true		10976	GCA_000862145.1
+M13215.1	in_index	11292	11292	Lyssavirus rabies	true		11932	GCA_000859625.1
+X07755.1	in_index	11084	3052465	Orthoflavivirus encephalitidis	true		3700	GCA_004789175.1
+U87411.1	in_index	31634	3052464	Orthoflavivirus denguei	true		10723	GCA_000871845.1
+AY632535.2	in_index	64320	3048459	Orthoflavivirus zikaense	true		10794	GCA_000882815.1
+AF369024.2	in_index	37124	3426298	Alphavirus chikungunya	true		11826	GCA_000854045.1
+X63135.1	in_index	11021	3426299	Alphavirus eastern	true		11675	GCA_000862705.1
+GQ287646.1	in_index	11039	3426323	Alphavirus western	true		11562	GCA_002889215.1
+DQ525916.1	in_index	11080	3052468	Orthoflavivirus louisense	true		10940	GCA_000866785.1
+L06436.1	in_index	11083	3048287	Orthoflavivirus powassanense	true		10839	GCA_000860485.1
+EF485030.1	in_index	11577	3052409	Orthobunyavirus lacrosseense	true		984	GCA_004789695.1
+EF485031.1	in_index	11577	3052409	Orthobunyavirus lacrosseense	true		4526	GCA_004789695.1
+EF485032.1	in_index	11577	3052409	Orthobunyavirus lacrosseense	true		6980	GCA_004789695.1
+HM007350.1	in_index	35511	3052402	Orthobunyavirus jamestownense	true		991	GCA_004789355.1
+HM007351.1	in_index	35511	3052402	Orthobunyavirus jamestownense	true		4510	GCA_004789355.1
+HM007352.1	in_index	35511	3052402	Orthobunyavirus jamestownense	true		6960	GCA_004789355.1
+AF441119.1	in_index	118655	3052429	Orthobunyavirus oropoucheense	true		4385	GCA_000853785.1
+AF484424.1	in_index	118655	3052429	Orthobunyavirus oropoucheense	true		6846	GCA_000853785.1
+AY237111.1	in_index	118655	3052429	Orthobunyavirus oropoucheense	true		754	GCA_000853785.1
+AF086833.2	in_index	128952	3052462	Orthoebolavirus zairense	true		18959	GCA_000848505.1
+AY729654.1	in_index	186540	3052460	Orthoebolavirus sudanense	true		18875	GCA_000855585.1
+DQ217792.2	in_index	33727	3052505	Orthomarburgvirus marburgense	true		19112	GCA_000857325.3
+J04324.1	in_index	3052310	3052310	Mammarenavirus lassaense	true		3402	GCA_000851705.1
+U73034.2	in_index	3052310	3052310	Mammarenavirus lassaense	true		7279	GCA_000851705.1
+AF467768.2	in_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		5366	GCA_000854165.1
+AY389361.2	in_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		12108	GCA_000854165.1
+U88410.1	in_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		1672	GCA_000854165.1
+AF212302.2	in_index	3052225	3052225	Henipavirus nipahense	true		18246	GCA_000863625.1
+AF017149.3	in_index	3052223	3052223	Henipavirus hendraense	true		18234	GCA_000852685.1
+DQ375403.1	in_index	11588	3052676	Phlebovirus riftense	true		6404	GCA_000847345.1
+DQ380151.1	in_index	11588	3052676	Phlebovirus riftense	true		1690	GCA_000847345.1
+DQ380206.1	in_index	11588	3052676	Phlebovirus riftense	true		3885	GCA_000847345.1
+JX869059.2	in_index	1235996	3433633	Betacoronavirus cameli	true		30119	GCA_000901155.1
+AY274119.3	in_index	227984	3418604	Betacoronavirus pandemicum	true		29751	GCA_000864885.1
+AY129248.1	in_index	3052317	3052317	Mammarenavirus machupoense	true		3439	GCA_000853725.1
+AY358021.2	in_index	3052317	3052317	Mammarenavirus machupoense	true		7196	GCA_000853725.1
+AY358022.2	in_index	2169991	2169991	Mammarenavirus juninense	true		7114	GCA_000856545.1
+AY358023.2	in_index	2169991	2169991	Mammarenavirus juninense	true		3411	GCA_000856545.1
+AY129247.1	in_index	3052307	3052307	Mammarenavirus guanaritoense	true		3343	GCA_000853765.1
+AY358024.2	in_index	3052307	3052307	Mammarenavirus guanaritoense	true		7081	GCA_000853765.1
+EU260463.1	in_index	3052302	3052302	Mammarenavirus chapareense	true		3357	GCA_000879235.1
+EU260464.1	in_index	3052302	3052302	Mammarenavirus chapareense	true		7107	GCA_000879235.1
+FJ952384.1	in_index	3052314	3052314	Mammarenavirus lujoense	true		3189	GCA_000885555.1
+FJ952385.1	in_index	3052314	3052314	Mammarenavirus lujoense	true		7163	GCA_000885555.1
+X69198.1	in_index	10255	3431487	Orthopoxvirus variola	true		185578	GCA_000859885.1
+AF291702.1	in_index	1980456	1980456	Orthohantavirus andesense	true		1871	GCA_000850405.1
+AF291703.2	in_index	1980456	1980456	Orthohantavirus andesense	true		3671	GCA_000850405.1
+AF291704.5	in_index	1980456	1980456	Orthohantavirus andesense	true		6562	GCA_000850405.1
+L37902.1	in_index	3052499	3052499	Orthohantavirus sinnombreense	true		6562	GCA_002830985.1
+L37903.1	in_index	3052499	3052499	Orthohantavirus sinnombreense	true		3696	GCA_002830985.1
+L37904.1	in_index	3052499	3052499	Orthohantavirus sinnombreense	true		2060	GCA_002830985.1
+M14626.1	in_index	3052480	3052480	Orthohantavirus hantanense	true		1696	GCA_000856085.1
+M14627.1	in_index	3052480	3052480	Orthohantavirus hantanense	true		3616	GCA_000856085.1
+X55901.1	in_index	3052480	3052480	Orthohantavirus hantanense	true		6533	GCA_000856085.1
+AF033819.3	in_index	11676	3418650	Lentivirus humimdef1	true		9181	GCA_000864765.1
+M30502.1	in_index	11709	3418651	Lentivirus humimdef2	true		10359	GCA_000856385.1
+M87661.2	in_index	11983	3431196	Norovirus norwalkense	true		7654	GCA_000864005.1
+HM002617.1	in_index	758863	3432266	Sapovirus sapporoense	true		7433	GCA_008792745.1
+Z25771.1	in_index	12456	3430629	Mamastrovirus hominis	true		6813	GCA_000861865.1
+FJ222451.1	in_index	1239570	3430631	Mamastrovirus melbournense	true		6171	GCA_000880715.1
+L19443.1	in_index	130309	3241426	Mastadenovirus faecale	true		34214	GCA_000846685.1
+X73487.1	in_index	28282	3241402	Mastadenovirus adami	true		34125	GCA_000846805.1
+DQ086466.1	in_index	45659	3241406	Mastadenovirus blackbeardi	true		35343	GCA_000880515.1
+J01917.1	in_index	10515	3241411	Mastadenovirus caesari	true		35937	GCA_000845085.1
+AJ854486.1	in_index	10527	3241420	Mastadenovirus dominans	true		35083	GCA_000845985.1
+JQ923422.1	in_index	3052040	3052040	Bocaparvovirus primate1	true		5543	GCA_003033285.1
+AB040749.1	in_index	1313215	72149	Kobuvirus aichi	true		8280	GCA_002817065.1
+AY421760.1	in_index	33757	3428500	Enterovirus alphacoxsackie	true		7398	GCA_002816655.1
+M88483.1	in_index	12072	3428502	Enterovirus betacoxsackie	true		7399	GCA_002816685.1
+FJ445111.1	in_index	573824	3428501	Enterovirus alpharhino	true		7137	GCA_002816835.1
+DQ473485.1	in_index	44130	3428503	Enterovirus betarhino	true		7208	GCA_002816855.1
+EF077279.1	in_index	1219416	3428504	Enterovirus cerhino	true		6944	GCA_002816885.1
+AY238384.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		751	GCA_000907835.1
+AY238385.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		814	GCA_000907835.1
+AY238388.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		2306	GCA_000907835.1
+AY238389.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		1269	GCA_000907835.1
+AY238390.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		2847	GCA_000907835.1
+AY238391.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		1276	GCA_000907835.1
+AY238392.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		1179	GCA_000907835.1
+AY238393.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		1007	GCA_000907835.1
+AY238394.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		631	GCA_000907835.1
+EU490415.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		3511	GCA_000907835.1
+EU490418.1	in_index	10942	3432195	Rotavirus betagastroenteritidis	true		2341	GCA_000907835.1
+AJ132203.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		1350	GCA_000864225.1
+AJ132204.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		1270	GCA_000864225.1
+AJ132205.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		1037	GCA_000864225.1
+AJ303139.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		2736	GCA_000864225.1
+AJ304859.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		3309	GCA_000864225.1
+M81488.2	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		730	GCA_000864225.1
+X59843.2	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		1353	GCA_000864225.1
+X77257.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		1063	GCA_000864225.1
+X79442.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		2283	GCA_000864225.1
+X83967.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		613	GCA_000864225.1
+X96697.1	in_index	10943	3432203	Rotavirus tritogastroenteritidis	true		2166	GCA_000864225.1
+AF304460.1	in_index	11137	3433756	Alphacoronavirus chicagoense	true		27317	GCA_000853505.1
+AY567487.2	in_index	277944	3433809	Alphacoronavirus amsterdamense	true		27553	GCA_000853865.1
+AY585228.1	in_index	31631	3433757	Betacoronavirus gravedinis	true		30741	GCA_003972325.1
+AY597011.2	in_index	290028	3433758	Betacoronavirus hongkongense	true		29926	GCA_000858765.1
+JN555585.1	in_index	10298	3050292	Simplexvirus humanalpha1	true		152222	GCA_000859985.2
+JN561323.2	in_index	10310	3050293	Simplexvirus humanalpha2	true		154675	GCA_000858385.2
+AJ507799.2	in_index	10376	3050299	Lymphocryptovirus humangamma4	true		171823	GCA_002402265.1
+AY446894.2	in_index	10359	3050295	Cytomegalovirus humanbeta5	true		235646	GCA_000845245.1
+X83413.2	in_index	32603	3050296	Roseolovirus humanbeta6a	true		159378	GCA_000845685.2
+AF157706.1	in_index	32604	3050297	Roseolovirus humanbeta6b	true		162114	GCA_000846365.1
+AF037218.1	in_index	10372	3050298	Roseolovirus humanbeta7	true		153080	GCA_000848125.1
+AF148805.2	in_index	37296	3050300	Rhadinovirus humangamma8	true		137969	GCA_000838265.1
+V01108.1	in_index	1891762	1891762	Betapolyomavirus hominis	true		5153	GCA_000837865.1
+AY386330.1	in_index	10798	3052189	Erythroparvovirus primate1	true		5596	GCA_000839645.1
+U60315.1	in_index	10280	3430922	Molluscipoxvirus molluscum	true		190289	GCA_000843325.1
+U44402.1	in_index	54290	3052608	Pegivirus hominis	true		9392	GCA_000862005.1
+KT439329.1	in_index	1704090	3052606	Pegivirus columbiaense	true		9538	GCA_002821385.1
+QB015708.1	out_of_index	2697049	3418604	Betacoronavirus pandemicum	true		29723	QB015708.1
+PZ994623.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		2367	2955465
+PZ994624.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		2340	2955465
+PZ994625.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		2275	2955465
+PZ994626.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		1847	2955465
+PZ994627.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		1815	2955465
+PZ994628.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		1529	2955465
+PZ994629.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		1154	2955465
+PZ994630.1	out_of_index	11520	2955465	Betainfluenzavirus influenzae	true		1066	2955465
+PZ716978.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		2353	2955935
+PZ716979.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		2348	2955935
+PZ716980.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		2161	2955935
+PZ716981.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		2055	2955935
+PZ716982.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		1790	2955935
+PZ716983.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		1165	2955935
+PZ716984.1	out_of_index	11552	2955935	Gammainfluenzavirus influenzae	true		900	2955935
+OZ546872.1	out_of_index	208895	3049954	Orthopneumovirus hominis	true		15221	OZ546872.1
+PX475770.1	out_of_index	170528	3052345	Morbillivirus hominis	true		15771	PX475770.1
+OZ501920.1	out_of_index	10244	3431483	Orthopoxvirus monkeypox	true		197232	OZ501920.1
+PZ317218.1	out_of_index	162145	3048148	Metapneumovirus hominis	true		13210	PZ317218.1
+PX380245.1	out_of_index	12730	3049952	Respirovirus laryngotracheitidis	true		15600	PX380245.1
+PV224536.1	out_of_index	2560525	3052557	Orthorubulavirus laryngotracheitidis	true		15504	PV224536.1
+PX360996.1	out_of_index	11216	3049953	Respirovirus pneumoniae	true		15404	PX360996.1
+PV224554.1	out_of_index	2560526	3052556	Orthorubulavirus hominis	true		17147	PV224554.1
+PQ612530.1	out_of_index	42789	3428506	Enterovirus deconjuncti	true		7331	PQ612530.1
+PX000255.1	out_of_index	3428505	3428505	Enterovirus coxsackiepol	true		7360	PX000255.1
+PZ362770.1	out_of_index	12092	3407641	Hepatovirus ahepa	true		7405	PZ362770.1
+PZ495775.1	out_of_index	10407	3431302	Orthohepadnavirus hominoidei	true		3221	PZ495775.1
+PQ638484.1	out_of_index	3052230	3052230	Hepacivirus hominis	true		9033	PQ638484.1
+PZ211806.1	out_of_index	12475	2844074	Deltavirus italiense	true		1678	PZ211806.1
+PZ015904.1	out_of_index	1428458	3052560	Orthorubulavirus parotitidis	true		15331	PZ015904.1
+LC778127.1	out_of_index	11041	2846071	Rubivirus rubellae	true		9757	LC778127.1
+PV845296.1	out_of_index	3050294	3050294	Varicellovirus humanalpha3	true		124882	PV845296.1
+LC929456.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		981	3432193
+LC929457.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		2328	3432193
+LC929458.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		1194	3432193
+LC929459.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		3267	3432193
+LC929460.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		2583	3432193
+LC929461.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		2508	3432193
+LC929462.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		1461	3432193
+LC929463.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		954	3432193
+LC929464.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		942	3432193
+LC929465.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		528	3432193
+LC929466.1	out_of_index	10941	3432193	Rotavirus alphagastroenteritidis	true		603	3432193
+PX463233.1	out_of_index	10598	337041	Alphapapillomavirus 9	true		7824	PX463233.1
+PV710595.1	out_of_index	11089	3046277	Orthoflavivirus flavi	true		10300	PV710595.1
+PV666486.1	out_of_index	11072	3048158	Orthoflavivirus japonicum	true		10918	PV666486.1
+PX896059.1	out_of_index	11292	11292	Lyssavirus rabies	true		11838	PX896059.1
+OZ318994.1	out_of_index	12637	3052464	Orthoflavivirus denguei	true		10342	OZ318994.1
+PQ433000.1	out_of_index	64320	3048459	Orthoflavivirus zikaense	true		10710	PQ433000.1
+PV685660.1	out_of_index	37124	3426298	Alphavirus chikungunya	true		11237	PV685660.1
+PQ220306.1	out_of_index	11021	3426299	Alphavirus eastern	true		11611	PQ220306.1
+PZ205952.1	out_of_index	3052468	3052468	Orthoflavivirus louisense	true		10629	PZ205952.1
+PX666892.1	out_of_index	58535	3048287	Orthoflavivirus powassanense	true		10834	PX666892.1
+PV208367.1	out_of_index	11577	3052409	Orthobunyavirus lacrosseense	true		6976	3052409
+PV208368.1	out_of_index	11577	3052409	Orthobunyavirus lacrosseense	true		4527	3052409
+PV208369.1	out_of_index	11577	3052409	Orthobunyavirus lacrosseense	true		984	3052409
+PQ329253.1	out_of_index	118655	3052429	Orthobunyavirus oropoucheense	true		940	3052429
+PQ329254.1	out_of_index	118655	3052429	Orthobunyavirus oropoucheense	true		4368	3052429
+PQ329255.1	out_of_index	118655	3052429	Orthobunyavirus oropoucheense	true		7741	3052429
+OZ538111.1	out_of_index	186538	3052462	Orthoebolavirus zairense	true		18789	OZ538111.1
+PV700541.1	out_of_index	3052505	3052505	Orthomarburgvirus marburgense	true		19048	PV700541.1
+PZ239818.1	out_of_index	3052310	3052310	Mammarenavirus lassaense	true		3406	3052310
+PZ239819.1	out_of_index	3052310	3052310	Mammarenavirus lassaense	true		7259	3052310
+PX874928.1	out_of_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		1638	3052518
+PX875024.1	out_of_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		5325	3052518
+PX875130.1	out_of_index	3052518	3052518	Orthonairovirus haemorrhagiae	true		12049	3052518
+PX130165.1	out_of_index	3052225	3052225	Henipavirus nipahense	true		18128	PX130165.1
+PV231432.1	out_of_index	11588	3052676	Phlebovirus riftense	true		1690	3052676
+PV231436.1	out_of_index	11588	3052676	Phlebovirus riftense	true		3096	3052676
+PV231440.1	out_of_index	11588	3052676	Phlebovirus riftense	true		1071	3052676
+OR987489.1	out_of_index	1335626	3433633	Betacoronavirus cameli	true		30118	OR987489.1
+PZ066131.1	out_of_index	3052307	3052307	Mammarenavirus guanaritoense	true		7080	3052307
+PZ066132.1	out_of_index	3052307	3052307	Mammarenavirus guanaritoense	true		3342	3052307
+PX353117.1	out_of_index	3052314	3052314	Mammarenavirus lujoense	true		3182	3052314
+PX353118.1	out_of_index	3052314	3052314	Mammarenavirus lujoense	true		7163	3052314
+PV808473.1	out_of_index	1980456	1980456	Orthohantavirus andesense	true		1869	1980456
+PV808474.1	out_of_index	1980456	1980456	Orthohantavirus andesense	true		3664	1980456
+PV808475.1	out_of_index	1980456	1980456	Orthohantavirus andesense	true		6562	1980456
+PV600323.1	out_of_index	3052480	3052480	Orthohantavirus hantanense	true		6492	3052480
+PV600334.1	out_of_index	3052480	3052480	Orthohantavirus hantanense	true		3419	3052480
+PV600345.1	out_of_index	3052480	3052480	Orthohantavirus hantanense	true		1488	3052480
+PZ802244.1	out_of_index	11676	3418650	Lentivirus humimdef1	true		9121	PZ802244.1
+LC927253.1	out_of_index	11709	3418651	Lentivirus humimdef2	true		10235	LC927253.1
+PZ051348.1	out_of_index	122929	3431196	Norovirus norwalkense	true		7560	PZ051348.1
+PP313551.1	out_of_index	1398550	3432266	Sapovirus sapporoense	true		7429	PP313551.1
+PV189393.1	out_of_index	12456	3430629	Mamastrovirus hominis	true		6814	PV189393.1
+LC940228.1	out_of_index	568715	3430631	Mamastrovirus melbournense	true		6163	LC940228.1
+PZ360999.1	out_of_index	10524	3241426	Mastadenovirus faecale	true		33289	PZ360999.1
+PX905700.1	out_of_index	129875	3241402	Mastadenovirus adami	true		33780	PX905700.1
+PV980175.1	out_of_index	714978	3241406	Mastadenovirus blackbeardi	true		34765	PV980175.1
+PX461437.1	out_of_index	129951	3241411	Mastadenovirus caesari	true		35869	PX461437.1
+PV359444.1	out_of_index	880565	3241420	Mastadenovirus dominans	true		35040	PV359444.1
+LC922662.1	out_of_index	3052040	3052040	Bocaparvovirus primate1	true		5542	LC922662.1
+PZ353127.1	out_of_index	1379496	72149	Kobuvirus aichi	true		8213	PZ353127.1
+PV437489.1	out_of_index	31704	3428500	Enterovirus alphacoxsackie	true		7275	PV437489.1
+PZ117055.1	out_of_index	12074	3428502	Enterovirus betacoxsackie	true		7344	PZ117055.1
+PX282722.1	out_of_index	147711	3428501	Enterovirus alpharhino	true		7090	PX282722.1
+LC889320.1	out_of_index	185926	3428503	Enterovirus betarhino	true		7205	LC889320.1
+PX282783.1	out_of_index	463676	3428504	Enterovirus cerhino	true		7055	PX282783.1
+PV833406.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		3477	3432195
+PV833421.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		2814	3432195
+PV833436.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		2292	3432195
+PV833451.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		2277	3432195
+PV833466.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		1174	3432195
+PV833481.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		1176	3432195
+PV833496.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		891	3432195
+PV833511.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		903	3432195
+PV833526.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		744	3432195
+PV833541.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		627	3432195
+PV833556.1	out_of_index	3065879	3432195	Rotavirus betagastroenteritidis	true		705	3432195
+PQ329026.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		3309	3432203
+PQ329027.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		2736	3432203
+PQ329028.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		2191	3432203
+PQ329029.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		2283	3432203
+PQ329030.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		1347	3432203
+PQ329031.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		1053	3432203
+PQ329032.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		1267	3432203
+PQ329033.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		1037	3432203
+PQ329034.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		1348	3432203
+PQ329035.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		613	3432203
+PQ329036.1	out_of_index	36427	3432203	Rotavirus tritogastroenteritidis	true		700	3432203
+OZ250410.1	out_of_index	11137	3433756	Alphacoronavirus chicagoense	true		27287	OZ250410.1
+PP910352.1	out_of_index	277944	3433809	Alphacoronavirus amsterdamense	true		27553	PP910352.1
+PV798433.1	out_of_index	31631	3433757	Betacoronavirus gravedinis	true		30736	PV798433.1
+PX441742.1	out_of_index	290028	3433758	Betacoronavirus hongkongense	true		29782	PX441742.1
+OZ348992.1	out_of_index	10298	3050292	Simplexvirus humanalpha1	true		152154	OZ348992.1
+PZ135825.1	out_of_index	10310	3050293	Simplexvirus humanalpha2	true		155875	PZ135825.1
+OR134767.1	out_of_index	10376	3050299	Lymphocryptovirus humangamma4	true		171946	OR134767.1
+PQ851839.1	out_of_index	10359	3050295	Cytomegalovirus humanbeta5	true		233799	PQ851839.1
+PX645526.2	out_of_index	3050296	3050296	Roseolovirus humanbeta6a	true		160180	PX645526.2
+PZ129846.1	out_of_index	1891762	1891762	Betapolyomavirus hominis	true		5132	PZ129846.1
+LC945221.1	out_of_index	10798	3052189	Erythroparvovirus primate1	true		5018	LC945221.1
+PV555123.1	out_of_index	54290	3052608	Pegivirus hominis	true		9081	PV555123.1
+NZ_CP032147.1	negative	2306583	2306583	Halomonas sp. JS92-SW72	false	0.01193112216585081	4062869	GCF_003547075.1
+NC_028478.1	negative	3432872	3432872	Tobamovirus fructirugosum	false	0.01075649581654841	6393	GCF_001461485.1
+NZ_CP087160.1	negative	2892442	2892442	Pseudomonas sp. CIP-10	false	0.007612361195587512	6008804	GCF_020911845.1
+NC_012691.1	negative	43948	43948	Tolumonas auensis	false	0.007233402480143214	3471292	GCF_000023065.1
+NC_000001.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	248956422	GCF_000001405.40
+NC_000002.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	242193529	GCF_000001405.40
+NC_000003.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	198295559	GCF_000001405.40
+NC_000004.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	190214555	GCF_000001405.40
+NC_000005.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	181538259	GCF_000001405.40
+NC_000006.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	170805979	GCF_000001405.40
+NC_000007.14	negative	9606	9606	Homo sapiens	false	0.005861033303847093	159345973	GCF_000001405.40
+NC_000008.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	145138636	GCF_000001405.40
+NC_000009.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	138394717	GCF_000001405.40
+NC_000010.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	133797422	GCF_000001405.40
+NC_000011.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	135086622	GCF_000001405.40
+NC_000012.12	negative	9606	9606	Homo sapiens	false	0.005861033303847093	133275309	GCF_000001405.40
+NC_000013.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	114364328	GCF_000001405.40
+NC_000014.9	negative	9606	9606	Homo sapiens	false	0.005861033303847093	107043718	GCF_000001405.40
+NC_000015.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	101991189	GCF_000001405.40
+NC_000016.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	90338345	GCF_000001405.40
+NC_000017.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	83257441	GCF_000001405.40
+NC_000018.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	80373285	GCF_000001405.40
+NC_000019.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	58617616	GCF_000001405.40
+NC_000020.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	64444167	GCF_000001405.40
+NC_000021.9	negative	9606	9606	Homo sapiens	false	0.005861033303847093	46709983	GCF_000001405.40
+NC_000022.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	50818468	GCF_000001405.40
+NC_000023.11	negative	9606	9606	Homo sapiens	false	0.005861033303847093	156040895	GCF_000001405.40
+NC_000024.10	negative	9606	9606	Homo sapiens	false	0.005861033303847093	57227415	GCF_000001405.40
+NC_012920.1	negative	9606	9606	Homo sapiens	false	0.005861033303847093	16569	GCF_000001405.40
+NZ_CP104290.1	negative	40324	40324	Stenotrophomonas maltophilia	false	0.00514406703133475	4531306	GCF_020641395.2
+NZ_CP032100.1	negative	1278212	1278212	Arcobacter suis	false	0.004624005855702219	2639269	GCF_003544815.1
+NZ_CP085932.1	negative	165179	165179	Segatella copri	false	0.004505375765089558	3325535	GCF_020735445.1
+NZ_CP117866.1	negative	477697	477697	Streptomyces sp. T12	false	0.0044132516264814535	11360781	GCF_028736035.1
+NZ_CP019509.1	negative	1938604	1938604	Aquaspirillum sp. LM1	false	0.004255065496909983	3962240	GCF_002002905.1
+NZ_CP032823.1	negative	28198	28198	Aliarcobacter cryaerophilus	false	0.004002059973247009	2006909	GCF_003660105.1
+NZ_CP053840.1	negative	1054033	1054033	Arcobacter venerupis	false	0.0036914999709053813	3209085	GCF_013201665.1
+NC_009614.1	negative	821	821	Phocaeicola vulgatus	false	0.003288773688295369	5163189	GCF_000012825.1
+NC_017448.1	negative	833	833	Fibrobacter succinogenes	false	0.00300117282462871	3843004	GCF_000146505.1
+NZ_CP075188.1	negative	138118	138118	Quatrionicoccus australiensis	false	0.002990662266553855	4171110	GCF_020510525.1
+NZ_CP043320.1	negative	2604941	2604941	Pseudomonas sp. C27(2019)	false	0.0028093411885684403	3217366	GCF_008807395.1
+NZ_CP025096.1	negative	2057025	2057025	Spirosoma pollinicola	false	0.002740202033325396	8794837	GCF_002831565.1
+NZ_CP042652.1	negative	1849015	1849015	Arcobacter acticola	false	0.0027381976706083696	3019071	GCF_013177675.1
+NC_001801.1	negative	3432895	3432895	Tobamovirus viridimaculae	false	0.002707281495086086	6424	GCF_000849225.1
+NC_013517.1	negative	826	826	Sebaldella termitidis	false	0.0022880536247754423	4418842	GCF_000024405.1
+NZ_CP091507.1	negative	252130	252130	Uruburuella suis	false	0.002273714101786163	2729985	GCF_022870845.1
+NC_014734.1	negative	185300	185300	Paludibacter propionicigenes	false	0.0021807247422154516	3685504	GCF_000183135.1
+NC_013515.1	negative	34105	34105	Streptobacillus moniliformis	false	0.0021499558978882844	1662578	GCF_000024565.1
+NZ_CP100595.1	negative	2961520	2961520	Arcobacter roscoffensis	false	0.0017654045232005351	3154193	GCF_024267655.1
+NZ_AP027059.1	negative	2996794	2996794	Haliovirga abyssi	false	0.0017256603283132138	2427922	GCF_030295325.1
+NZ_CP028103.1	negative	856	856	Fusobacterium varium	false	0.001598806852391005	3303644	GCF_003019655.1
+NZ_CP084606.1	negative	2880008	2880008	Brucepastera parasyntrophica	false	0.001589886812759967	3239032	GCF_022376835.1
+NZ_CP092643.1	negative	39491	39491	Agathobacter rectalis	false	0.0015464063316876627	3451485	GCF_022453685.1
+NZ_CP041403.1	negative	2593672	2593672	Arcobacter sp. FWKO B	false	0.0015380249151520677	2243270	GCF_014844135.1
+NC_000913.3	negative	562	562	Escherichia coli	false	0.0014592338381623565	4641652	GCF_000005845.2
+NZ_CP168939.1	negative	3322121	3322121	Dechloromonas sp. ARDL1	false	0.0014516784640145766	4506470	GCF_051122455.1
+NC_002516.2	negative	287	287	Pseudomonas aeruginosa	false	0.0014260306544906273	6264404	GCF_000006765.1
+NZ_CP010896.1	negative	321846	321846	Pseudomonas simiae	false	0.0013045629156752646	6143950	GCF_000934565.1
+NZ_CP092519.1	negative	188913	188913	Cetobacterium somerae	false	0.0012781549101076861	1904440	GCF_022430525.1
+NZ_CP041345.1	negative	2590900	2590900	Tenuifilum thalassicum	false	0.0011519809684574784	3195778	GCF_013265555.1
+NZ_CP045110.1	negative	470	470	Acinetobacter baumannii	false	0.0011205044405461708	3981941	GCF_009035845.1
+NC_009725.2	negative	492670	492670	Bacillus velezensis	false	0.0011170432274640256	3918596	GCF_000015785.2
+NZ_CP014234.1	negative	34062	34062	Faucicola osloensis	false	0.001116780171319002	2434688	GCF_001553955.1
+NZ_CP030944.1	negative	1315211	1315211	Arcobacter aquimarinus	false	0.001073778722400652	2520808	GCF_013177635.1
+NC_003630.1	negative	3432865	3432865	Tobamovirus capsici	false	0.0010576802789423	6357	GCF_000859645.1
+NZ_CP013656.1	negative	1763998	1763998	Rheinheimera sp. F8	false	0.0010524326545423843	4464611	GCF_001518915.1
+NZ_CP075189.1	negative	76259	76259	Ferribacterium limneticum	false	0.0010386758716991523	4150051	GCF_020510565.1
+NZ_CP034551.1	negative	1396	1396	Bacillus cereus	false	0.0010204533897932152	5416249	GCF_006094295.1
+NZ_CP150631.1	negative	3133695	3133695	Azonexus sp. IMCC34839	false	0.0010092326788963132	3626767	GCF_047047955.1
+NZ_CP055997.1	negative	2744227	2744227	Fusobacterium sp. SB021	false	0.0010027771033123026	1692105	GCF_050219445.1
+NZ_CP158016.1	negative	3153928	3153928	Pseudaeromonas aegiceratis	false	0.0009544896744985486	3681671	GCF_046254905.1
+NZ_CP075564.1	negative	651	651	Aeromonas media	false	0.000950497081418821	4521851	GCF_020423125.1
+NZ_CP027526.1	negative	55518	55518	Magnetospirillum gryphiswaldense	false	0.0009485750266320272	4155740	GCF_002995515.1
+NC_013194.1	negative	327160	327160	Candidatus Accumulibacter phosphatis	false	0.0009230763590776596	5058518	GCF_000024165.1
+NZ_OU015321.1	negative	2004710	2004710	Cloacibacterium caeni	false	0.0009100236382696381	2718917	GCF_907163105.1
+NC_015732.1	negative	215591	215591	Gracilinema caldarium	false	0.0009072556225759126	3239340	GCF_000219725.1
+NC_016845.1	negative	573	573	Klebsiella pneumoniae	false	0.000874848850437115	5333942	GCF_000240185.1
+NZ_CP035708.1	negative	639200	639200	Sphaerotilus sulfidivorans	false	0.0008607972405877896	3983768	GCF_008329925.1
+NZ_CP091511.1	negative	1689272	1689272	Vitreoscilla massiliensis	false	0.0008578995075960174	3727721	GCF_022870925.1
+NZ_CP025704.1	negative	960	960	Bacteriovorax stolpii	false	0.0008553828603212226	3810309	GCF_002872415.1
+NZ_CP063458.1	negative	2807512	2807512	Humisphaera borealis	false	0.0008530298412117303	7189892	GCF_015169395.1
+NZ_CP068114.1	negative	285729	285729	Fusobacterium canifelinum	false	0.0008519106179764261	2352222	GCF_016724785.1
+NZ_AP038804.1	negative	3374109	3374109	Arcobacter sp. 15-2	false	0.000824460264780381	2351109	GCF_047159865.1
+NZ_CP031222.1	negative	2283318	2283318	Aquirhabdus parva	false	0.0007994131385312699	3777352	GCF_003351745.1
+NZ_CP173697.1	negative	301302	301302	Roseburia faecis	false	0.0007951966678813095	3385415	GCF_045061065.1
+NZ_CP110645.1	negative	645	645	Aeromonas salmonicida	false	0.0007876985800529716	4866465	GCF_028355655.1
+NC_012559.1	negative	168471	168471	Laribacter hongkongensis	false	0.0007743080674992751	3169329	GCF_000021025.1
+NZ_CP053097.1	negative	754516	754516	Mycoplasma miroungirhinis	false	0.0007632384739622801	779550	GCF_013008815.1
+NZ_HF545616.1	negative	1160721	1160721	Ruminococcus bicirculans (ex Wegman et al. 2014)	false	0.0007392356707319615	2240877	GCF_000723465.1
+NZ_HG322949.1	negative	55508	55508	Janthinobacterium agaricidamnosum	false	0.0007373447283427956	5949001	GCF_000723165.1
+NZ_CP031124.1	negative	2268024	2268024	Ephemeroptericola cinctiostellae	false	0.0007028427255319946	2723407	GCF_003339525.1
+NZ_CP029210.1	negative	1296669	1296669	Aquabacterium olei	false	0.0006837239102658236	3890087	GCF_003100395.1
+NZ_CP129143.1	negative	820	820	Bacteroides uniformis	false	0.0006751619101312979	4709701	GCF_044361425.1
+NZ_CP186925.1	negative	40519	40519	Ruminococcus callidus	false	0.0006730439624705502	3228728	GCF_049562855.1
+NZ_CP151406.1	negative	418702	418702	Azonexus hydrophilus	false	0.0006611545819484376	3423569	GCF_038368255.1
+NC_074552.1	negative	2843939	2843939	Chimpavirus luticola	false	0.0006556424198607541	4513	GCF_018569295.1
+NZ_CP060633.1	negative	2763672	2763672	Simiaoa sunii	false	0.0006500891038079543	3572951	GCF_014337175.1
+NZ_CP056783.1	negative	2746225	2746225	Flavobacterium sp. K5-23	false	0.0006425933206016628	3490877	GCF_023278045.1
+NZ_CP081913.1	negative	46506	46506	Bacteroides stercoris	false	0.0006314144221333188	3883826	GCF_020091485.1
+NZ_AP023087.1	negative	2724896	2724896	Marinicellulosiphila megalodicopiae	false	0.0006307650125637828	4648065	GCF_045862395.1
+NZ_LR778301.1	negative	311182	311182	Denitratisoma oestradiolicum	false	0.0006266761192056831	4168563	GCF_902813185.1
+NZ_CP046176.1	negative	357276	357276	Phocaeicola dorei	false	0.0006117642268695656	5625488	GCF_013009555.1
+NC_001556.1	negative	3432879	3432879	Tobamovirus mititessellati	false	0.0006067541431563015	6355	GCF_000847545.1
+NC_002692.1	negative	3432892	3432892	Tobamovirus tomatotessellati	false	0.0006049568671917404	6383	GCF_000853705.1
+NC_021505.1	negative	303	303	Pseudomonas putida	false	0.0006021253097758752	6156701	GCF_000412675.1
+NZ_AP019822.1	negative	157692	157692	Pseudoleptotrichia goodfellowii	false	0.0006004187371504306	2290729	GCF_007990505.1
+NZ_CP046570.1	negative	29447	29447	Xanthomonas albilineans	false	0.0005933577044316282	3724581	GCF_009931595.1
+NZ_CP098400.1	negative	2949635	2949635	Xiashengella succiniciproducens	false	0.0005806656569738865	3101014	GCF_023674465.1
+NZ_CP037933.1	negative	2547394	2547394	Flavobacterium nackdongense	false	0.0005722941173899192	4217227	GCF_004355225.1
+NZ_CP117193.1	negative	80878	80878	Acidovorax temperans	false	0.0005714881581370807	4510507	GCF_028596105.1
+NZ_CP172594.1	negative	33039	33039	[Ruminococcus] torques	false	0.0005667561106121426	2979783	GCF_044591705.1
+NZ_CP047159.1	negative	2691580	2691580	Prevotella sp. Rep29	false	0.0005615744971722736	2730135	GCF_019551475.1
+NZ_CP016210.1	negative	418699	418699	Azoarcus olearius	false	0.0005572620554756618	4451751	GCF_001682385.1
+NZ_CP023819.1	negative	853	853	Faecalibacterium prausnitzii	false	0.000548484573179787	2868932	GCF_002586945.1
+NZ_CP010554.1	negative	1565605	1565605	Rugosibacter aromaticivorans	false	0.0005473462545046687	2934611	GCF_000934545.1
+NC_021039.1	negative	1161942	1161942	Ruminococcus champanellensis	false	0.0005258780416779358	2573208	GCF_000210095.1
+NC_014972.1	negative	894	894	Desulfobulbus propionicus	false	0.0005172236920456889	3851869	GCF_000186885.1
+NC_018227.2	negative	83986	83986	Methanoculleus bourgensis	false	0.0005114094598540514	2789774	GCF_000304355.2
+NZ_CP007207.1	negative	96345	96345	Flavobacterium psychrophilum	false	0.0005066991416226949	2715909	GCF_000754405.1
+NZ_CP059467.1	negative	76115	76115	Aromatoleum bremense	false	0.0005024355908366413	4376837	GCF_017894365.1
+NZ_CP172404.1	negative	3373598	3373598	Niveibacterium terrae	false	0.0004963704840736546	3980235	GCF_048213115.1
+NZ_CP013212.1	negative	336810	336810	Candidatus Karelsulcia muelleri	false	0.0004954282228883507	190657	GCF_001447915.1
+NC_014762.1	negative	148813	148813	Sulfuricurvum kujiense	false	0.0004951501867000247	2574824	GCF_000183725.1
+NZ_CP012410.1	negative	712357	712357	Leptotrichia sp. oral taxon 212	false	0.0004908102541547152	2444904	GCF_001274535.1
+NZ_CP041185.1	negative	2590869	2590869	Janthinobacterium tructae	false	0.000489674733949225	6314370	GCF_006517255.1
+NZ_CP042285.1	negative	823	823	Parabacteroides distasonis	false	0.0004732268110191049	5344828	GCF_018279895.1
+NC_073967.1	negative	2845020	2845020	Ishugivirus pelohabitans	false	0.0004714859982946834	3888	GCF_018577185.1
+NZ_OX336137.1	negative	1323948	1323948	Nitrospina watsonii	false	0.00047056826487258885	3011914	GCF_946900835.1
+NZ_CP022423.1	negative	63	63	Vitreoscilla filiformis	false	0.0004652556172077894	3464895	GCF_002222655.1
+NZ_CP023817.1	negative	2033033	2033033	Aeromonas sp. CU5	false	0.00046238010735718003	4615599	GCF_002586745.1
+NZ_CP064782.1	negative	2785627	2785627	Azospira inquinata	false	0.0004497071553392522	3277463	GCF_018905915.1
+NZ_CP102265.1	negative	40520	40520	Blautia obeum	false	0.00044417408703728957	3649956	GCF_025147765.1
+NZ_CP010350.1	negative	40214	40214	Acinetobacter johnsonii	false	0.00044154122096500616	3509795	GCF_001484935.1
+NC_008609.1	negative	29543	29543	Pelobacter propionicus	false	0.0004381377880498843	4008000	GCF_000015045.1
+NZ_CP048736.1	negative	2707174	2707174	Enterobacter sp. T2	false	0.00043676390407844016	4854376	GCF_010692925.1
+NZ_CP044060.1	negative	654	654	Aeromonas veronii	false	0.0004341366349454126	4559061	GCF_008693705.1
+NZ_OX352320.1	negative	3019969	3019969	Rheinheimera sp. MM224	false	0.0004311396385897797	4642311	GCF_947090785.1
+NZ_CP049916.1	negative	2715163	2715163	Acinetobacter lanii	false	0.0004180755592873861	3408300	GCF_011578285.1
+NC_011662.2	negative	164330	164330	Thauera aminoaromatica	false	0.00041778896307431587	4496212	GCF_000021765.1
+NZ_CP089096.1	negative	2897181	2897181	Flavobacterium channae	false	0.0004121016497110972	2808467	GCF_021172165.1
+NC_000919.1	negative	160	160	Treponema pallidum	false	0.0004094017849836044	1138011	GCF_000008605.1
+NZ_CP145906.1	negative	3120518	3120518	Acinetobacter sp. KS-LM10	false	0.0004082367985390909	3506746	GCF_036896575.1
+NC_074195.1	negative	2845672	2845672	Nehpavirus caenenecus	false	0.00040779036032550874	4171	GCF_018563535.1
+NZ_LS483441.1	negative	648	648	Aeromonas caviae	false	0.000405306636222807	4586140	GCF_900476005.1
+NZ_AP018694.1	negative	2010828	2010828	Aquipluma nitroreducens	false	0.0004044479998946195	5712279	GCF_009689585.1
+NC_004061.1	negative	9	9	Buchnera aphidicola	false	0.0003984051162727956	641454	GCF_000007365.1
+NZ_CP064354.1	negative	296	296	Pseudomonas fragi	false	0.0003926708873893443	5072729	GCF_015476275.1
+NZ_CP171125.1	negative	34059	34059	Faucicola atlantae	false	0.00039102094261989973	2270934	GCF_043950565.1
+NZ_CP069798.1	negative	2809020	2809020	Paralysiella testudinis	false	0.00038975323587845577	2905699	GCF_016894345.1
+NZ_CP042818.1	negative	162	162	Treponema phagedenis	false	0.000389112386333664	3372116	GCF_008153345.1
+NC_074098.1	negative	2846214	2846214	Sholavirus caenivivens	false	0.0003881879036612904	3904	GCF_018574935.1
+NC_003197.2	negative	28901	28901	Salmonella enterica	false	0.0003820161258207221	4857450	GCF_000006945.2
+NZ_CP132968.1	negative	649756	649756	Anaerostipes hadrus	false	0.00037856528353778616	2946270	GCF_030864025.1
+NZ_CP038207.1	negative	2559074	2559074	Pseudomonas sp. S150	false	0.0003770763330798768	6304843	GCF_004526365.1
+NZ_AP031498.1	negative	1008307	1008307	Maricurvus nonylphenolicus	false	0.00035852577176403224	5624926	GCF_042854845.1
+NZ_AP025286.1	negative	163	163	Treponema bryantii	false	0.00035824724172812484	3431497	GCF_036492245.1
+NZ_CP048686.1	negative	1366	1366	Pseudolactococcus raffinolactis	false	0.000354862575021096	2295672	GCF_010669245.1
+NZ_LT629689.1	negative	359110	359110	Pseudomonas extremaustralis	false	0.0003538740567790013	6674429	GCF_900102035.1
+NZ_CP024847.1	negative	2067065	2067065	Aquella oligotrophica	false	0.0003536959424179778	2820660	GCF_002892535.1
+NZ_CP121197.1	negative	3036359	3036359	Aurantibacillus circumpalustris	false	0.0003528274291381624	4604442	GCF_029625215.1
+NZ_CP042831.1	negative	2602769	2602769	Flavobacterium alkalisoli	false	0.00034862445698876016	3985855	GCF_008000935.1
+NZ_CP193656.1	negative	3425950	3425950	Flavobacterium sp. TMP13	false	0.0003478394039502007	3761726	GCF_050847115.1
+NZ_CP064781.1	negative	404405	404405	Azospira restricta	false	0.00034260231496535486	3975213	GCF_016858125.1
+NZ_CP144459.1	negative	3116654	3116654	Treponema sp. HNW	false	0.00034247934691758724	2809884	GCF_050320395.1
+NZ_AP043771.1	negative	28129	28129	Prevotella denticola	false	0.0003398189899966061	1949961	GCF_055390445.1
+NZ_AP018786.1	negative	2494234	2494234	Sutterella megalosphaeroides	false	0.0003397620329088851	2725161	GCF_003609995.1
+NZ_CP162391.1	negative	3233380	3233380	Ruminococcus sp. JE7B6	false	0.00033943263657209384	2427278	GCF_045819885.1
+NZ_CP014646.1	negative	1134435	1134435	Thauera humireducens	false	0.0003341433643594805	4171754	GCF_001051995.2
+NC_015578.1	negative	88058	88058	Treponema primitia	false	0.00033140069950826666	4059867	GCF_000214375.1
+NC_009850.1	negative	28197	28197	Aliarcobacter butzleri	false	0.0003289390339308673	2341251	GCF_000014025.1
+NZ_CP068055.1	negative	40545	40545	Sutterella wadsworthensis	false	0.0003250552519349074	3026517	GCF_016724805.1
+NZ_AP024276.1	negative	1501662	1501662	Streptococcus parasuis	false	0.00032489458685509316	2197342	GCF_021654455.1
+NZ_AP025730.1	negative	2914710	2914710	Sphaerotilus microaerophilus	false	0.00031922175968759545	6027181	GCF_023734135.1
+NC_014933.1	negative	290053	290053	Bacteroides helcogenes	false	0.00031849070065126866	3998906	GCF_000186225.1
+NC_021219.1	negative	1332188	1332188	Candidatus Saccharimonas aalborgensis	false	0.0003165409903999166	1013781	GCF_000392435.1
+NZ_CP071060.1	negative	2811415	2811415	Niveibacterium microcysteis	false	0.0003153086760684727	4825992	GCF_017161445.1
+NZ_CP060704.1	negative	356302	356302	Chitinimonas koreensis	false	0.0003152668636399145	5648696	GCF_014353015.1
+NZ_CP017279.1	negative	299767	299767	Enterobacter ludwigii	false	0.00031137715547297786	4857439	GCF_001750725.1
+NZ_CP097162.1	negative	86183	86183	[Pseudomonas] boreopolis	false	0.0003082975219553914	4498896	GCF_046529185.1
+NZ_CP029331.1	negative	2184083	2184083	Pseudothauera hydrothermalis	false	0.00030592688894882935	3059321	GCF_003345255.1
+NZ_CP045696.1	negative	2606626	2606626	Sodaliphilus pleomorphus	false	0.00030485063045310667	3340670	GCF_009676955.1
+NZ_CP034726.1	negative	1720083	1720083	Acetilactobacillus jinshanensis	false	0.0003045204110370131	1616430	GCF_004359375.1
+NZ_AP014723.1	negative	1581011	1581011	Sulfurospirillum sp. UCH001	false	0.0003007569632350534	2606563	GCF_001548035.1
+NZ_CP041668.1	negative	454	454	Legionella israelensis	false	0.00030022163245681997	3046673	GCF_007361795.1
+NZ_CP017038.2	negative	712710	712710	Tannerella serpentiformis	false	0.0002999533086042614	2973544	GCF_001717525.2
+NZ_CP035288.1	negative	1282	1282	Staphylococcus epidermidis	false	0.00029638657675555785	2466502	GCF_006094375.1
+NZ_CP096601.1	negative	84109	84109	Slackia exigua	false	0.00029626097485402277	1987822	GCF_049191205.1
+NZ_CP014158.1	negative	53408	53408	Pseudomonas citronellolis	false	0.0002962155408765343	6951444	GCF_001586155.1
+NC_028809.1	negative	3427948	3427948	Cinvestavvirus PaMx74	false	0.00029272700156155184	58637	GCF_001505215.1
+NZ_CP169222.1	negative	859	859	Fusobacterium necrophorum	false	0.000291220931054154	2190104	GCF_050994935.1
+NZ_LT608328.1	negative	1642646	1642646	Petrimonas mucosa	false	0.0002896103294753606	3717632	GCF_900095795.1
+NZ_CP064936.1	negative	2787628	2787628	Treponema peruense	false	0.000289123395760104	2738066	GCF_016117655.1
+NZ_AP013035.1	negative	412593	412593	Thermosulfidibacter takaii	false	0.00028687408464270496	1816670	GCF_001547735.1
+NC_018002.1	negative	44674	44674	Sulfurospirillum barnesii	false	0.00028681185984744904	2510109	GCF_000265295.1
+NC_074207.1	negative	2846622	2846622	Wahdswovirus lutenecus	false	0.00028649513893191366	4343	GCF_018574535.1
+NZ_CP069440.1	negative	387090	387090	Phocaeicola coprophilus	false	0.0002855997932668424	4113613	GCF_016888945.1
+NZ_CP014784.1	negative	43263	43263	Aquipseudomonas alcaligenes	false	0.0002819836766599992	4406305	GCF_001597285.1
+NZ_CP037745.1	negative	2545632	2545632	Rheinheimera sp. D18	false	0.0002819469673231155	3308353	GCF_004345025.1
+NZ_CP020918.1	negative	1355330	1355330	Flavobacterium faecale	false	0.00027818845799696974	4621116	GCF_003076455.1
+NC_008255.1	negative	985	985	Cytophaga hutchinsonii	false	0.0002781693625571557	4433218	GCF_000014145.1
+NC_015500.1	negative	81028	81028	Treponema brennaborense	false	0.0002772702307272938	3055580	GCF_000212415.1
+NZ_CP025682.1	negative	2067960	2067960	Pseudazoarcus pumilus	false	0.00027707252707887486	3225512	GCF_002872475.1
+NZ_CP102486.1	negative	447588	447588	Dechloromonas sp. A34	false	0.0002758125572828728	4757803	GCF_026261605.1
+NZ_CP036287.1	negative	2528011	2528011	Engelhardtia mirabilis	false	0.0002699474587903515	6899822	GCF_007748095.1
+NZ_CP045875.1	negative	356322	356322	Heliorestis convoluta	false	0.0002682976786367674	3218981	GCF_009649955.1
+NZ_CP054142.1	negative	138851	138851	Treponema parvum	false	0.00026343541996620126	2658287	GCF_017893965.1
+NZ_CP098455.1	negative	1748242	1748242	Spongiibacter taiwanensis	false	0.0002616188839459657	3714182	GCF_023702635.1
+NZ_CP140614.1	negative	3094835	3094835	Sulfurospirillum sp. 1612	false	0.00026017717824000983	2377931	GCF_036556685.1
+NC_008570.1	negative	644	644	Aeromonas hydrophila	false	0.00025707762620330707	4744448	GCF_000014805.1
+NZ_CP137642.1	negative	394967	394967	Methanoculleus receptaculi	false	0.00025658262631088764	1980381	GCF_033472595.1
+NC_013895.2	negative	884684	884684	Mageeibacillus indolicus	false	0.00025466550999990776	1809746	GCF_000025225.2
+NC_015510.1	negative	2350	2350	Haliscomenobacter hydrossis	false	0.00025321047040925416	8371686	GCF_000212735.1
+NZ_CP102267.1	negative	418240	418240	Blautia wexlerae	false	0.0002529107049273467	4685728	GCF_025148125.1
+NZ_CP012159.1	negative	52	52	Chondromyces crocatus	false	0.0002501286968854817	11388132	GCF_001189295.1

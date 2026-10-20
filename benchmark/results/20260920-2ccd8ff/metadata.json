@@ -1,0 +1,10 @@
+{
+  "hits_files": [
+    "pipeline/virus_hits_final.tsv.gz"
+  ],
+  "n_hits": 1604075,
+  "bt2_score_threshold": 20.0,
+  "taxonomy_nodes": "refs/taxonomy-nodes.dmp",
+  "spurious_per_billion_observed": 88.86633377240744,
+  "spurious_per_billion_bound": 1242.433645151115
+}

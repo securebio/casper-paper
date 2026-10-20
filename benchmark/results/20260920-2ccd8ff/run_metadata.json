@@ -1,0 +1,71 @@
+{
+  "created_utc": "2026-09-20T19:14:39+00:00",
+  "git_commit": "2ccd8ff",
+  "git_dirty": false,
+  "inputs": {
+    "in_index.fasta": {
+      "path": "refs/in_index.fasta",
+      "sha256_16": "b2b212d0da0d76e5"
+    },
+    "in_index_genomes.tsv": {
+      "path": "panels/in_index_genomes.tsv",
+      "sha256_16": "54cabeddf321a2d8"
+    },
+    "kraken_abundance.tsv": {
+      "path": "panels/kraken_abundance.tsv",
+      "sha256_16": "b43cd6513b71bf0f"
+    },
+    "negative_genomes.fasta.gz": {
+      "path": "refs/negative_genomes.fasta.gz",
+      "sha256_16": "8c35755e39173670"
+    },
+    "negative_genomes.tsv": {
+      "path": "panels/negative_genomes.tsv",
+      "sha256_16": "734bd83a77b3e7c2"
+    },
+    "out_of_index.fasta": {
+      "path": "refs/out_of_index.fasta",
+      "sha256_16": "5d5b77f339ba17a6"
+    },
+    "out_of_index_divergence.tsv": {
+      "path": "panels/out_of_index_divergence.tsv",
+      "sha256_16": "e0f09b7d4ec55582"
+    },
+    "out_of_index_genomes.tsv": {
+      "path": "panels/out_of_index_genomes.tsv",
+      "sha256_16": "04e05cd064838536"
+    },
+    "panel_manifest.tsv": {
+      "path": "panels/panel_manifest.tsv",
+      "sha256_16": "d04fa3ae7b3daa22"
+    },
+    "positive_species.tsv": {
+      "path": "panels/positive_species.tsv",
+      "sha256_16": "bc6a748d7df7c229"
+    },
+    "positive_taxa.tsv": {
+      "path": "panels/positive_taxa.tsv",
+      "sha256_16": "5320e0a4b93cdd4c"
+    },
+    "read_allocation.tsv": {
+      "path": "panels/read_allocation.tsv",
+      "sha256_16": "3ddc35e423b7ba3d"
+    }
+  },
+  "insilicoseq_version": "2.0.1",
+  "reads": {
+    "in_index": 929999,
+    "negative": 94500001,
+    "out_of_index": 760001
+  },
+  "run_id": "20260920-2ccd8ff",
+  "simulation": {
+    "compress": true,
+    "cpus": 30,
+    "executable": "iss",
+    "fragment_length": 250,
+    "fragment_length_sd": 50,
+    "model": "novaseq",
+    "seed": 20260826
+  }
+}
