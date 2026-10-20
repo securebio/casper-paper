@@ -2,33 +2,28 @@
 
 Sensitivity and specificity of the vertebrate-infecting virus (VV) identification
 pipeline, measured on simulated reads. Reads are generated from known genomes, run
-through mgs-workflow, and scored against the genome each read came from.
-
-Pinned to the version the manuscript reports: **mgs-workflow 3.0.1 (tag 3.0.1.9),
-reference index 20250825, `bt2_score_threshold = 20`**.
+through mgs-workflow (v3.0.1, index 20250825), and scored against the genome each read came from.
 
 ## Layout
 
 | | |
 |---|---|
-| `panels/` | panel selection scripts, and the selected genomes as committed tables |
+| `panels/` | panel selection scripts and genome accessions |
 | `assignment_evaluation/` | scoring and plotting |
 | `run/` | the mgs-workflow config and launcher |
 | `results/20260920-2ccd8ff/` | the scores the manuscript reports |
 
 ## Panels
 
-| Panel | Taxa | Genomes | Accessions | What it measures |
+| Panel | Taxa | Genomes | Accessions | Description |
 |---|---|---|---|---|
-| in-index | 93 | 93 | 165 | genomes the reference database contains |
-| out-of-index | 77 | 76 | 134 | genomes absent from it, median 97.9% identity to their nearest indexed relative |
-| negative | 189 | 189 | 213 | the non-viral organisms that dominate wastewater, plus the human genome |
+| in-index | 93 | 93 | 165 | VV genomes contained in the reference database |
+| out-of-index | 77 | 76 | 134 | VV genomes absent from the reference database |
+| negative | 189 | 189 | 213 | most abundant non-VV taxa |
 
-Positive panels span 92 species in 27 families.
+## Reproducing this analysis
 
-## Redrawing the figure
-
-The only step reproducible from this directory alone; the evaluation CSVs are committed.
+The only step reproducible from this directory alone is plotting the evaluation results.
 
 ```bash
 pip install -e .
@@ -37,10 +32,8 @@ python -m assignment_evaluation.plot_composition
 
 Writes `../figures/pipeline_benchmark.png`.
 
-## Everything else
-
 Rescoring a pipeline run (`assignment_evaluation/cli.py`) needs its output and the NCBI
-taxonomy dumps, neither committed here. Rerunning the pipeline (`run/run_benchmark.sh`)
+taxonomy dumps, which are not committed here. Rerunning the pipeline (`run/run_benchmark.sh`)
 needs Nextflow, Docker and AWS; it reads `MGS_WORKFLOW_DIR` and `BENCHMARK_BASE`, and the
 reference index must already be staged under `$BENCHMARK_BASE/ref/20250825/output`.
 Rebuilding the panels needs live NCBI access.
