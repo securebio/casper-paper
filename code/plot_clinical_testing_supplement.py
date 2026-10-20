@@ -1,21 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplementary figure showing Boston clinical testing volume and positivity rate
-alongside MGS vs clinical comparison.
-
-Creates a 3-row x 3-column figure:
-- Row 1: MU-sequenced MGS vs clinical time series
-- Row 2: SB-sequenced MGS vs clinical time series
-- Row 3: Stacked bar plots showing test volume (gray=negative, colored=positive)
-
-Columns: SARS-CoV-2, Influenza A, RSV
-
-Clinical data source:
-Clinical respiratory virus testing data from the Massachusetts General Hospital
-(MGH) Clinical Diagnostic Microbiology Laboratory. Data include aggregated weekly
-test counts from MGH and affiliated Mass General Brigham hospitals serving the
-greater Boston metropolitan area, which overlaps geographically with the sewershed
-served by Boston's Deer Island Treatment Plant.
+"""Supplementary figure: Boston clinical testing volume and positivity rate,
+alongside wastewater abundance.
 """
 
 import sys
@@ -38,7 +23,7 @@ from data_loaders import (
 )
 
 # Import correlation formatting function
-from plot_mgs_nwss_panel import format_r_with_stars
+from plot_mgs_pcr_clinical_lineage_panel import format_r_with_stars
 
 # Import ticker for custom formatting
 from matplotlib.ticker import FuncFormatter, ScalarFormatter
@@ -67,7 +52,6 @@ def clean_zero_formatter(x, pos):
         formatted = f'{x:.2g}'
         return formatted
 
-# MMWR smoothing is now imported from plot_config via wildcard import above
 
 # Pathogens to plot (columns)
 PATHOGENS_TO_PLOT = ['sars-cov-2', 'influenza_a', 'rsv']
@@ -158,7 +142,7 @@ def load_clinical_testing_data(drop_last_n_weeks=1):
     df = pd.read_csv(path)
     df['date'] = pd.to_datetime(df['date'])
 
-    # Rename columns to match internal format expected by plotting code
+    # Rename columns to the names the plotting code expects
     df = df.rename(columns={
         'pathogen': 'Target',
         'positives': 'Positives',
@@ -262,7 +246,7 @@ def plot_mgs_row(
 
                     # Smooth on full data to avoid edge effects
                     mgs_smoothed = calculate_mmwr_smoothed_trend(
-                        site_mgs, 'date', 'ra_clade_pmmov_norm'
+                        site_mgs, 'date', 'ra_clade_tobamovirus_norm'
                     )
 
                     color = get_location_color(site_name)
@@ -305,7 +289,8 @@ def plot_mgs_row(
         clinical_color = '#666666'
         if not clinical_filtered.empty:
             clinical_smoothed = calculate_mmwr_smoothed_trend(
-                clinical_filtered, 'date', clinical_col_name
+                clinical_filtered, 'date', clinical_col_name,
+                kernel=SOURCE_KERNELS['clinical']
             )
 
             if not clinical_smoothed.empty:
@@ -550,7 +535,8 @@ def plot_clinical_testing_supplement(
             # Calculate positivity rate and apply MMWR smoothing
             pathogen_testing['positivity_rate'] = (positives / tests * 100).replace([np.inf, -np.inf], np.nan)
             positivity_smoothed = calculate_mmwr_smoothed_trend(
-                pathogen_testing, 'date', 'positivity_rate'
+                pathogen_testing, 'date', 'positivity_rate',
+                kernel=SOURCE_KERNELS['clinical']
             )
             if not positivity_smoothed.empty:
                 ax_bar2.plot(positivity_smoothed['date'], positivity_smoothed['smoothed_values'],

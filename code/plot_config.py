@@ -15,6 +15,58 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 
+from smoothing import (  # noqa: F401
+    MIN_NONZERO_WEEKS,
+    MIN_OVERLAP_WEEKS,
+    SOURCE_KERNELS,
+    calculate_mmwr_smoothed_trend,
+    has_nonzero_floor,
+    passes_inclusion_floors,
+    smooth_for_source,
+    smooth_value_series,
+    spearman_on_smoothed,
+)
+
+# ============================================================================
+# NORMALIZATION
+# ============================================================================
+
+# Canonical normalization key -> relative-abundance column. Single source
+# of truth; the figure and table scripts import this rather than keeping
+# their own copies.
+NORMALIZATION_COLUMNS = {
+    'raw': 'ra_clade',
+    'tobamovirus': 'ra_clade_tobamovirus_norm',
+    'pmmov': 'ra_clade_pmmov_norm',
+    'tobrfv': 'ra_clade_tobrfv_norm',
+    'rrna': 'ra_clade_rrna_norm',
+}
+
+# Short labels used in table column headers.
+NORMALIZATION_LABELS_SHORT = {
+    'raw': 'Total reads',
+    'tobamovirus': 'Tobamovirus',
+    'pmmov': 'PMMoV',
+    'tobrfv': 'ToBRFV',
+    'rrna': 'rRNA',
+}
+
+# Processing laboratory colours, separable under deuteranopia and protanopia.
+# The luminance gap is modest (0.125), so they read less well in greyscale.
+LAB_COLORS = {
+    'MU': '#7896c3',
+    'SB': '#ec9d37',
+}
+
+# Long labels used for figure axis titles.
+NORMALIZATION_LABELS = {
+    'raw': 'Relative abundance',
+    'tobamovirus': 'Wastewater sequencing signal\n(pathogen / tobamovirus read pairs)',
+    'pmmov': 'Wastewater sequencing signal\n(pathogen / PMMoV read pairs)',
+    'tobrfv': 'Wastewater sequencing signal\n(pathogen / ToBRFV read pairs)',
+    'rrna': 'Wastewater sequencing signal\n(pathogen / rRNA read pairs)',
+}
+
 # ============================================================================
 # FONT AND STYLE CONFIGURATION
 # ============================================================================
@@ -212,8 +264,6 @@ SCATTER_SIZE_LARGE = 40
 
 SCATTER_ALPHA = 0.6
 LINE_ALPHA = 0.8
-
-SMOOTH_WINDOW = 7
 
 # ============================================================================
 # DATE FORMATTING FOR TIME SERIES
@@ -426,7 +476,7 @@ def sort_locations_by_state_and_name(df, loc_id_column='site_name',
     Args:
         df: DataFrame containing location data.
         loc_id_column: Name of the column containing site names (default: 'site_name').
-        use_paper_names: Ignored (kept for API compatibility).
+        use_paper_names: Ignored.
 
     Returns:
         DataFrame sorted by region, state, and site name.
@@ -469,82 +519,6 @@ def get_sorted_location_order(locations, **kwargs):
 # ============================================================================
 # UTILITY FUNCTIONS
 # ============================================================================
-
-
-def apply_smooth(data, window=SMOOTH_WINDOW):
-    """Apply rolling average smoothing (DEPRECATED — use calculate_mmwr_smoothed_trend)."""
-    if not isinstance(data, pd.Series):
-        data = pd.Series(data)
-    return data.rolling(window=window, center=True, min_periods=1).mean()
-
-
-def calculate_mmwr_smoothed_trend(df, date_col: str, value_col: str,
-                                   smooth_window: int = 5):
-    """Convert data to MMWR weeks with geometric mean aggregation and
-    centered moving average.
-
-    Methodology:
-    - Data is aggregated to MMWR epidemiological weeks using geometric mean
-      (arithmetic mean of log1p-transformed values, then expm1)
-    - A centered moving average produces smoothed time series
-    - Values are plotted at the MMWR week midpoint (Wednesday)
-
-    Args:
-        df: DataFrame with time series data.
-        date_col: Name of the date column.
-        value_col: Name of the value column to smooth.
-        smooth_window: Weeks for centered moving average (default: 5).
-
-    Returns:
-        DataFrame with date_col, smoothed_values, mmwr_year, mmwr_week.
-    """
-    import epiweeks
-
-    df_clean = df[[date_col, value_col]].copy().dropna().sort_values(date_col)
-
-    if len(df_clean) < 2:
-        return pd.DataFrame()
-
-    df_clean['date'] = pd.to_datetime(df_clean[date_col])
-
-    mmwr_data = []
-    for _, row in df_clean.iterrows():
-        epi_week = epiweeks.Week.fromdate(row['date'])
-        mmwr_data.append({
-            'date': row['date'],
-            'mmwr_year': epi_week.year,
-            'mmwr_week': epi_week.week,
-            'value': row[value_col],
-        })
-
-    mmwr_df = pd.DataFrame(mmwr_data)
-    mmwr_df['log_value'] = np.log1p(mmwr_df['value'])
-
-    weekly_agg = mmwr_df.groupby(['mmwr_year', 'mmwr_week']).agg(
-        log_value=('log_value', 'mean')
-    ).reset_index()
-
-    weekly_agg = weekly_agg.sort_values(['mmwr_year', 'mmwr_week'])
-
-    weekly_agg['date'] = weekly_agg.apply(
-        lambda row: epiweeks.Week(int(row['mmwr_year']),
-                                   int(row['mmwr_week'])).startdate()
-        + pd.Timedelta(days=3),
-        axis=1,
-    )
-
-    weekly_agg['smoothed_log_values'] = weekly_agg['log_value'].rolling(
-        window=smooth_window, center=True, min_periods=1
-    ).mean()
-
-    weekly_agg['smoothed_values'] = np.expm1(weekly_agg['smoothed_log_values'])
-
-    return pd.DataFrame({
-        date_col: weekly_agg['date'],
-        'smoothed_values': weekly_agg['smoothed_values'],
-        'mmwr_year': weekly_agg['mmwr_year'],
-        'mmwr_week': weekly_agg['mmwr_week'],
-    })
 
 
 # ============================================================================
@@ -672,3 +646,43 @@ def format_bp(x, pos=None):
 # ============================================================================
 
 init_plotting_style()
+
+
+# ============================================================================
+# SHARED LABEL HELPERS
+# ============================================================================
+
+def add_stacked_rotated_label(fig, x, y, label, rotation=90,
+                              main_size=FONT_SIZE_LARGE, sub_scale=0.8,
+                              sub_size=None, gap_scale=0.62, **kwargs):
+    """Draw a two-line rotated axis label whose second line is smaller.
+
+    ``label`` is the usual newline-separated axis label: the first line is
+    the quantity, the second the qualifier (units, denominator). Matplotlib
+    applies a single font size per text object, so the qualifier is drawn as
+    its own text, offset perpendicular to the reading direction. Offsets are
+    in points so the gap tracks the font size rather than the figure size.
+
+    For rotation=90 the lines stack along x with the first line at smaller x;
+    at rotation=270 that order flips, so the sign follows the rotation. A
+    label with no second line is drawn as a single centered text.
+    """
+    from matplotlib.transforms import offset_copy
+
+    main, _, sub = label.partition('\n')
+    if not sub:
+        return fig.text(x, y, main, fontsize=main_size, rotation=rotation,
+                        ha='center', va='center', **kwargs)
+
+    if sub_size is None:
+        sub_size = main_size * sub_scale
+    half_gap = gap_scale * (main_size + sub_size) / 2
+    sign = -1.0 if rotation % 360 == 90 else 1.0
+
+    def _t(dx):
+        return offset_copy(fig.transFigure, fig=fig, x=dx, y=0, units='points')
+
+    fig.text(x, y, main, fontsize=main_size, rotation=rotation,
+             ha='center', va='center', transform=_t(sign * half_gap), **kwargs)
+    fig.text(x, y, sub, fontsize=sub_size, rotation=rotation,
+             ha='center', va='center', transform=_t(-sign * half_gap), **kwargs)

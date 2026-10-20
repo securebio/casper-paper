@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Combined visualization: sampling timeline + read counts + SRA comparison + cost.
-
-Creates a 2-row figure:
-- Top row (a, b): Sample collection timeline and read count distributions
-- Bottom row (c, d, e): CASPER cumulative reads, SRA comparison, and median depth with cost
-
-Figure 2 in the CASPER manuscript.
+"""Main figure: sampling timeline, sequencing depth, and CASPER as a share of
+wastewater sequencing on the SRA.
 """
 
 import sys
@@ -36,7 +30,7 @@ from data_loaders import (
 # Paths
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
-_SUPP_DIR = _REPO_ROOT / "tables"
+_DATA_DIR = _REPO_ROOT / "data"
 
 
 def _get_sequencing_lab_column(df):
@@ -337,10 +331,11 @@ def _plot_boxplot_panel(ax, locations, df, show_xlabel=True):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
 
+    rng = np.random.default_rng(0)
     for idx, site_name in enumerate(locations):
         loc_data = df[df['site_name'] == site_name]['total_read_pairs'].values
         if len(loc_data) > 0:
-            y_jitter = np.random.normal(0, 0.08, size=len(loc_data))
+            y_jitter = rng.normal(0, 0.08, size=len(loc_data))
             y_positions = idx + y_jitter
 
             ax.scatter(loc_data, y_positions,
@@ -415,7 +410,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     sra_timeline_collection = load_sra_timeline(by_collection_date=True)
 
     # Paths
-    lit_review_path = _SUPP_DIR / 'lit_review_table.tsv'
+    lit_review_path = _DATA_DIR / 'lit_review_table.tsv'
 
     # =========================================================================
     # Prepare site data for top row panels
@@ -590,7 +585,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     ax_sra_all.tick_params(axis='both', labelsize=FONT_SIZE_LARGE + 3)
     ax_sra_all.spines['top'].set_visible(False)
     ax_sra_all.spines['right'].set_visible(False)
-    ax_sra_all.set_title(ax_sra_all.get_title(), fontsize=FONT_SIZE_LARGE + 3, weight='normal', pad=24)
+    ax_sra_all.set_title('Wastewater sequencing on SRA', fontsize=FONT_SIZE_LARGE + 3, weight='normal', pad=24)
 
     mid_legend = ax_sra_all.get_legend()
     if mid_legend:
@@ -601,8 +596,12 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     for child in ax_sra_all.texts:
         child.set_fontsize(FONT_SIZE_LARGE + 3)
 
-    ax_sra_all.set_yticks([0, 100e6, 200e6, 300e6, 400e6, 500e6, 600e6])
-    ax_sra_all.set_yticklabels(['0', '', '200', '', '400', '', '600'])
+    # Ticks every 100 Tb up to the axis top, labelled every 200 Tb.
+    _tick_top = int(ax_sra_all.get_ylim()[1] // 100e6) * 100e6
+    _ticks = np.arange(0, _tick_top + 1, 100e6)
+    ax_sra_all.set_yticks(_ticks)
+    ax_sra_all.set_yticklabels(
+        [f'{t/1e6:.0f}' if (t / 200e6) % 1 == 0 else '' for t in _ticks])
 
     xlim_mid_left = pd.Timestamp('2011-01-01')
     xlim_mid_right = pd.Timestamp('2026-06-01')
@@ -617,7 +616,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
 
     # Use median_gb_untargeted (public column name) converted to bp for axis scale
     _median_col = 'median_gb_untargeted'
-    _gb_to_bp = 1e9  # convert Gb to bases to match internal axis scale
+    _gb_to_bp = 1e9  # convert Gb to bases to match the axis scale
     plot_lit_review_scatter(ax_median_bp, lit_review_path,
                            y_column=_median_col,
                            y_label='Median bases per sample',
@@ -658,7 +657,7 @@ def plot_sampling_timeline_sra_combined(save_path=None):
     plt.setp(ax_median_bp.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
     # ---- Cost overlay (bases_per_1k mode) ----
-    cost_path = _SUPP_DIR / 'sequencing_cost_table.tsv'
+    cost_path = _DATA_DIR / 'sequencing_cost_table.tsv'
     cost_df = pd.read_csv(cost_path, sep='\t')
 
     cost_df['parsed_date'] = pd.to_datetime(cost_df['Date'], format='%b %Y')

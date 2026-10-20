@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""
-Time series of median quality score per sample for ALL sites (supplementary figure).
-
-Creates line/scatter plots showing median per-sequence Phred quality score over time
-for all sites, arranged in 2 columns. Sites are ordered by sequencing lab (MU first,
-then SB), then by state, then alphabetically within state.
-
-Uses raw (pre-trimming) quality scores as this reflects the quality of data deposited
-in SRA, which users will download and process with their own pipelines.
-"""
+"""Supplementary figure: median raw quality score per sample, every site."""
 
 import sys
 from pathlib import Path

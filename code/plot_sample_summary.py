@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generate summary table and visualizations for sample collection across sites.
-
-Creates comprehensive summary statistics including:
-- Number of samples per site
-- Date range of sampling
-- Median sampling interval
-- Mean and standard deviation of read pairs per sample
-"""
+"""Build the sampling-site summary table."""
 
 import sys
 from pathlib import Path
@@ -21,213 +13,6 @@ from data_loaders import (
     load_all_site_data, load_site_metadata, load_sample_metadata,
     load_sample_age_data, load_nwss_site_matches,
 )
-
-
-def calculate_sampling_interval(dates):
-    """
-    Calculate median sampling interval in days.
-
-    Args:
-        dates: List or Series of datetime objects
-
-    Returns:
-        Median interval in days (float)
-    """
-    if len(dates) < 2:
-        return np.nan
-
-    dates_sorted = sorted(dates)
-    intervals = [(dates_sorted[i+1] - dates_sorted[i]).days
-                 for i in range(len(dates_sorted) - 1)]
-
-    return np.median(intervals)
-
-
-def create_site_summary_table(site_data, output_file=None, separate_by_seq_lab=False):
-    """
-    Create comprehensive summary table for all sites.
-
-    Args:
-        site_data: DataFrame from load_all_site_data()
-        output_file: Optional path to save CSV
-        separate_by_seq_lab: If True, create separate tables for MU and SB sites
-
-    Returns:
-        DataFrame with summary statistics per site
-        (or tuple of (mu_df, sb_df) if separate_by_seq_lab=True)
-    """
-    # Merge with libraries_metadata to get sequencing_lab
-    libs_meta = load_sample_metadata()
-    if 'sequencing_lab' not in site_data.columns:
-        merge_cols = ['sra_accession'] if 'sra_accession' in site_data.columns else ['site_name', 'date']
-        lab_info = libs_meta[['sra_accession', 'sequencing_lab']].drop_duplicates()
-        site_data = site_data.merge(lab_info, on='sra_accession', how='left')
-
-    # Load site metadata for city/state
-    site_meta = load_site_metadata()
-    meta_lookup = site_meta.set_index('site_name')
-
-    # Group by (site_name, sequencing_lab) for multi-lab sites
-    if 'sequencing_lab' in site_data.columns:
-        site_groups = site_data.groupby(['site_name', 'sequencing_lab'])
-    else:
-        site_groups = [(name, 'Unknown', grp) for name, grp in site_data.groupby('site_name')]
-        site_groups = site_data.groupby('site_name')
-
-    summary_rows = []
-
-    for group_key, group in site_groups:
-        if isinstance(group_key, tuple):
-            site_name, seq_lab = group_key
-        else:
-            site_name = group_key
-            seq_lab = group['sequencing_lab'].mode().iloc[0] if 'sequencing_lab' in group.columns else 'Unknown'
-
-        # Get metadata
-        if site_name in meta_lookup.index:
-            meta_row = meta_lookup.loc[site_name]
-            city = meta_row.get('city', site_name)
-            state = meta_row.get('state', 'Unknown')
-        else:
-            city = site_name
-            state = 'Unknown'
-
-        # Basic counts
-        n_samples = len(group)
-
-        # Date range
-        start_date = group['date'].min()
-        end_date = group['date'].max()
-        date_range_days = (end_date - start_date).days
-
-        # Sampling interval
-        median_interval = calculate_sampling_interval(group['date'])
-
-        # Read pair statistics
-        mean_read_pairs = group['total_read_pairs'].mean()
-        std_read_pairs = group['total_read_pairs'].std()
-        median_read_pairs = group['total_read_pairs'].median()
-
-        summary_rows.append({
-            'site_name': site_name,
-            'city': city,
-            'state': state,
-            'seq_lab': seq_lab,
-            'n_samples': n_samples,
-            'start_date': start_date.strftime('%Y-%m-%d'),
-            'end_date': end_date.strftime('%Y-%m-%d'),
-            'date_range_days': date_range_days,
-            'median_sampling_interval_days': median_interval,
-            'mean_read_pairs': mean_read_pairs,
-            'std_read_pairs': std_read_pairs,
-            'median_read_pairs': median_read_pairs,
-        })
-
-    summary_df = pd.DataFrame(summary_rows)
-
-    # Sort by state, then by number of samples
-    summary_df = summary_df.sort_values(
-        ['state', 'n_samples'],
-        ascending=[True, False]
-    ).reset_index(drop=True)
-
-    if separate_by_seq_lab:
-        # Split into MU and SB tables
-        mu_df = summary_df[summary_df['seq_lab'] == 'MU'].copy().reset_index(drop=True)
-        sb_df = summary_df[summary_df['seq_lab'].isin(['SB', 'BCL'])].copy().reset_index(drop=True)
-
-        # Remove seq_lab column for display
-        mu_df = mu_df.drop(columns=['seq_lab'])
-        sb_df = sb_df.drop(columns=['seq_lab'])
-
-        # Save if requested
-        if output_file is not None:
-            output_path = Path(output_file)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-
-            mu_path = output_path.parent / (output_path.stem + '_mu' + output_path.suffix)
-            mu_df.to_csv(mu_path, index=False)
-            print(f"Saved MU summary table to {mu_path}")
-
-            sb_path = output_path.parent / (output_path.stem + '_sb' + output_path.suffix)
-            sb_df.to_csv(sb_path, index=False)
-            print(f"Saved SB summary table to {sb_path}")
-
-        return mu_df, sb_df
-    else:
-        # Remove seq_lab column for display if not separating
-        summary_df = summary_df.drop(columns=['seq_lab'])
-
-        # Save if requested
-        if output_file is not None:
-            output_path = Path(output_file)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            summary_df.to_csv(output_path, index=False)
-            print(f"Saved summary table to {output_path}")
-
-        return summary_df
-
-
-def format_summary_table_for_display(summary_df):
-    """
-    Format summary table for nice display (markdown, latex, etc).
-
-    Args:
-        summary_df: DataFrame from create_site_summary_table()
-
-    Returns:
-        Formatted DataFrame with better column names and number formatting
-    """
-    display_df = summary_df.copy()
-
-    # Create combined mean +/- std column in millions
-    def format_mean_std(row):
-        mean = row['mean_read_pairs']
-        std = row['std_read_pairs']
-        if pd.notna(mean) and pd.notna(std):
-            mean_M = mean / 1e6
-            std_M = std / 1e6
-            return f'{mean_M:.0f}M +/- {std_M:.0f}M'
-        elif pd.notna(mean):
-            mean_M = mean / 1e6
-            return f'{mean_M:.0f}M'
-        else:
-            return 'N/A'
-
-    display_df['read_pairs_mean_std'] = display_df.apply(format_mean_std, axis=1)
-
-    # Select and reorder columns
-    display_df = display_df[[
-        'site_name',
-        'city',
-        'state',
-        'n_samples',
-        'start_date',
-        'end_date',
-        'date_range_days',
-        'median_sampling_interval_days',
-        'read_pairs_mean_std',
-    ]].copy()
-
-    # Rename columns for display
-    display_df.columns = [
-        'Site Name',
-        'City',
-        'State',
-        'N Samples',
-        'Start Date',
-        'End Date',
-        'Date Range (days)',
-        'Median Interval (days)',
-        'Read Pairs (Mean +/- Std)',
-    ]
-
-    # Format median interval
-    display_df['Median Interval (days)'] = display_df['Median Interval (days)'].apply(
-        lambda x: f'{x:.1f}' if pd.notna(x) else 'N/A'
-    )
-
-    return display_df
 
 
 def load_sample_age_by_site():
@@ -281,9 +66,9 @@ def parse_population_value(pop_str):
         return np.nan
 
 
-def generate_table1_sampling_sites(site_data, save_path=None):
+def generate_sampling_sites_table(site_data, save_path=None):
     """
-    Generate Table 1: Summary of CASPER sampling sites.
+    Summarise the CASPER sampling sites.
 
     Computes start date and median sampling interval from actual data.
     Includes location type, sample type, population served from metadata.
@@ -294,7 +79,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
         save_path: Optional path to save CSV
 
     Returns:
-        DataFrame with Table 1 data
+        DataFrame of per-site summary rows
     """
     # Load metadata
     site_meta = load_site_metadata()
@@ -408,7 +193,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
     df = pd.DataFrame(rows)
 
     if df.empty:
-        print("No data for Table 1")
+        print("No site data")
         return df
 
     # Sort by region order, then state alphabetically, then site name
@@ -416,7 +201,7 @@ def generate_table1_sampling_sites(site_data, save_path=None):
     df['_region_order'] = df['region'].map(region_order_map).fillna(len(REGION_ORDER))
     df = df.sort_values(['_region_order', 'state', 'Sampling site'])
 
-    # Drop internal columns
+    # Drop the working columns
     df = df.drop(columns=['_region_order'])
 
     if save_path:
@@ -426,28 +211,3 @@ def generate_table1_sampling_sites(site_data, save_path=None):
     return df
 
 
-def print_table1_markdown(df):
-    """Print Table 1 in markdown format with region headers."""
-    print("\n" + "="*140)
-    print("TABLE 1: SUMMARY OF CASPER SAMPLING SITES")
-    print("="*140 + "\n")
-
-    # Print header
-    cols = ['Sampling site', 'Location type', 'Sample type', 'Approx. population served',
-            'Sequencing partner', 'Sample collection start date', 'Sample collection end date',
-            'Number of samples', 'Median read pairs', 'Median sampling interval (days)', 'Median turnaround (days)']
-    print("| " + " | ".join(cols) + " |")
-    print("|" + "|".join(["---"] * len(cols)) + "|")
-
-    current_region = None
-    for _, row in df.iterrows():
-        # Print region header if changed
-        if row['region'] != current_region:
-            current_region = row['region']
-            print(f"| **{current_region}** | | | | | | | | | | |")
-
-        # Print row
-        values = [str(row[col]) if pd.notna(row[col]) else '' for col in cols]
-        print("| " + " | ".join(values) + " |")
-
-    print("\n" + "="*140 + "\n")

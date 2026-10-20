@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""
-Supplemental figure: CASPER as fraction of untargeted SRA data + total sequencing effort by study.
-
-Creates a 1x2 figure:
-- Left (a): CASPER as fraction of untargeted wastewater sequencing on SRA
-- Right (b): Total untargeted sequencing effort by study (scatter)
-
-Figure S2 in the CASPER manuscript.
+"""Supplementary figure: CASPER as a share of untargeted wastewater
+sequencing on the SRA, and total bases by study.
 """
 
 import sys
@@ -28,7 +22,7 @@ from data_loaders import load_sra_timeline, CASPER_BIOPROJECTS
 # Paths
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
-_SUPP_DIR = _REPO_ROOT / "tables"
+_DATA_DIR = _REPO_ROOT / "data"
 
 
 def plot_sra_panel_on_axis(ax, timeline_data, by_collection_date=False, category='untargeted'):
@@ -184,7 +178,7 @@ def plot_sra_untargeted_supplement(save_path=None):
     """
     sra_timeline_collection = load_sra_timeline(by_collection_date=True)
 
-    lit_review_path = _SUPP_DIR / 'lit_review_table.tsv'
+    lit_review_path = _DATA_DIR / 'lit_review_table.tsv'
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8),
                               gridspec_kw={'wspace': 0.38})

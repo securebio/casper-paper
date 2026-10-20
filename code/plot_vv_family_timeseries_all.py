@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
-"""
-Time series of VV family composition for ALL sites (supplementary figure).
-
-Creates stacked bar charts showing VV family relative abundance over time for
-all sites, arranged in 2 columns. Sites are ordered by sequencing lab
-(MU first, then SB), then by state, then alphabetically within state.
-
-Top families by total abundance across all sites are shown separately,
-with remaining families grouped into "Other".
+"""Supplementary figure: vertebrate-infecting virus family composition over
+time, every site.
 """
 
 import sys

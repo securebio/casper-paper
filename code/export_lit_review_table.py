@@ -13,9 +13,9 @@ from pathlib import Path
 # Paths relative to this file
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
-_SUPP_DIR = _REPO_ROOT / "tables"
+_DATA_DIR = _REPO_ROOT / "data"
 
-LIT_REVIEW_TSV = _SUPP_DIR / "lit_review_table.tsv"
+LIT_REVIEW_TSV = _DATA_DIR / "lit_review_table.tsv"
 
 
 def load_lit_review_table():

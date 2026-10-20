@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""
-Time series of mean raw read length per sample for ALL sites (supplementary figure).
-
-Creates line/scatter plots showing mean raw read length over time for all sites,
-arranged in 2 columns. Sites are ordered by sequencing lab (MU first, then SB),
-then by state, then alphabetically within state.
-
-Uses raw (pre-trimming) read length to show the sequencing configuration used.
-"""
+"""Supplementary figure: mean raw read length per sample, every site."""
 
 import sys
 from pathlib import Path

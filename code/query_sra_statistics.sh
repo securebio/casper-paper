@@ -2,8 +2,10 @@
 # Query SRA statistics for wastewater metagenomic sequencing data
 # Compares CASPER and related projects against total SRA and wastewater categories
 #
-# Requires: gcloud CLI with BigQuery access configured
-# Usage: ./query_sra_statistics.sh [output_dir]
+# Requires: gcloud CLI with BigQuery access, and a billing project set in
+# BQ_PROJECT_ID. Queries the public nih-sra-datastore.sra.metadata dataset;
+# the project is only used for billing the scan.
+# Usage: BQ_PROJECT_ID=your-project ./query_sra_statistics.sh [output_dir]
 #
 # Outputs (no timestamp suffix — overwrites existing files):
 #   sra_summary_statistics.csv
@@ -13,7 +15,7 @@
 set -e
 
 # Configuration
-PROJECT_ID="broad-sabeti-lab"
+PROJECT_ID="${BQ_PROJECT_ID:?set BQ_PROJECT_ID to a GCP project with BigQuery billing enabled}"
 OUTPUT_DIR="${1:-$(dirname "$0")/../data/sra_statistics}"
 
 # Create output directory

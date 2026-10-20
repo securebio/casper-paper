@@ -17,7 +17,6 @@ import pandas as pd
 _CODE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _CODE_DIR.parent
 _DATA_DIR = _REPO_ROOT / "data"
-_SUPP_DIR = _REPO_ROOT / "tables"
 _SRA_DIR = _DATA_DIR / "sra_statistics"
 
 
@@ -52,10 +51,13 @@ CASPER_BIOPROJECTS = ["PRJNA1247874", "PRJNA1198001"]
 # ============================================================================
 
 def _load_csv(filename):
-    """Load a CSV from the data directory."""
+    """Load a CSV from the data directory. The larger files are gzipped."""
     path = _DATA_DIR / filename
     if not path.exists():
-        raise FileNotFoundError(f"Data file not found: {path}")
+        gzipped = path.with_name(path.name + ".gz")
+        if not gzipped.exists():
+            raise FileNotFoundError(f"Data file not found: {path}")
+        path = gzipped
     df = pd.read_csv(path)
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"])
@@ -96,8 +98,29 @@ def load_sample_metadata(**kwargs):
 
 
 def load_all_kraken_data(**kwargs):
-    """Load kraken_summary — domain-level taxonomic composition per sample."""
-    return _load_csv("kraken_summary.csv")
+    """Load kraken_summary — domain-level taxonomic composition per sample.
+
+    Backfills `fraction_qc_filtered` where it is missing. Libraries summarised
+    before that column was introduced carry NaN, and because the column is a
+    denominator for the QC-adjusted rRNA fraction, a NaN silently removes the
+    affected sites from boxplots and QC summaries rather than erroring. It is
+    recomputed from the profiled read counts in the same file, which is the
+    definition the populated rows already follow (agreement to ~1e-16).
+    """
+    df = _load_csv("kraken_summary.csv")
+
+    needed = {"fraction_qc_filtered", "n_reads_profiled",
+              "n_reads_profiled_passed_qc"}
+    if needed.issubset(df.columns):
+        missing = df["fraction_qc_filtered"].isna()
+        if missing.any():
+            df.loc[missing, "fraction_qc_filtered"] = _safe_divide(
+                df.loc[missing, "n_reads_profiled"]
+                - df.loc[missing, "n_reads_profiled_passed_qc"],
+                df.loc[missing, "n_reads_profiled"],
+            )
+
+    return df
 
 
 def load_all_vv_family_data(exclude_families=None, **kwargs):
@@ -115,9 +138,60 @@ def load_all_vv_family_data(exclude_families=None, **kwargs):
     return df
 
 
+def _safe_divide(num, denom):
+    """Return num/denom, with NaN wherever denom is <= 0, NaN or non-finite.
+
+    Centralizes the division-by-zero policy for the normalized abundance
+    columns:
+
+      * clade_counts == 0 and denom > 0  -> 0.0
+      * denom == 0 or NaN or negative    -> NaN
+      * both NaN                         -> NaN
+    """
+    num = np.asarray(num, dtype=float)
+    denom = np.asarray(denom, dtype=float)
+    valid = np.isfinite(denom) & (denom > 0)
+    out = np.full_like(num, np.nan, dtype=float)
+    np.divide(num, denom, out=out, where=valid)
+    return out
+
+
 def load_all_relative_abundance(**kwargs):
-    """Load merged relative abundance (mj + custom targets)."""
-    return _load_csv("relative_abundance.csv")
+    """Load merged relative abundance (mj + custom targets).
+
+    Adds the Tobamovirus-normalized abundance column. The genus-level
+    Tobamovirus count (taxid 12234) lives in kraken_summary.csv rather
+    than relative_abundance.csv, so it is joined on `sra_accession` and
+    scaled to full library depth the same way the PMMoV and ToBRFV
+    columns already shipped in the CSV were:
+
+        scale                     = total_read_pairs / n_reads_profiled
+        tobamovirus_counts_scaled = tobamovirus_counts * scale
+        ra_clade_tobamovirus_norm = clade_counts / tobamovirus_counts_scaled
+
+    Tobamovirus is used in preference to PMMoV alone because it is far
+    better powered: median ~47,000 reads per sample versus ~3,000 for
+    PMMoV, and non-zero in every sample in the release.
+    """
+    df = _load_csv("relative_abundance.csv")
+
+    kraken_col = "n_reads_tobamovirus_12234_clade_non_rrna"
+    kraken = _load_csv("kraken_summary.csv")[["sra_accession", kraken_col]]
+    df = df.merge(kraken, on="sra_accession", how="left")
+
+    df["tobamovirus_counts"] = df[kraken_col]
+    df = df.drop(columns=[kraken_col])
+    df["tobamovirus_counts_scaled"] = (
+        df["tobamovirus_counts"] * df["total_read_pairs"] / df["n_reads_profiled"]
+    )
+    df["ra_clade_tobamovirus_norm"] = _safe_divide(
+        df["clade_counts"], df["tobamovirus_counts_scaled"]
+    )
+    df["ra_clade_dedup_tobamovirus_norm"] = _safe_divide(
+        df["clade_counts_dedup"], df["tobamovirus_counts_scaled"]
+    )
+
+    return df
 
 
 def load_all_virus_host_data(**kwargs):
@@ -203,7 +277,7 @@ def load_mgs_pathogen_data(taxids=None, **kwargs):
 
     Returns:
         DataFrame with columns including site_name, sra_accession, date,
-        taxid, ra_clade_pmmov_norm, etc.
+        taxid, ra_clade, ra_clade_tobamovirus_norm, etc.
     """
     df = load_all_relative_abundance()
     if taxids is not None:
@@ -241,7 +315,7 @@ def load_nwss_site_matches():
     Returns:
         DataFrame with columns: site_name, sewershed_id.
     """
-    path = _SUPP_DIR / "sewershed_ids.tsv"
+    path = _DATA_DIR / "sewershed_ids.tsv"
     if not path.exists():
         raise FileNotFoundError(f"Sewershed ID mapping not found: {path}")
 
@@ -300,12 +374,12 @@ def load_clinical_positives_tests_data(filter_test_types=True,
     tests from Massachusetts General Hospital.
 
     Args:
-        filter_test_types: Ignored (pre-filtered in export). Kept for API compat.
+        filter_test_types: Ignored; the export is already filtered.
         drop_last_n_weeks: Drop last N weeks (0 = keep all).
 
     Returns:
         DataFrame pivoted with date index and pathogen columns containing
-        positive counts, matching the internal loader's output format.
+        positive counts.
     """
     path = _DATA_DIR / "clinical_testing_data.csv"
     if not path.exists():
@@ -707,7 +781,7 @@ def print_sra_statistics():
 
 def print_lit_review_statistics():
     """Print literature review comparison statistics."""
-    path = _SUPP_DIR / "lit_review_table.tsv"
+    path = _DATA_DIR / "lit_review_table.tsv"
     if path.exists():
         df = pd.read_csv(path, sep="\t")
         print(f"Literature review: {len(df)} studies")
@@ -726,7 +800,7 @@ def print_lit_review_statistics():
 
 def print_cost_statistics():
     """Print sequencing cost statistics."""
-    path = _SUPP_DIR / "sequencing_cost_table.tsv"
+    path = _DATA_DIR / "sequencing_cost_table.tsv"
     if path.exists():
         df = pd.read_csv(path, sep="\t")
         print(f"Cost data: {len(df)} entries")
@@ -799,19 +873,16 @@ def print_read_length_statistics(qc_data):
 def generate_cost_table(save_path=None):
     """Generate manuscript cost table with derived columns.
 
-    Reads the full sequencing_cost_table.tsv (Cost per Mb from NHGRI),
-    filters to Jan 2007 onward, and adds 'Cost per median CASPER sample'.
-    Saves as sequencing_cost_table_manuscript.tsv.
-
-    The original file is kept intact for use by plot_sampling_timeline_sra_combined.
+    Reads the NHGRI cost-per-Mb series, filters to Jan 2007 onward, and adds
+    a cost per median CASPER sample.
     """
-    path = _SUPP_DIR / "sequencing_cost_table.tsv"
+    path = _DATA_DIR / "sequencing_cost_table.tsv"
     if not path.exists():
         print("Cost table not found")
         return pd.DataFrame()
 
     # Get median CASPER sample size from lit review table
-    lit_path = _SUPP_DIR / "lit_review_table.tsv"
+    lit_path = _DATA_DIR / "lit_review_table.tsv"
     lit_df = pd.read_csv(lit_path, sep="\t")
     casper_median_gb = lit_df.loc[
         lit_df["bioproject"] == "PRJNA1247874", "median_gb_untargeted"
@@ -853,9 +924,6 @@ def generate_cost_table(save_path=None):
     df = df[["Date", "Cost per Mb", "Cost per median CASPER sample", "Source"]]
 
     if save_path:
-        # Save manuscript version alongside the original
-        out = Path(save_path)
-        manuscript_path = out.parent / (out.stem + "_manuscript" + out.suffix)
-        df.to_csv(manuscript_path, sep="\t", index=False)
-        print(f"Saved manuscript cost table to {manuscript_path}")
+        df.to_csv(save_path, sep="\t", index=False)
+        print(f"Saved {save_path}")
     return df

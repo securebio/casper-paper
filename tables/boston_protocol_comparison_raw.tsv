@@ -1,0 +1,49 @@
+pathogen	site_name	comparison	seq_lab	series	metric	r_value	p_value	n_points	n_both_detected	median_mu_sb_ratio
+SARS-CoV-2	Boston DITP South, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.5582461244546961	8.229837950814404e-05	44		
+SARS-CoV-2	Boston DITP South, MA	MU vs SB		smoothed weekly	Total read relative abundance	0.2917768290337148	0.054636069673809594	44		
+SARS-CoV-2	Boston DITP South, MA	MU vs SB		paired samples	Tobamovirus-normalized	0.5545837699993539	9.370118437338618e-05	44	37.0	4.838190741426128
+SARS-CoV-2	Boston DITP South, MA	MU vs SB		paired samples	Total read relative abundance	0.11707408844651498	0.4491496562124224	44	37.0	3.034999639168259
+SARS-CoV-2	Boston DITP South, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.45073891625615753	0.014131926700855913	29		
+SARS-CoV-2	Boston DITP South, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.24830492415747354	0.19401352453226567	29		
+SARS-CoV-2	Boston DITP South, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.7536331106897074	8.79950876548935e-06	26		
+SARS-CoV-2	Boston DITP South, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.07568500251927004	0.7132706114982723	26		
+SARS-CoV-2	Boston DITP North, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.8219496906122297	7.960205688205548e-12	44		
+SARS-CoV-2	Boston DITP North, MA	MU vs SB		smoothed weekly	Total read relative abundance	-0.207654899969439	0.17619308437155165	44		
+SARS-CoV-2	Boston DITP North, MA	MU vs SB		paired samples	Tobamovirus-normalized	0.6309855575139071	4.397574911169595e-06	44	37.0	3.5588429067039495
+SARS-CoV-2	Boston DITP North, MA	MU vs SB		paired samples	Total read relative abundance	-0.0747071083090548	0.629834887299205	44	37.0	7.463230858386638
+SARS-CoV-2	Boston DITP North, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.6842364532019704	4.257694986819227e-05	29		
+SARS-CoV-2	Boston DITP North, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.5883659483884792	0.0007878058620097499	29		
+SARS-CoV-2	Boston DITP North, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.49307574664907355	0.010483941904907297	26		
+SARS-CoV-2	Boston DITP North, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.5839468165744752	0.001736158675083061	26		
+Influenza A	Boston DITP South, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.525574290690132	0.00024876827901236656	44		
+Influenza A	Boston DITP South, MA	MU vs SB		smoothed weekly	Total read relative abundance	0.31045981674691436	0.04026102929922444	44		
+Influenza A	Boston DITP South, MA	MU vs SB		paired samples	Tobamovirus-normalized	0.31465367160530305	0.03750212861673186	44	8.0	9.635518022011775
+Influenza A	Boston DITP South, MA	MU vs SB		paired samples	Total read relative abundance	0.2998464400003476	0.047989716513684666	44	8.0	0.6964991095303216
+Influenza A	Boston DITP South, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.8152054421372491	7.235968273780619e-08	29		
+Influenza A	Boston DITP South, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.6116348031090035	0.0004229068069226204	29		
+Influenza A	Boston DITP South, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.6108261764358268	0.0009182203014964747	26		
+Influenza A	Boston DITP South, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.6995484932439814	6.978107911738029e-05	26		
+Influenza A	Boston DITP North, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.7047470228419233	9.313862254290335e-08	44		
+Influenza A	Boston DITP North, MA	MU vs SB		smoothed weekly	Total read relative abundance	0.6245349877383746	5.876748267892749e-06	44		
+Influenza A	Boston DITP North, MA	MU vs SB		paired samples	Tobamovirus-normalized	0.6106553813540427	1.0732531849305205e-05	44	12.0	6.25559121135189
+Influenza A	Boston DITP North, MA	MU vs SB		paired samples	Total read relative abundance	0.5431005398274269	0.00013939474037187962	44	12.0	5.253036820678638
+Influenza A	Boston DITP North, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.653417078054598	0.00012142696770288065	29		
+Influenza A	Boston DITP North, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.8948146405268597	5.893803420197491e-11	29		
+Influenza A	Boston DITP North, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.4823613893830243	0.01257384824223739	26		
+Influenza A	Boston DITP North, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.9195930766415553	3.182338459072162e-11	26		
+RSV	Boston DITP South, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.2242134312590803	0.1434264336584403	44		
+RSV	Boston DITP South, MA	MU vs SB		smoothed weekly	Total read relative abundance	-0.0006579997982658262	0.9966177603889373	44		
+RSV	Boston DITP South, MA	MU vs SB		paired samples	Tobamovirus-normalized	-0.07701057392423703	0.6192854156716994	44	1.0	87.15737975891197
+RSV	Boston DITP South, MA	MU vs SB		paired samples	Total read relative abundance	-0.06872986705066315	0.657546910706519	44	1.0	36.59769126920406
+RSV	Boston DITP South, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.38851393579183	0.0372694696670756	29		
+RSV	Boston DITP South, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.8589449690078422	2.4827740579855906e-09	29		
+RSV	Boston DITP South, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.3820520996980679	0.05409567599122501	26		
+RSV	Boston DITP South, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.8283259089938829	1.7492680013807514e-07	26		
+RSV	Boston DITP North, MA	MU vs SB		smoothed weekly	Tobamovirus-normalized	0.8019272970414747	6.054418604027251e-11	44		
+RSV	Boston DITP North, MA	MU vs SB		smoothed weekly	Total read relative abundance	0.7766799154062795	5.760879211341733e-10	44		
+RSV	Boston DITP North, MA	MU vs SB		paired samples	Tobamovirus-normalized	0.6530264077124447	1.5505125906580874e-06	44	9.0	5.227267560764216
+RSV	Boston DITP North, MA	MU vs SB		paired samples	Total read relative abundance	0.5431319960585704	0.00013924588193443317	44	9.0	0.7288965406607292
+RSV	Boston DITP North, MA	vs wastewater PCR	MU	smoothed weekly	Tobamovirus-normalized	0.759715977586254	1.7557198562095816e-06	29		
+RSV	Boston DITP North, MA	vs wastewater PCR	SB	smoothed weekly	Tobamovirus-normalized	0.867682897604626	1.1053296238177114e-09	29		
+RSV	Boston DITP North, MA	vs clinical testing	MU	smoothed weekly	Tobamovirus-normalized	0.6713138450023245	0.00017375517795240755	26		
+RSV	Boston DITP North, MA	vs clinical testing	SB	smoothed weekly	Tobamovirus-normalized	0.8401566828259738	7.921760879214887e-08	26		

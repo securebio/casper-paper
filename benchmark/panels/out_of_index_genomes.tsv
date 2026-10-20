@@ -1,0 +1,135 @@
+genome_id	species_taxid	taxid	organism_name	title	length	create_date	reference_length	species_name	reference_density	selection_reason	n_segments_expected
+QB015708.1	3418604	2697049	Severe acute respiratory syndrome coronavirus 2	Severe acute respiratory syndrome coronavirus 2 isolate SARS-CoV-2/human/USA/WI-WSLH-2601264/2026 ORF1ab polyprotein (ORF1ab), ORF1a polyprotein (ORF1ab), surface glycoprotein (S), ORF3a protein (ORF3a), envelope protein (E), membrane glycoprotein (M), ORF6 protein (ORF6), ORF7a protein (ORF7a), ORF7b (ORF7b), ORF8 protein (ORF8), nucleocapsid phosphoprotein (N), and ORF10 protein (ORF10) genes, complete cds	29723	2026/09/16	29751	Betacoronavirus pandemicum	dense	ok	1
+PZ994623.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 2 polymerase PB2 (PB2) gene, complete cds	2367	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994624.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 1 polymerase PB1 (PB1) gene, complete cds	2340	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994625.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 3 polymerase PA (PA) gene, complete cds	2275	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994626.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 4 hemagglutinin (HA) gene, complete cds	1847	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994627.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 5 nucleoprotein (NP) gene, complete cds	1815	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994628.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 6 NB protein (NB) and neuraminidase (NA) genes, complete cds	1529	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994629.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 7 matrix protein 1 (M1) and BM2 protein (BM2) genes, complete cds	1154	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ994630.1	2955465	11520	Influenza B virus	Influenza B virus (B/Texas/ISC-1055/2026) segment 8 nuclear export protein (NEP) and nonstructural protein 1 (NS1) genes, complete cds	1066	2026/09/11	2313	Betainfluenzavirus influenzae	dense	ok	8
+PZ716978.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 1 polymerase PB2 (PB2) gene, complete cds	2353	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716979.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 2 polymerase PB1 (PB1) gene, complete cds	2348	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716980.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 3 polymerase P3 (P3) gene, complete cds	2161	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716981.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 4 hemagglutinin-esterase (HE) gene, complete cds	2055	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716982.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 5 nucleoprotein (NP) gene, complete cds	1790	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716983.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 6 matrix protein 1 (M1) and CM2 protein (CM2) genes, complete cds	1165	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+PZ716984.1	2955935	11552	Influenza C virus	Influenza C virus (C/Manombo/MVAN24_8S_3909/2024) segment 7 nonstructural protein 2 (NEP) and nonstructural protein 1 (NS1) genes, complete cds	900	2026/07/21	2365	Gammainfluenzavirus influenzae	moderate	ok	7
+OZ546872.1	3049954	208895	Human respiratory syncytial virus B	Human respiratory syncytial virus B isolate hRSV/B/Australia/NT-RDH-0227/2026 genome assembly, complete genome: monopartite	15221	2026/09/10	15222	Orthopneumovirus hominis	dense	ok	1
+PX475770.1	3052345	170528	Measles virus genotype D8	Measles virus genotype D8 isolate MVs/Arizona.USA/40.25/3 [D8], complete genome	15771	2025/11/03	15894	Morbillivirus hominis	dense	ok	1
+OZ501920.1	3431483	10244	Monkeypox virus	Monkeypox virus isolate LC0000068 genome assembly, complete genome: monopartite	197232	2026/08/02	196858	Orthopoxvirus monkeypox	dense	ok	1
+PZ317218.1	3048148	162145	human metapneumovirus	Human metapneumovirus isolate HMPV/CNJX/2025/1837, complete genome	13210	2026/05/14	13350	Metapneumovirus hominis	dense	ok	1
+PX380245.1	3049952	12730	Human respirovirus 1	Human respirovirus 1 isolate hPIV1/Russia/SPE-RII-21580V1/2022, complete genome	15600	2025/10/11	15600	Respirovirus laryngotracheitidis	sparse	ok	1
+PV224536.1	3052557	2560525	Human orthorubulavirus 2	Human orthorubulavirus 2 strain HPIV2/USA/320036/2022, complete genome	15504	2025/03/25	15646	Orthorubulavirus laryngotracheitidis	moderate	ok	1
+PX360996.1	3049953	11216	Human respirovirus 3	Human respirovirus 3 isolate hPIV3/Russia/SPE-RII-4682S/2025, complete genome	15404	2025/10/11	15462	Respirovirus pneumoniae	dense	ok	1
+PV224554.1	3052556	2560526	Human orthorubulavirus 4	Human orthorubulavirus 4 strain HPIV4B/USA/RCGSHD/2022, complete genome	17147	2025/03/25	17052	Orthorubulavirus hominis	moderate	ok	1
+PQ612530.1	3428506	42789	enterovirus D68	Enterovirus D68 isolate EVD68-022194079601-VRES22-435-21-LYO-FRA22 polyprotein gene, complete cds	7331	2025/06/01	7367	Enterovirus deconjuncti	dense	ok	1
+PX000255.1	3428505	3428505	Enterovirus coxsackiepol	Enterovirus coxsackiepol isolate CAF-23-190 polyprotein gene, complete cds	7360	2026/04/14	7440	Enterovirus coxsackiepol	dense	ok	1
+PZ362770.1	3407641	12092	Hepatovirus A	Hepatovirus A isolate CR01574/G.gorilla/Cameroon/2006, complete genome	7405	2026/09/09	7478	Hepatovirus ahepa	dense	ok	1
+PZ495775.1	3431302	10407	Hepatitis B virus	Hepatitis B virus isolate KENHBV104, complete genome	3221	2026/09/06	3182	Orthohepadnavirus hominoidei	dense	ok	1
+PQ638484.1	3052230	3052230	Orthohepacivirus hominis	Orthohepacivirus hominis isolate POUIAA032 polyprotein (POLY) and protein F (POLY) genes, complete cds	9033	2026/08/01	9646	Hepacivirus hominis	dense	ok	1
+PZ211806.1	2844074	12475	Hepatitis delta virus	Hepatitis delta virus isolate Participant084_BL_HDV-FG, complete genome	1678	2026/07/21	1676	Deltavirus italiense	dense	ok	1
+PZ015904.1	3052560	1428458	Mumps virus genotype C	Mumps virus genotype C strain MuVs/Kerala.IND/50.24[C], complete genome	15331	2026/08/18	15384	Orthorubulavirus parotitidis	dense	ok	1
+LC778127.1	2846071	11041	Rubella virus	Rubella virus RVi/Tokyo.JPN04.13[2B] RNA, complete genome	9757	2025/04/17	9761	Rubivirus rubellae	dense	ok	1
+PV845296.1	3050294	3050294	Varicellovirus humanalpha3	Varicellovirus humanalpha3 isolate UGA-VZV-045, complete genome	124882	2025/07/20	124884	Varicellovirus humanalpha3	dense	ok	1
+LC929456.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP7 protein, complete cds	981	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929457.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP4 protein, complete cds	2328	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929458.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP6 protein, complete cds	1194	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929459.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP1 protein, complete cds	3267	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929460.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP2 protein, complete cds	2583	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929461.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for VP3 protein, complete cds	2508	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929462.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for NSP1 protein, complete cds	1461	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929463.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for NSP2 protein, complete cds	954	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929464.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for NSP3 protein, complete cds	942	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929465.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for NSP4 protein, complete cds	528	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+LC929466.1	3432193	10941	Human rotavirus A	Human rotavirus A RVA/Human-wt/VNM/RVN14.1119/2014/G1P[8] gene for NSP5 protein, complete cds	603	2026/07/02	1614	Rotavirus alphagastroenteritidis	dense	ok	11
+PX463233.1	337041	10598	human papillomavirus 58	Human papillomavirus 58 isolate InDRE 190-CHP/Mexico/2022, complete genome	7824	2025/10/22	7904	Alphapapillomavirus 9	dense	ok	1
+PV710595.1	3046277	11089	Yellow fever virus	Yellow fever virus isolate UWARN_YFVHUMLPA_006_25FA polyprotein gene, complete cds	10300	2025/06/14	10862	Orthoflavivirus flavi	moderate	ok	1
+PV666486.1	3048158	11072	Japanese encephalitis virus	Japanese encephalitis virus strain 22-01262-0053/VIC/22, complete genome	10918	2025/05/27	10976	Orthoflavivirus japonicum	sparse	ok	1
+PX896059.1	11292	11292	Lyssavirus rabies	Lyssavirus rabies isolate RV-C1, complete genome	11838	2026/08/03	11932	Lyssavirus rabies	dense	ok	1
+OZ318994.1	3052464	12637	Dengue virus	Dengue virus isolate Oman_30982/DENV2/2II_F.1.1 genome assembly, complete genome: monopartite	10342	2026/08/31	10723	Orthoflavivirus denguei	dense	ok	1
+PQ433000.1	3048459	64320	Zika virus	Zika virus isolate 432837, complete genome	10710	2025/10/04	10794	Orthoflavivirus zikaense	moderate	ok	1
+PV685660.1	3426298	37124	Chikungunya virus	Chikungunya virus strain S8b82, complete genome	11237	2025/06/10	11826	Alphavirus chikungunya	moderate	ok	1
+PQ220306.1	3426299	11021	Eastern equine encephalitis virus	MAG: Eastern equine encephalitis virus isolate VN7173MEL1, complete genome	11611	2026/01/02	11675	Alphavirus eastern	sparse	ok	1
+PZ205952.1	3052468	3052468	Orthoflavivirus louisense	Orthoflavivirus louisense isolate V07457, complete genome	10629	2026/05/19	10940	Orthoflavivirus louisense	sparse	ok	1
+PX666892.1	3048287	58535	Deer tick virus	Deer tick virus isolate R59266, complete genome	10834	2026/02/08	10839	Orthoflavivirus powassanense	moderate	ok	1
+PV208367.1	3052409	11577	La Crosse virus	La Crosse virus isolate 24CO-13 segment L, complete sequence	6976	2025/03/18	984	Orthobunyavirus lacrosseense	moderate	ok	3
+PV208368.1	3052409	11577	La Crosse virus	La Crosse virus isolate 24CO-13 segment M, complete sequence	4527	2025/03/18	984	Orthobunyavirus lacrosseense	moderate	ok	3
+PV208369.1	3052409	11577	La Crosse virus	La Crosse virus isolate 24CO-13 segment S, complete sequence	984	2025/03/18	984	Orthobunyavirus lacrosseense	moderate	ok	3
+PQ329253.1	3052429	118655	Oropouche virus	Oropouche virus strain SP2024 segment S nucleoprotein gene, complete cds	940	2025/12/31	4385	Orthobunyavirus oropoucheense	moderate	ok	3
+PQ329254.1	3052429	118655	Oropouche virus	Oropouche virus strain SP2024 segment M membrane polyprotein gene, complete cds	4368	2025/12/31	4385	Orthobunyavirus oropoucheense	moderate	ok	3
+PQ329255.1	3052429	118655	Oropouche virus	Oropouche virus strain SP2024 segment L RNA-dependent RNA polymerase gene, complete cds	7741	2025/12/31	4385	Orthobunyavirus oropoucheense	moderate	ok	3
+OZ538111.1	3052462	186538	Zaire ebolavirus	Zaire ebolavirus isolate 25FHV173 genome assembly, complete genome: monopartite	18789	2026/08/27	18959	Orthoebolavirus zairense	moderate	ok	1
+PV700541.1	3052505	3052505	Orthomarburgvirus marburgense	Orthomarburgvirus marburgense isolate MARV_H.Sapiens_TZ_Kagera_S8_2023, complete genome	19048	2025/11/27	19112	Orthomarburgvirus marburgense	moderate	ok	1
+PZ239818.1	3052310	3052310	Mammarenavirus lassaense	Mammarenavirus lassaense strain JU/A&ECL_1023 segment S, complete sequence	3406	2026/06/27	3402	Mammarenavirus lassaense	moderate	ok	2
+PZ239819.1	3052310	3052310	Mammarenavirus lassaense	Mammarenavirus lassaense strain JU/A&ECL_1023 segment L, complete sequence	7259	2026/06/27	3402	Mammarenavirus lassaense	moderate	ok	2
+PX874928.1	3052518	3052518	Orthonairovirus haemorrhagiae	Orthonairovirus haemorrhagiae isolate TRSCU/67-S41/Sivas/2015 segment S nucleocapsid protein gene, complete cds	1638	2026/04/19	5366	Orthonairovirus haemorrhagiae	moderate	ok	3
+PX875024.1	3052518	3052518	Orthonairovirus haemorrhagiae	Orthonairovirus haemorrhagiae isolate TRSCU/67-S41/Sivas/2015 segment M envelope glycoprotein precursor, gene, complete cds	5325	2026/04/19	5366	Orthonairovirus haemorrhagiae	moderate	ok	3
+PX875130.1	3052518	3052518	Orthonairovirus haemorrhagiae	Orthonairovirus haemorrhagiae isolate TRSCU/67-S41/Sivas/2015 segment L RNA-dependent RNA polymerase gene, complete cds	12049	2026/04/19	5366	Orthonairovirus haemorrhagiae	moderate	ok	3
+PX130165.1	3052225	3052225	Henipavirus nipahense	Henipavirus nipahense isolate NiV/human/BGD/SB0200425/2025, complete genome	18128	2025/08/24	18246	Henipavirus nipahense	dense	ok	1
+PV231432.1	3052676	11588	Rift Valley fever virus	Rift Valley fever virus isolate BOT_CAP/2020/2112_S4 segment S, complete sequence	1690	2025/03/23	6404	Phlebovirus riftense	moderate	ok	3
+PV231436.1	3052676	11588	Rift Valley fever virus	Rift Valley fever virus isolate BOT_CAP/2020/2112_S4 segment M, complete sequence	3096	2025/03/23	6404	Phlebovirus riftense	moderate	ok	3
+PV231440.1	3052676	11588	Rift Valley fever virus	Rift Valley fever virus isolate BOT_CAP/2020/2112_S4 segment L, complete sequence	1071	2025/03/23	6404	Phlebovirus riftense	moderate	ok	3
+OR987489.1	3433633	1335626	Middle East respiratory syndrome-related coronavirus	Middle East respiratory syndrome-related coronavirus isolate Hu/Al Khabourah-Oman-19525/2019, complete genome	30118	2025/03/21	30119	Betacoronavirus cameli	moderate	ok	1
+PZ066131.1	3052307	3052307	Mammarenavirus guanaritoense	Mammarenavirus guanaritoense isolate VINH-95551 segment L, complete sequence	7080	2026/05/26	3343	Mammarenavirus guanaritoense	moderate	ok	2
+PZ066132.1	3052307	3052307	Mammarenavirus guanaritoense	Mammarenavirus guanaritoense isolate VINH-95551 segment S, complete sequence	3342	2026/05/26	3343	Mammarenavirus guanaritoense	moderate	ok	2
+PX353117.1	3052314	3052314	Mammarenavirus lujoense	Mammarenavirus lujoense isolate LUJV H.sapiens/ZAF/2008/NML-P3 segment S, complete sequence	3182	2025/09/24	3189	Mammarenavirus lujoense	moderate	ok	2
+PX353118.1	3052314	3052314	Mammarenavirus lujoense	Mammarenavirus lujoense isolate LUJV H.sapiens/ZAF/2008/NML-P3 segment L, complete sequence	7163	2025/09/24	3189	Mammarenavirus lujoense	moderate	ok	2
+PV808473.1	1980456	1980456	Orthohantavirus andesense	Orthohantavirus andesense isolate CHI-Hu13724_P1 segment S, complete sequence	1869	2025/11/04	1871	Orthohantavirus andesense	dense	ok	3
+PV808474.1	1980456	1980456	Orthohantavirus andesense	Orthohantavirus andesense isolate CHI-Hu13724_P1 segment M, complete sequence	3664	2025/11/04	1871	Orthohantavirus andesense	dense	ok	3
+PV808475.1	1980456	1980456	Orthohantavirus andesense	Orthohantavirus andesense isolate CHI-Hu13724_P1 segment L, complete sequence	6562	2025/11/04	1871	Orthohantavirus andesense	dense	ok	3
+PV600323.1	3052480	3052480	Orthohantavirus hantanense	Orthohantavirus hantanense strain Yanbian-Aa22a-H3999 segment L RNA-dependent RNA polymerase gene, complete cds	6492	2025/10/31	1696	Orthohantavirus hantanense	dense	ok	3
+PV600334.1	3052480	3052480	Orthohantavirus hantanense	Orthohantavirus hantanense strain Yanbian-Aa22a-H3999 segment M glycoprotein gene, complete cds	3419	2025/10/31	1696	Orthohantavirus hantanense	dense	ok	3
+PV600345.1	3052480	3052480	Orthohantavirus hantanense	Orthohantavirus hantanense strain Yanbian-Aa22a-H3999 segment S nucleocapsid protein gene, complete cds	1488	2025/10/31	1696	Orthohantavirus hantanense	dense	ok	3
+PZ802244.1	3418650	11676	Human immunodeficiency virus 1	HIV-1 isolate 008-001-base-PL4-O23 from United Kingdom, complete genome	9121	2026/09/08	9181	Lentivirus humimdef1	dense	ok	1
+LC927253.1	3418651	11709	Human immunodeficiency virus 2	Human immunodeficiency virus 2 07JP.NMC716 proviral DNA, complete genome	10235	2026/04/17	10359	Lentivirus humimdef2	dense	ok	1
+PZ051348.1	3431196	122929	Norovirus GII	Norovirus GII isolate Hu/US/2024/GII.17[P17]/Jackson2659, complete genome	7560	2026/09/01	7654	Norovirus norwalkense	dense	ok	1
+PP313551.1	3432266	1398550	Sapovirus GI.1	Sapovirus GI.1 strain Hu/CHN/2023/GI.1/QS014, complete genome	7429	2025/12/31	7433	Sapovirus sapporoense	dense	ok	1
+PV189393.1	3430629	12456	Human astrovirus 1	Human astrovirus 1 strain HAstV-1/Fuzhou2023218, complete genome	6814	2025/03/18	6813	Mamastrovirus hominis	dense	ok	1
+LC940228.1	3430631	568715	Astrovirus MLB1	Astrovirus MLB1 MLB1/1105/Tokyo/2023 RNA, complete genome	6163	2026/07/03	6171	Mamastrovirus melbournense	moderate	ok	1
+PZ360999.1	3241426	10524	Human adenovirus 41	Human adenovirus 41 isolate BC14 penton base protein, hexon protein, short fiber protein, and long fiber protein genes, complete cds	33289	2026/07/29	34214	Mastadenovirus faecale	dense	ok	1
+PX905700.1	3241402	129875	Human mastadenovirus A	Human mastadenovirus A isolate AdV-AS51, complete genome	33780	2026/04/14	34125	Mastadenovirus adami	dense	ok	1
+PV980175.1	3241406	714978	Human adenovirus 55	Human adenovirus 55 strain hAdV-B55/Russia/SPE-RII-MH209699V/2024, complete genome	34765	2025/08/06	35343	Mastadenovirus blackbeardi	dense	ok	1
+PX461437.1	3241411	129951	Human mastadenovirus C	Human mastadenovirus C isolate HAdV/KOR/GJ-2024-0202, complete genome	35869	2026/03/03	35937	Mastadenovirus caesari	dense	ok	1
+PV359444.1	3241420	880565	Human adenovirus 56	Human adenovirus 56 isolate JP19759, complete genome	35040	2025/04/02	35083	Mastadenovirus dominans	dense	ok	1
+LC922662.1	3052040	3052040	Bocaparvovirus primate1	Bocaparvovirus primate1 HBoV1_Fukushima_OH915_2025 RNA, complete genome	5542	2026/03/25	5543	Bocaparvovirus primate1	moderate	ok	1
+PZ353127.1	72149	1379496	Feline kobuvirus	Feline kobuvirus isolate FeKoV0813, complete genome	8213	2026/07/25	8280	Kobuvirus aichi	moderate	ok	1
+PV437489.1	3428500	31704	Coxsackievirus A16	Coxsackievirus A16 isolate JD22-50, complete genome	7275	2026/08/15	7398	Enterovirus alphacoxsackie	dense	ok	1
+PZ117055.1	3428502	12074	Coxsackievirus B5	Coxsackievirus B5 isolate SPb_12223/25EVI/Novgorod/2025/RU, complete genome	7344	2026/05/10	7399	Enterovirus betacoxsackie	dense	ok	1
+PX282722.1	3428501	147711	Rhinovirus A	Rhinovirus A isolate RVA/China/Hangzhou-24-1-977 polyprotein (POLY) gene, complete cds	7090	2025/10/07	7137	Enterovirus alpharhino	dense	ok	1
+LC889320.1	3428503	185926	rhinovirus B70	Rhinovirus B70 HRV_Fukushima_OH49_2023_B70 RNA, complete genome	7205	2025/09/05	7208	Enterovirus betarhino	dense	ok	1
+PX282783.1	3428504	463676	Rhinovirus C	Rhinovirus C isolate RVC/China/Hangzhou-24-2-1252 polyprotein (POLY) gene, complete cds	7055	2025/10/07	6944	Enterovirus cerhino	dense	ok	1
+PV833406.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 1 RNA-dependent RNA polymerase VP1 (VP1) gene, complete cds	3477	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833421.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 2 inner capsid protein VP2 (VP2) gene, complete cds	2814	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833436.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 3 RNA capping protein VP3 (VP3) gene, complete cds	2292	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833451.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 4 outer capsid protein VP4 (VP4) gene, complete cds	2277	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833466.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 5 non-structural protein 1-1 (NSP1-1) and non-structural protein 1-2 (NSP1-2) genes, complete cds	1174	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833481.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 6 inner capsid protein VP6 (VP6) gene, complete cds	1176	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833496.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 7 non-structural protein 3 (NSP3) gene, complete cds	891	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833511.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 8 non-structural protein 2 (NSP2) gene, complete cds	903	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833526.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 9 outer capsid protein VP7 (VP7) gene, complete cds	744	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833541.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 10 non-structural protein 4 (NSP4) gene, complete cds	627	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PV833556.1	3432195	3065879	Equine rotavirus B	Equine rotavirus B strain RVB/Horse-wt/USA/KY8-1/2024 segment 11 non-structural protein 5 (NSP5) gene, complete cds	705	2025/07/19	751	Rotavirus betagastroenteritidis	dense	ok	11
+PQ329026.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP1, complete sequence	3309	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329027.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP2, complete sequence	2736	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329028.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP3, complete sequence	2191	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329029.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP4, complete sequence	2283	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329030.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP6, complete sequence	1347	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329031.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment VP7, complete sequence	1053	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329032.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment NSP1, complete sequence	1267	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329033.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment NSP2, complete sequence	1037	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329034.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment NSP3, complete sequence	1348	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329035.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment NSP4, complete sequence	613	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+PQ329036.1	3432203	36427	Rotavirus C	Rotavirus C isolate RVC/Human-wt/CHN/Hb1118/2011/G4P2 segment NSP5, complete sequence	700	2025/09/29	1350	Rotavirus tritogastroenteritidis	dense	ok	11
+OZ250410.1	3433756	11137	Human coronavirus 229E	Human coronavirus 229E isolate RNA genome assembly, complete genome: monopartite	27287	2025/04/10	27317	Alphacoronavirus chicagoense	dense	ok	1
+PP910352.1	3433809	277944	Human coronavirus NL63	Human coronavirus NL63 strain p15_A6, complete genome	27553	2025/10/31	27553	Alphacoronavirus amsterdamense	moderate	ok	1
+PV798433.1	3433757	31631	Human coronavirus OC43	Human coronavirus OC43 isolate 12_S3, complete genome	30736	2026/07/01	30741	Betacoronavirus gravedinis	dense	ok	1
+PX441742.1	3433758	290028	Human coronavirus HKU1	Human coronavirus HKU1 isolate HKU1A_IPP02_P4D4_110225_S24, complete genome	29782	2026/05/19	29926	Betacoronavirus hongkongense	moderate	ok	1
+OZ348992.1	3050292	10298	Human alphaherpesvirus 1	Human alphaherpesvirus 1 isolate 136 genome assembly, complete genome: monopartite	152154	2025/10/31	152222	Simplexvirus humanalpha1	dense	ok	1
+PZ135825.1	3050293	10310	Human alphaherpesvirus 2	Human alphaherpesvirus 2 isolate 51-SV_uncultured, complete genome	155875	2026/07/24	154675	Simplexvirus humanalpha2	dense	ok	1
+OR134767.1	3050299	10376	human gammaherpesvirus 4	Human gammaherpesvirus 4 isolate C666-1, complete genome	171946	2025/07/17	171823	Lymphocryptovirus humangamma4	dense	ok	1
+PQ851839.1	3050295	10359	Human betaherpesvirus 5	Human betaherpesvirus 5 isolate B-111, complete genome	233799	2025/06/14	235646	Cytomegalovirus humanbeta5	dense	ok	1
+PX645526.2	3050296	3050296	Roseolovirus humanbeta6a	Roseolovirus humanbeta6a isolate AA-80, complete genome	160180	2026/02/17	159378	Roseolovirus humanbeta6a	moderate	ok	1
+PZ129846.1	1891762	1891762	Betapolyomavirus hominis	Betapolyomavirus hominis isolate 25B57827, complete genome	5132	2026/04/15	5153	Betapolyomavirus hominis	moderate	ok	1
+LC945221.1	3052189	10798	Human parvovirus B19	Human parvovirus B19 PVB19-A250047 DNA, complete sequence	5018	2026/08/26	5596	Erythroparvovirus primate1	moderate	ok	1
+PV555123.1	3052608	54290	GB virus C	GB virus C isolate BH19HGV01 polyprotein gene, complete cds	9081	2025/04/29	9392	Pegivirus hominis	moderate	ok	1

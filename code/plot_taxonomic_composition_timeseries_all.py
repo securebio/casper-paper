@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
-"""
-Time series of taxonomic composition for ALL sites (supplementary figure).
-
-Creates stacked bar charts showing taxonomic composition over time for
-all sites, arranged in 2 columns. Sites are ordered by sequencing lab
-(MU first, then SB), then by state, then alphabetically within state.
-
-Taxonomic categories:
-- Ribosomal: All rRNA reads regardless of taxonomic domain
-- Bacteria: Non-rRNA bacterial reads
-- Archaea: Non-rRNA archaeal reads
-- Eukaryota: Non-rRNA eukaryotic reads
-- Viruses: Non-rRNA viral reads
-- Unclassified: Non-rRNA unclassified reads + direct assignments to root/cellular organisms
-"""
+"""Supplementary figure: taxonomic composition over time, every site."""
 
 import sys
 from pathlib import Path
@@ -24,6 +10,8 @@ from matplotlib.patches import Rectangle
 
 # Import plotting config
 sys.path.insert(0, str(Path(__file__).parent))
+
+_FIGURES_DIR = Path(__file__).resolve().parent.parent / "figures"
 from plot_config import *
 from plot_config import _state_from_site_name
 
@@ -363,7 +351,7 @@ def main():
     parser.add_argument(
         '--output',
         type=str,
-        default='figures/taxonomic_composition_timeseries_all.png',
+        default=str(_FIGURES_DIR / 'taxonomic_composition_timeseries_all.png'),
         help='Output file path for the figure'
     )
 

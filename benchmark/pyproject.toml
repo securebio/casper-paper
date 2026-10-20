@@ -1,0 +1,79 @@
+[project]
+name = "casper-pipeline-benchmark"
+version = "1.0.0"
+description = "Benchmark the CASPER vertebrate-infecting virus pipeline on simulated reads"
+requires-python = ">=3.11"
+dependencies = [
+    "InSilicoSeq>=2.0.1",
+    "matplotlib>=3.8",
+    # figures/ and export_benchmark_table.py are pandas so that code/index.qmd can render
+    # them in the manuscript's environment, which has no polars.
+    "pandas>=2.0",
+    "polars>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==1.18.2",
+    "ruff==0.13.2",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["assignment_evaluation"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[[tool.mypy.overrides]]
+module = "assignment_evaluation.*"
+check_untyped_defs = true
+
+# pandas ships no type information. plot_composition and export_benchmark_table use pandas
+# rather than the polars the rest of the package is written in, so that code/index.qmd can
+# render them in the manuscript's environment, which has no polars.
+[[tool.mypy.overrides]]
+module = "pandas.*"
+ignore_missing_imports = true
+
+
+[tool.ruff]
+# Comprehensive rule selection
+lint.select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes (unused imports, etc.)
+    "I",   # isort
+    "B",   # bugbear (likely bugs and design problems)
+    "C4",  # comprehensions (better list/dict comprehensions)
+    "UP",  # pyupgrade (modernize Python code)
+    "N",   # naming (PEP8 naming conventions)
+    "COM", # commas (trailing commas)
+    "PIE", # misc. lints (unnecessary code)
+    "RET", # return statements (consistent returns)
+    "SIM", # simplify (code simplification)
+]
+
+# Ignored rules
+lint.ignore = [
+    "E501", # Ignore line too long
+    "COM812", # Trailing comma rule that conflicts with the formatter
+]
+
+# Basic exclusions
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".venv",
+]
+
+# Target Python version
+target-version = "py311"

@@ -1,5 +1,14 @@
 archive/
 .DS_Store
 __pycache__/
+code/index.html
 code/index_files/
 *.quarto_ipynb
+.quarto/
+_freeze/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+.env
+.venv/
+*.egg-info/

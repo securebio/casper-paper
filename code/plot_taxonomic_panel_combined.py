@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
-"""
-Combined taxonomic composition panel figure (Figure 3).
-
-Creates a single large panel figure combining:
-- (a) Aggregate composition across all samples (taxonomic + virus host)
-- (b) Aggregate composition by site and sequencing partner (horizontal bars)
-- (c) Temporal variation in composition for selected sites
-- (d) Distribution of rRNA fraction by site (boxplots)
-- (e) rRNA fraction and PMMoV relative abundance over time
-
-Figure dimensions: 18x24 inches
-"""
+"""Main figure: taxonomic composition of the sequencing data."""
 
 import sys
 from pathlib import Path
@@ -23,6 +12,8 @@ from matplotlib.lines import Line2D
 
 # Import plotting config
 sys.path.insert(0, str(Path(__file__).parent))
+
+_FIGURES_DIR = Path(__file__).resolve().parent.parent / "figures"
 from plot_config import *
 from plot_config import get_virus_host_colors, _state_from_site_name, MULTI_LAB_SITES, filter_timeseries_data
 
@@ -103,8 +94,8 @@ def _plot_rrna_lines_on_axis(ax, locations, df, highlight_sites=None):
                            alpha=LINE_ALPHA, label=site_name, zorder=3)
 
 
-def _plot_pmmov_lines_on_axis(ax, locations, df, highlight_sites=None):
-    """Plot PMMoV fraction lines on a single axis."""
+def _plot_tobamovirus_lines_on_axis(ax, locations, df, highlight_sites=None):
+    """Plot Tobamovirus fraction lines on a single axis."""
     if highlight_sites is None:
         highlight_sites = []
 
@@ -112,7 +103,7 @@ def _plot_pmmov_lines_on_axis(ax, locations, df, highlight_sites=None):
         if site_name not in highlight_sites:
             loc_data = df[df['site_name'] == site_name].sort_values('date').reset_index(drop=True)
             if len(loc_data) >= 2:
-                smoothed = calculate_mmwr_smoothed_trend(loc_data, 'date', 'pmmov_fraction')
+                smoothed = calculate_mmwr_smoothed_trend(loc_data, 'date', 'tobamovirus_fraction')
                 if not smoothed.empty:
                     ax.plot(smoothed['date'], smoothed['smoothed_values'],
                            color='#CCCCCC', linewidth=LINE_WIDTH,
@@ -123,17 +114,17 @@ def _plot_pmmov_lines_on_axis(ax, locations, df, highlight_sites=None):
             loc_data = df[df['site_name'] == site_name].sort_values('date').reset_index(drop=True)
             if len(loc_data) > 0:
                 color = get_location_color(site_name)
-                ax.scatter(loc_data['date'], loc_data['pmmov_fraction'],
+                ax.scatter(loc_data['date'], loc_data['tobamovirus_fraction'],
                           color=color, s=SCATTER_SIZE_SMALL * 2.5,
                           alpha=0.4, zorder=2, edgecolors='none')
                 if len(loc_data) >= 2:
-                    smoothed = calculate_mmwr_smoothed_trend(loc_data, 'date', 'pmmov_fraction')
+                    smoothed = calculate_mmwr_smoothed_trend(loc_data, 'date', 'tobamovirus_fraction')
                     if not smoothed.empty:
                         ax.plot(smoothed['date'], smoothed['smoothed_values'],
                                color=color, linewidth=LINE_WIDTH * 1.5,
                                alpha=LINE_ALPHA, zorder=3)
                 else:
-                    ax.plot(loc_data['date'], loc_data['pmmov_fraction'],
+                    ax.plot(loc_data['date'], loc_data['tobamovirus_fraction'],
                            color=color, linewidth=LINE_WIDTH * 1.5,
                            alpha=LINE_ALPHA, zorder=3)
 
@@ -146,7 +137,7 @@ def _plot_bars_on_axis(ax, locations, df, location_stats, title):
         locations: List of site names to plot
         df: DataFrame with merged kraken and virus data
         location_stats: DataFrame with location statistics
-        title: Title for this panel (unused, kept for API compat)
+        title: Ignored.
     """
     categories = ['virus', 'eukaryota', 'bacteria', 'archaea', 'unclassified', 'ribosomal']
     colors = get_taxonomic_colors()
@@ -205,8 +196,17 @@ def _plot_rrna_boxplot_on_axis(ax, locations, kraken_data, show_xlabel=True):
     positions = []
     colors_list = []
 
+    # Non-finite values must be dropped, not just counted: matplotlib's
+    # boxplot propagates NaN through the quartiles and draws nothing, while
+    # scatter skips them silently, so a single bad value would leave a row of
+    # points with no box behind it.
+    site_values = {}
+    for site_name in locations:
+        vals = df[df['site_name'] == site_name]['rrna_fraction'].values
+        site_values[site_name] = vals[np.isfinite(vals)]
+
     for idx, site_name in enumerate(locations):
-        loc_data = df[df['site_name'] == site_name]['rrna_fraction'].values
+        loc_data = site_values[site_name]
         if len(loc_data) > 0:
             data_to_plot.append(loc_data)
             positions.append(idx)
@@ -226,10 +226,11 @@ def _plot_rrna_boxplot_on_axis(ax, locations, kraken_data, show_xlabel=True):
         patch.set_facecolor(color)
         patch.set_alpha(0.7)
 
+    rng = np.random.default_rng(0)
     for idx, site_name in enumerate(locations):
-        loc_data = df[df['site_name'] == site_name]['rrna_fraction'].values
+        loc_data = site_values[site_name]
         if len(loc_data) > 0:
-            y_jitter = np.random.normal(0, 0.08, size=len(loc_data))
+            y_jitter = rng.normal(0, 0.08, size=len(loc_data))
             y_positions = idx + y_jitter
             ax.scatter(loc_data, y_positions,
                       alpha=0.4, s=SCATTER_SIZE_SMALL,
@@ -544,11 +545,11 @@ def plot_panels_b_d(ax_bars_mu, ax_bars_sb, ax_box_mu, ax_box_sb,
     return mu_locations, sb_locations
 
 
-def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_pmmov_mu, ax_pmmov_sb, fig,
+def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_tobamovirus_mu, ax_tobamovirus_sb, fig,
                  kraken_data, virus_data, highlight_sites=None):
-    """Plot panel (e): rRNA and PMMoV fraction time series.
+    """Plot panel (e): rRNA and Tobamovirus fraction time series.
 
-    2x2 grid: (rRNA | PMMoV) x (MU | SB)
+    2x2 grid: (rRNA | Tobamovirus) x (MU | SB)
     """
     if highlight_sites is None:
         highlight_sites = DEFAULT_SITES
@@ -568,11 +569,15 @@ def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_pmmov_mu, ax_pmmov_sb, fig,
         df['total_read_pairs'] = df['total_read_pairs_vd']
         df.drop(columns=['total_read_pairs_vd'], inplace=True)
 
-    # Scale Kraken subset PMMoV counts up to total read pairs, then compute fraction.
-    # n_reads_profiled is the pre-QC Kraken subset size.
+    # Scale Kraken subset Tobamovirus counts up to total read pairs, then
+    # compute fraction. n_reads_profiled is the pre-QC Kraken subset size.
+    # Genus-level Tobamovirus (taxid 12234) is used rather than PMMoV alone:
+    # it is ~16x deeper and non-zero in every sample in the release.
     df['scaling_factor'] = df['total_read_pairs'] / df['n_reads_profiled']
-    df['scaled_pmmov_counts'] = df['n_reads_pmmov_12239_clade_non_rrna'] * df['scaling_factor']
-    df['pmmov_fraction'] = df['scaled_pmmov_counts'] / df['total_read_pairs']
+    df['scaled_tobamovirus_counts'] = (
+        df['n_reads_tobamovirus_12234_clade_non_rrna'] * df['scaling_factor']
+    )
+    df['tobamovirus_fraction'] = df['scaled_tobamovirus_counts'] / df['total_read_pairs']
 
     # Convert rrna_fraction to QC-passed denominator
     if 'fraction_qc_filtered' in df.columns:
@@ -608,9 +613,9 @@ def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_pmmov_mu, ax_pmmov_sb, fig,
     _plot_rrna_lines_on_axis(ax_rrna_mu, mu_locations, mu_ts, highlight_sites)
     _plot_rrna_lines_on_axis(ax_rrna_sb, sb_locations, sb_ts, sb_highlight)
 
-    # Plot PMMoV
-    _plot_pmmov_lines_on_axis(ax_pmmov_mu, mu_locations, mu_ts, highlight_sites)
-    _plot_pmmov_lines_on_axis(ax_pmmov_sb, sb_locations, sb_ts, sb_highlight)
+    # Plot Tobamovirus
+    _plot_tobamovirus_lines_on_axis(ax_tobamovirus_mu, mu_locations, mu_ts, highlight_sites)
+    _plot_tobamovirus_lines_on_axis(ax_tobamovirus_sb, sb_locations, sb_ts, sb_highlight)
 
     # Format rRNA axes
     ax_rrna_mu.set_ylabel('rRNA fraction', fontsize=LABEL_FONT)
@@ -635,30 +640,30 @@ def plot_panel_e(ax_rrna_mu, ax_rrna_sb, ax_pmmov_mu, ax_pmmov_sb, fig,
     ax_rrna_sb.spines['top'].set_visible(False)
     ax_rrna_sb.spines['right'].set_visible(False)
 
-    # Format PMMoV axes
-    ax_pmmov_mu.set_ylabel('PMMoV fraction', fontsize=LABEL_FONT)
-    ax_pmmov_mu.set_yscale('log')
-    ax_pmmov_mu.set_ylim(1e-6, None)
-    ax_pmmov_mu.set_xlim(mu_date_min, mu_date_max)
-    ax_pmmov_mu.tick_params(axis='both', labelsize=TICK_FONT)
-    ax_pmmov_mu.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[1, 4, 7, 10]))
-    ax_pmmov_mu.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    plt.setp(ax_pmmov_mu.xaxis.get_majorticklabels(), rotation=45, ha='right')
-    ax_pmmov_mu.grid(True, alpha=0.3, zorder=1)
-    ax_pmmov_mu.set_axisbelow(True)
-    ax_pmmov_mu.spines['top'].set_visible(False)
-    ax_pmmov_mu.spines['right'].set_visible(False)
+    # Format Tobamovirus axes
+    ax_tobamovirus_mu.set_ylabel('tobamovirus fraction', fontsize=LABEL_FONT)
+    ax_tobamovirus_mu.set_yscale('log')
+    ax_tobamovirus_mu.set_ylim(1e-6, None)
+    ax_tobamovirus_mu.set_xlim(mu_date_min, mu_date_max)
+    ax_tobamovirus_mu.tick_params(axis='both', labelsize=TICK_FONT)
+    ax_tobamovirus_mu.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[1, 4, 7, 10]))
+    ax_tobamovirus_mu.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    plt.setp(ax_tobamovirus_mu.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax_tobamovirus_mu.grid(True, alpha=0.3, zorder=1)
+    ax_tobamovirus_mu.set_axisbelow(True)
+    ax_tobamovirus_mu.spines['top'].set_visible(False)
+    ax_tobamovirus_mu.spines['right'].set_visible(False)
 
-    ax_pmmov_sb.set_xlim(sb_date_min, sb_date_max)
-    ax_pmmov_sb.tick_params(axis='both', labelsize=TICK_FONT)
-    ax_pmmov_sb.tick_params(labelleft=False)
-    ax_pmmov_sb.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[1, 4, 7, 10]))
-    ax_pmmov_sb.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
-    plt.setp(ax_pmmov_sb.xaxis.get_majorticklabels(), rotation=45, ha='right')
-    ax_pmmov_sb.grid(True, alpha=0.3, zorder=1)
-    ax_pmmov_sb.set_axisbelow(True)
-    ax_pmmov_sb.spines['top'].set_visible(False)
-    ax_pmmov_sb.spines['right'].set_visible(False)
+    ax_tobamovirus_sb.set_xlim(sb_date_min, sb_date_max)
+    ax_tobamovirus_sb.tick_params(axis='both', labelsize=TICK_FONT)
+    ax_tobamovirus_sb.tick_params(labelleft=False)
+    ax_tobamovirus_sb.xaxis.set_major_locator(mdates.MonthLocator(bymonth=[1, 4, 7, 10]))
+    ax_tobamovirus_sb.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    plt.setp(ax_tobamovirus_sb.xaxis.get_majorticklabels(), rotation=45, ha='right')
+    ax_tobamovirus_sb.grid(True, alpha=0.3, zorder=1)
+    ax_tobamovirus_sb.set_axisbelow(True)
+    ax_tobamovirus_sb.spines['top'].set_visible(False)
+    ax_tobamovirus_sb.spines['right'].set_visible(False)
 
     handles_mu, labels_mu = ax_rrna_mu.get_legend_handles_labels()
     handles_sb, labels_sb = ax_rrna_sb.get_legend_handles_labels()
@@ -681,7 +686,7 @@ def plot_taxonomic_panel_combined(kraken_data, virus_host_data, virus_data, viru
     Layout:
     - Top row: (a) Total composition + virus host | (c) Time-series composition
     - Middle row: (b) Per-site bars | (d) rRNA boxplots
-    - Bottom row: (e) rRNA + PMMoV time series
+    - Bottom row: (e) rRNA + Tobamovirus time series
 
     Args:
         kraken_data: DataFrame from load_all_kraken_data()
@@ -766,8 +771,8 @@ def plot_taxonomic_panel_combined(kraken_data, virus_host_data, virus_data, viru
 
     ax_rrna_mu = fig.add_subplot(gs_bottom[0, 0])
     ax_rrna_sb = fig.add_subplot(gs_bottom[0, 1], sharey=ax_rrna_mu)
-    ax_pmmov_mu = fig.add_subplot(gs_bottom[1, 0], sharex=ax_rrna_mu)
-    ax_pmmov_sb = fig.add_subplot(gs_bottom[1, 1], sharex=ax_rrna_sb, sharey=ax_pmmov_mu)
+    ax_tobamovirus_mu = fig.add_subplot(gs_bottom[1, 0], sharex=ax_rrna_mu)
+    ax_tobamovirus_sb = fig.add_subplot(gs_bottom[1, 1], sharex=ax_rrna_sb, sharey=ax_tobamovirus_mu)
 
     # =========================================================================
     # PLOT ALL PANELS
@@ -781,7 +786,7 @@ def plot_taxonomic_panel_combined(kraken_data, virus_host_data, virus_data, viru
                                          kraken_data, virus_data)
 
     e_handles_mu, e_labels_mu, e_handles_sb, e_labels_sb = plot_panel_e(
-        ax_rrna_mu, ax_rrna_sb, ax_pmmov_mu, ax_pmmov_sb, fig,
+        ax_rrna_mu, ax_rrna_sb, ax_tobamovirus_mu, ax_tobamovirus_sb, fig,
         kraken_data, virus_hits_data, highlight_sites=DEFAULT_SITES,
     )
 
@@ -932,7 +937,7 @@ def main():
     parser.add_argument(
         '--output',
         type=str,
-        default='figures/taxonomic_panel_combined.png',
+        default=str(_FIGURES_DIR / 'taxonomic_panel_combined.png'),
         help='Output file path'
     )
 
